@@ -295,7 +295,74 @@
       border-radius: 13px;
       box-shadow: 0 3px 10px rgba(23, 35, 28, .035);
     }
-    .cat-photo { height: 155px; border: 0; border-bottom: 1px solid var(--border); }
+    .cat-carousel {
+      position: relative;
+      height: 178px;
+      overflow: hidden;
+      border-bottom: 1px solid var(--border);
+      background: var(--warm-gray);
+      touch-action: pan-y;
+    }
+    .carousel-track { height: 100%; display: flex; transition: transform .35s cubic-bezier(.22, .61, .36, 1); }
+    .carousel-slide { min-width: 100%; height: 100%; margin: 0; }
+    .carousel-slide img { display: block; width: 100%; height: 100%; object-fit: cover; }
+    .carousel-placeholder { height: 100%; border: 0; }
+    .carousel-arrow {
+      position: absolute;
+      z-index: 3;
+      top: 50%;
+      width: 30px;
+      height: 30px;
+      display: grid;
+      place-items: center;
+      padding: 0;
+      border: 1px solid rgba(255, 255, 255, .7);
+      border-radius: 50%;
+      background: rgba(13, 71, 41, .7);
+      color: #fff;
+      font: 22px/1 Georgia, serif;
+      cursor: pointer;
+      transform: translateY(-50%);
+      backdrop-filter: blur(5px);
+      transition: background .2s ease, transform .2s ease;
+    }
+    .carousel-arrow:hover { background: var(--green-dark); transform: translateY(-50%) scale(1.05); }
+    .carousel-arrow.prev { left: 8px; }
+    .carousel-arrow.next { right: 8px; }
+    .carousel-arrow[hidden], .carousel-dots[hidden], .carousel-count[hidden] { display: none; }
+    .carousel-dots {
+      position: absolute;
+      z-index: 3;
+      left: 50%;
+      bottom: 8px;
+      display: flex;
+      gap: 5px;
+      transform: translateX(-50%);
+    }
+    .carousel-dot {
+      width: 6px;
+      height: 6px;
+      padding: 0;
+      border: 0;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, .65);
+      box-shadow: 0 0 0 1px rgba(13, 71, 41, .2);
+      cursor: pointer;
+    }
+    .carousel-dot.active { width: 17px; border-radius: 6px; background: var(--yellow); }
+    .carousel-count {
+      position: absolute;
+      z-index: 3;
+      top: 8px;
+      right: 8px;
+      padding: 4px 7px;
+      border-radius: 10px;
+      background: rgba(13, 71, 41, .72);
+      color: #fff;
+      font-size: 9px;
+      letter-spacing: .06em;
+      backdrop-filter: blur(4px);
+    }
     .cat-info { padding: 14px 15px 16px; }
     .cat-name-row { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
     .cat-name-row h3 {
@@ -568,7 +635,7 @@
       .section-title { font-size: 22px; }
       .section-link { display: none; }
       .cat-grid { grid-template-columns: 1fr; }
-      .cat-photo { height: 230px; }
+      .cat-carousel { height: 260px; }
       .story-copy { padding: 25px 22px; }
       .two-card-grid { grid-template-columns: 1fr; }
       .stats-row { gap: 0; }
@@ -625,7 +692,16 @@
         </div>
         <div class="cat-grid">
           <article class="cat-card">
-            <div class="photo-slot cat-photo" data-label="李十六照片待补充"></div>
+            <div class="cat-carousel" data-carousel tabindex="0" aria-label="李十六照片相册">
+              <div class="carousel-track">
+                <figure class="carousel-slide"><img src="li-shiliu-01.jpg" alt="李十六在教室里靠近镜头" loading="eager"></figure>
+                <figure class="carousel-slide"><img src="li-shiliu-02.jpg" alt="李十六坐在校园草坪旁" loading="lazy"></figure>
+              </div>
+              <button class="carousel-arrow prev" type="button" aria-label="上一张照片">‹</button>
+              <button class="carousel-arrow next" type="button" aria-label="下一张照片">›</button>
+              <div class="carousel-dots" aria-label="选择照片"></div>
+              <span class="carousel-count" aria-live="polite"></span>
+            </div>
             <div class="cat-info">
               <div class="cat-name-row"><h3>李十六</h3><span class="status">常驻</span></div>
               <p class="cat-place">别名：李石榴 / 十六 / 石榴</p>
@@ -634,7 +710,11 @@
             </div>
           </article>
           <article class="cat-card">
-            <div class="photo-slot cat-photo" data-label="芝麻糊照片待补充"></div>
+            <div class="cat-carousel" data-carousel tabindex="0" aria-label="芝麻糊照片相册">
+              <div class="carousel-track"><figure class="carousel-slide photo-slot carousel-placeholder" data-label="芝麻糊照片待补充"></figure></div>
+              <button class="carousel-arrow prev" type="button" aria-label="上一张照片">‹</button><button class="carousel-arrow next" type="button" aria-label="下一张照片">›</button>
+              <div class="carousel-dots" aria-label="选择照片"></div><span class="carousel-count" aria-live="polite"></span>
+            </div>
             <div class="cat-info">
               <div class="cat-name-row"><h3>芝麻糊</h3><span class="status">常驻</span></div>
               <p class="cat-place">别名：大海参</p>
@@ -643,7 +723,11 @@
             </div>
           </article>
           <article class="cat-card">
-            <div class="photo-slot cat-photo" data-label="小白照片待补充"></div>
+            <div class="cat-carousel" data-carousel tabindex="0" aria-label="小白照片相册">
+              <div class="carousel-track"><figure class="carousel-slide photo-slot carousel-placeholder" data-label="小白照片待补充"></figure></div>
+              <button class="carousel-arrow prev" type="button" aria-label="上一张照片">‹</button><button class="carousel-arrow next" type="button" aria-label="下一张照片">›</button>
+              <div class="carousel-dots" aria-label="选择照片"></div><span class="carousel-count" aria-live="polite"></span>
+            </div>
             <div class="cat-info">
               <div class="cat-name-row"><h3>小白</h3><span class="status">常驻</span></div>
               <p class="cat-place">别名：白雪 / 异瞳</p>
@@ -652,7 +736,11 @@
             </div>
           </article>
           <article class="cat-card">
-            <div class="photo-slot cat-photo" data-label="奥大橘照片待补充"></div>
+            <div class="cat-carousel" data-carousel tabindex="0" aria-label="奥大橘照片相册">
+              <div class="carousel-track"><figure class="carousel-slide photo-slot carousel-placeholder" data-label="奥大橘照片待补充"></figure></div>
+              <button class="carousel-arrow prev" type="button" aria-label="上一张照片">‹</button><button class="carousel-arrow next" type="button" aria-label="下一张照片">›</button>
+              <div class="carousel-dots" aria-label="选择照片"></div><span class="carousel-count" aria-live="polite"></span>
+            </div>
             <div class="cat-info">
               <div class="cat-name-row"><h3>奥大橘</h3><span class="status">常驻</span></div>
               <p class="cat-place">别名：暂无</p>
@@ -746,6 +834,60 @@
       <small>© 2026</small>
     </footer>
   </div>
+
+  <script>
+    document.querySelectorAll('[data-carousel]').forEach((carousel) => {
+      const track = carousel.querySelector('.carousel-track');
+      const slides = [...carousel.querySelectorAll('.carousel-slide')];
+      const previous = carousel.querySelector('.prev');
+      const next = carousel.querySelector('.next');
+      const dots = carousel.querySelector('.carousel-dots');
+      const count = carousel.querySelector('.carousel-count');
+      let index = 0;
+      let startX = null;
+
+      slides.forEach((_, dotIndex) => {
+        const dot = document.createElement('button');
+        dot.type = 'button';
+        dot.className = 'carousel-dot';
+        dot.setAttribute('aria-label', `查看第 ${dotIndex + 1} 张照片`);
+        dot.addEventListener('click', () => show(dotIndex));
+        dots.appendChild(dot);
+      });
+
+      const dotButtons = [...dots.children];
+      const show = (newIndex) => {
+        index = (newIndex + slides.length) % slides.length;
+        track.style.transform = `translateX(-${index * 100}%)`;
+        dotButtons.forEach((dot, dotIndex) => dot.classList.toggle('active', dotIndex === index));
+        count.textContent = `${index + 1} / ${slides.length}`;
+      };
+
+      if (slides.length < 2) {
+        previous.hidden = true;
+        next.hidden = true;
+        dots.hidden = true;
+        count.hidden = true;
+      } else {
+        previous.addEventListener('click', () => show(index - 1));
+        next.addEventListener('click', () => show(index + 1));
+        carousel.addEventListener('keydown', (event) => {
+          if (event.key === 'ArrowLeft') show(index - 1);
+          if (event.key === 'ArrowRight') show(index + 1);
+        });
+        carousel.addEventListener('pointerdown', (event) => { startX = event.clientX; });
+        carousel.addEventListener('pointerup', (event) => {
+          if (startX === null) return;
+          const distance = event.clientX - startX;
+          if (Math.abs(distance) > 42) show(index + (distance < 0 ? 1 : -1));
+          startX = null;
+        });
+        carousel.addEventListener('pointercancel', () => { startX = null; });
+      }
+
+      show(0);
+    });
+  </script>
 
 </body>
 </html>
