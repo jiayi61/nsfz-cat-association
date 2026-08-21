@@ -581,8 +581,8 @@
     .qr-card h3 { margin-bottom: 8px; }
     .qr-card p { margin: 0; color: var(--muted); font-size: 11px; }
     .qr-slot {
-      width: 150px;
-      height: 150px;
+      width: 180px;
+      height: 180px;
       margin-top: 17px;
       display: grid;
       place-items: center;
@@ -592,6 +592,8 @@
       color: #8d835b;
       font-size: 11px;
     }
+    .qr-slot img { display: block; width: 100%; height: 100%; object-fit: contain; border-radius: 9px; }
+    .qq-number { margin-top: 11px; color: var(--green-dark); font-size: 12px; letter-spacing: .04em; }
 
     .footer {
       min-height: 78px;
@@ -724,7 +726,10 @@
           </article>
           <article class="cat-card">
             <div class="cat-carousel" data-carousel tabindex="0" aria-label="小白照片相册">
-              <div class="carousel-track"><figure class="carousel-slide photo-slot carousel-placeholder" data-label="小白照片待补充"></figure></div>
+              <div class="carousel-track">
+                <figure class="carousel-slide"><img src="xiaobai-01.jpg" alt="异瞳的小白坐在校园长椅上" loading="lazy"></figure>
+                <figure class="carousel-slide"><img src="xiaobai-02.jpg" alt="小白在阳光下的近景照片" loading="lazy"></figure>
+              </div>
               <button class="carousel-arrow prev" type="button" aria-label="上一张照片">‹</button><button class="carousel-arrow next" type="button" aria-label="下一张照片">›</button>
               <div class="carousel-dots" aria-label="选择照片"></div><span class="carousel-count" aria-live="polite"></span>
             </div>
@@ -822,7 +827,8 @@
           <aside class="qr-card">
             <h3>猫墙二维码</h3>
             <p>扫码关注卧附藏喵</p>
-            <div class="qr-slot">猫墙二维码待补充</div>
+            <div class="qr-slot"><img src="cat-wall-qq-qr.jpg" alt="卧附藏喵 QQ 猫墙二维码"></div>
+            <strong class="qq-number">QQ：3782499640</strong>
           </aside>
         </div>
       </section>
