@@ -500,22 +500,78 @@
       font-weight: 800;
     }
 
-    .activity-card {
+    .timeline-section { background: linear-gradient(180deg, var(--paper) 0%, #f8faf6 100%); }
+    .timeline-heading { margin-bottom: 5px; }
+    .timeline-subtitle { margin: 0 0 28px 34px; color: var(--muted); font-size: 13px; line-height: 1.7; }
+    .timeline-list { position: relative; display: grid; gap: 22px; }
+    .timeline-list::before {
+      content: "";
+      position: absolute;
+      top: 10px;
+      bottom: 10px;
+      left: 50%;
+      width: 1px;
+      background: linear-gradient(var(--green-soft), var(--green), var(--yellow));
+      transform: translateX(-50%);
+    }
+    .timeline-entry {
+      position: relative;
       display: grid;
-      grid-template-columns: 1.05fr .95fr;
-      min-height: 270px;
+      grid-template-columns: minmax(0, 1fr) 58px minmax(0, 1fr);
+      align-items: center;
+    }
+    .timeline-node {
+      position: relative;
+      z-index: 2;
+      grid-column: 2;
+      display: grid;
+      place-items: center;
+      width: 34px;
+      height: 34px;
+      margin: 0 auto;
+      border: 5px solid var(--paper);
+      border-radius: 50%;
+      background: var(--yellow);
+      color: var(--green-dark);
+      font-size: 11px;
+      box-shadow: 0 0 0 1px #ead78f;
+    }
+    .timeline-card {
+      grid-column: 1;
+      display: grid;
+      grid-template-columns: 155px minmax(0, 1fr);
+      min-height: 176px;
       overflow: hidden;
       border: 1px solid var(--border);
       border-radius: 14px;
       background: #fff;
+      box-shadow: 0 5px 16px rgba(23, 35, 28, .045);
     }
-    .activity-photo { min-height: 270px; border: 0; border-right: 1px solid var(--border); }
-    .activity-list { display: flex; flex-direction: column; justify-content: center; padding: 22px 30px; }
-    .activity-item { display: grid; grid-template-columns: 34px 1fr; gap: 12px; padding: 12px 0; border-bottom: 1px solid var(--border); }
-    .activity-item:last-child { border-bottom: 0; }
-    .activity-number { color: var(--yellow); font: 25px/1 Georgia, serif; }
-    .activity-item h4 { margin: 0 0 4px; color: var(--green-dark); font: 800 16px/1.3 "Songti SC", serif; }
-    .activity-item p { margin: 0; color: var(--muted); font-size: 11px; line-height: 1.6; }
+    .timeline-entry:nth-child(even) .timeline-card { grid-column: 3; }
+    .timeline-media { min-height: 176px; overflow: hidden; background: var(--green-soft); }
+    .timeline-media img { display: block; width: 100%; height: 100%; object-fit: cover; }
+    .timeline-media.aodaju img { object-position: center 38%; }
+    .timeline-media.charity img { object-position: center 38%; }
+    .timeline-content { display: flex; flex-direction: column; justify-content: center; padding: 20px 20px 20px 18px; }
+    .timeline-date {
+      align-self: flex-start;
+      margin-bottom: 10px;
+      padding: 5px 9px;
+      border-radius: 20px;
+      background: var(--green-soft);
+      color: var(--green);
+      font: 700 10px/1 Georgia, "PingFang SC", sans-serif;
+      letter-spacing: .04em;
+    }
+    .timeline-card h3 { margin: 0 0 8px; color: var(--green-dark); font: 800 18px/1.35 "Songti SC", "STSong", serif; }
+    .timeline-card p { margin: 0; color: var(--muted); font-size: 12px; line-height: 1.75; }
+    .timeline-card.text-only {
+      grid-template-columns: 1fr;
+      min-height: 154px;
+      background: linear-gradient(135deg, #fffdf3 0%, var(--yellow-soft) 100%);
+      border-color: #f0dd9b;
+    }
+    .timeline-card.text-only .timeline-content { padding: 24px 26px; }
 
     .join-grid { display: grid; grid-template-columns: 1.25fr .75fr; gap: 16px; }
     .join-intro, .qr-card {
@@ -614,8 +670,12 @@
       .hero { grid-template-columns: 1fr; padding-top: 42px; }
       .hero-collage { min-height: 430px; }
       .cat-grid { grid-template-columns: repeat(2, 1fr); }
-      .story-card, .activity-card { grid-template-columns: 1fr; }
-      .story-photo, .activity-photo { min-height: 250px; border-right: 0; border-bottom: 1px solid var(--border); }
+      .story-card { grid-template-columns: 1fr; }
+      .story-photo { min-height: 250px; border-right: 0; border-bottom: 1px solid var(--border); }
+      .timeline-list::before { left: 19px; transform: none; }
+      .timeline-entry { grid-template-columns: 40px minmax(0, 1fr); }
+      .timeline-node { grid-column: 1; grid-row: 1; }
+      .timeline-card, .timeline-entry:nth-child(even) .timeline-card { grid-column: 2; grid-row: 1; width: 100%; }
       .join-grid { grid-template-columns: 1fr; }
     }
 
@@ -636,6 +696,11 @@
       .section { padding: 30px 20px; }
       .section-title { font-size: 22px; }
       .section-link { display: none; }
+      .timeline-subtitle { margin-left: 0; }
+      .timeline-list { gap: 16px; }
+      .timeline-card { grid-template-columns: 1fr; }
+      .timeline-media { height: 190px; min-height: 190px; }
+      .timeline-content { padding: 19px 18px 21px; }
       .cat-grid { grid-template-columns: 1fr; }
       .cat-carousel { height: 260px; }
       .story-copy { padding: 25px 22px; }
@@ -658,7 +723,7 @@
       <div class="nav-links">
         <a href="#cats">猫咪档案</a>
         <a href="#guide">猫咪指南</a>
-        <a href="#moments">猫协动态</a>
+        <a href="#timeline">猫协大事记</a>
         <a href="#about">关于我们</a>
       </div>
       <a class="join-button" href="#join">加入我们</a>
@@ -794,19 +859,109 @@
         </div>
       </section>
 
-      <section class="section" id="moments">
-        <div class="section-head">
+      <section class="section timeline-section" id="timeline">
+        <div class="section-head timeline-heading">
           <span class="leaf" aria-hidden="true">❧</span>
-          <h2 class="section-title">往期活动重现</h2>
+          <h2 class="section-title">猫协大事记</h2>
         </div>
-        <article class="activity-card">
-          <div class="photo-slot activity-photo" data-label="往期活动照片待补充"></div>
-          <div class="activity-list">
-            <div class="activity-item"><span class="activity-number">01</span><div><h4>科学投喂与猫屋维护</h4><p>清理食盆、补充清水、维护猫屋，让照护成为稳定的日常。</p></div></div>
-            <div class="activity-item"><span class="activity-number">02</span><div><h4>伤病救助与绝育</h4><p>从发现、送医到后续观察，每一份记录都为了更长久的陪伴。</p></div></div>
-            <div class="activity-item"><span class="activity-number">03</span><div><h4>猫猫科普与主题活动</h4><p>用分享和互动，让更多同学了解正确的相处方式。</p></div></div>
-          </div>
-        </article>
+        <p class="timeline-subtitle">这些时刻，记录着猫协如何救助、照顾和陪伴校园里的猫猫。</p>
+
+        <div class="timeline-list">
+          <article class="timeline-entry">
+            <span class="timeline-node" aria-hidden="true">🐾</span>
+            <div class="timeline-card">
+              <div class="timeline-media"><img src="assets/timeline/2025-02-calf-rescue.webp" alt="住院观察中的小奶牛猫，佩戴着伊丽莎白圈" loading="lazy"></div>
+              <div class="timeline-content">
+                <time class="timeline-date" datetime="2025-02">2025.02</time>
+                <h3>小奶牛猫救助与纪念</h3>
+                <p>校内发现一只主动向人求助的小奶牛猫。猫协立即送医并展开救助，虽然没能将它救回，但及时处置也避免疾病继续传向其他校园猫。</p>
+              </div>
+            </div>
+          </article>
+
+          <article class="timeline-entry">
+            <span class="timeline-node" aria-hidden="true">🐾</span>
+            <div class="timeline-card">
+              <div class="timeline-media aodaju"><img src="assets/timeline/2025-02-aodaju.webp" alt="奥大橘在教室窗边安静坐着" loading="lazy"></div>
+              <div class="timeline-content">
+                <time class="timeline-date" datetime="2025-02">2025.02-03</time>
+                <h3>奥大橘救治与康复</h3>
+                <p>奥大橘因打架导致后腿伤口感染，猫协组织送医、救助与募捐。一个月后的总结里，它已经恢复，也正式成为被持续关注的校园常驻猫。</p>
+              </div>
+            </div>
+          </article>
+
+          <article class="timeline-entry">
+            <span class="timeline-node" aria-hidden="true">🐾</span>
+            <div class="timeline-card">
+              <div class="timeline-media"><img src="assets/timeline/2025-04-kitten-adoption.webp" alt="接受检查和照顾的宋秋分幼崽" loading="lazy"></div>
+              <div class="timeline-content">
+                <time class="timeline-date" datetime="2025-04-30">2025.04.30</time>
+                <h3>宋秋分幼崽救助与领养</h3>
+                <p>猫协为宋秋分的幼崽检查身体、准备幼猫粮，并认真审核领养家庭的经验与陪伴条件。送养不是“谁想领就领”，而是一次负责任的托付。</p>
+              </div>
+            </div>
+          </article>
+
+          <article class="timeline-entry">
+            <span class="timeline-node" aria-hidden="true">🐾</span>
+            <div class="timeline-card">
+              <div class="timeline-media charity"><img src="assets/timeline/2025-05-charity-sale.webp" alt="江心洲公益义卖现场的猫协周边摊位" loading="lazy"></div>
+              <div class="timeline-content">
+                <time class="timeline-date" datetime="2025-05-01">2025.05.01-02</time>
+                <h3>中招会与江心洲公益义卖</h3>
+                <p>猫协为中招会准备猫咪贴纸和小卡，也与 AWA 流浪动物保护社一起在江心洲设摊义卖，让校园文化与动物保护在假期里相遇。</p>
+              </div>
+            </div>
+          </article>
+
+          <article class="timeline-entry">
+            <span class="timeline-node" aria-hidden="true">🐾</span>
+            <div class="timeline-card">
+              <div class="timeline-media"><img src="assets/timeline/2025-06-tech-festival.webp" alt="科技文化节现场摆放的猫协周边商品" loading="lazy"></div>
+              <div class="timeline-content">
+                <time class="timeline-date" datetime="2025-06-27">2025.06.27-29</time>
+                <h3>科技文化节新品义卖</h3>
+                <p>科技文化节期间，猫协推出新品周边，并和青物社联合开展活动。每一次购买都在为后续救助筹集资金，也让更多同学认识校园猫。</p>
+              </div>
+            </div>
+          </article>
+
+          <article class="timeline-entry">
+            <span class="timeline-node" aria-hidden="true">🐾</span>
+            <div class="timeline-card text-only">
+              <div class="timeline-content">
+                <time class="timeline-date" datetime="2025-07-25">2025.07.25</time>
+                <h3>学年总结与新一届招新</h3>
+                <p>猫协公开阶段性义卖收入、实际余额和账目去向，也向新同学发出招新邀请。透明记录与持续交接，让照护不会随着一届学生毕业而中断。</p>
+              </div>
+            </div>
+          </article>
+
+          <article class="timeline-entry">
+            <span class="timeline-node" aria-hidden="true">🐾</span>
+            <div class="timeline-card">
+              <div class="timeline-media"><img src="assets/timeline/2025-10-sports-sale.webp" alt="运动会义卖中的猫咪造型周边实拍" loading="lazy"></div>
+              <div class="timeline-content">
+                <time class="timeline-date" datetime="2025-10-24">2025.10.24-25</time>
+                <h3>运动会义卖，开售 1.5 小时售罄</h3>
+                <p>运动会义卖受到许多同学欢迎，首场开售约 1.5 小时便售罄。大家带走的不只是猫咪周边，也为校园猫救助与动物保护添了一份支持。</p>
+              </div>
+            </div>
+          </article>
+
+          <article class="timeline-entry">
+            <span class="timeline-node" aria-hidden="true">🐾</span>
+            <div class="timeline-card">
+              <div class="timeline-media"><img src="assets/timeline/2025-12-zhimahu.webp" alt="正常状态下的芝麻糊侧脸照片" loading="lazy"></div>
+              <div class="timeline-content">
+                <time class="timeline-date" datetime="2025-12-29">2025.12.29</time>
+                <h3>芝麻糊紧急送医</h3>
+                <p>发现芝麻糊腿部伤口红肿后，猫协第一时间将它送医并完成清创。日常观察让不易发现的伤情得到及时处理，也留下了后续照护记录。</p>
+              </div>
+            </div>
+          </article>
+        </div>
       </section>
 
       <section class="section" id="join">
@@ -836,7 +991,7 @@
 
     <footer class="footer">
       <div class="footer-brand"><span class="footer-logo" aria-hidden="true"></span><span>卧附藏喵-南师附中猫协</span></div>
-      <div class="footer-links"><a href="#cats">猫咪档案</a><a href="#guide">猫咪指南</a><a href="#moments">猫协动态</a><a href="#about">关于我们</a></div>
+      <div class="footer-links"><a href="#cats">猫咪档案</a><a href="#guide">猫咪指南</a><a href="#timeline">猫协大事记</a><a href="#about">关于我们</a></div>
       <small>© 2026</small>
     </footer>
   </div>
