@@ -450,20 +450,43 @@
     .activity-item h4 { margin: 0 0 4px; color: var(--green-dark); font: 800 16px/1.3 "Songti SC", serif; }
     .activity-item p { margin: 0; color: var(--muted); font-size: 11px; line-height: 1.6; }
 
-    .join-grid { display: grid; grid-template-columns: .78fr 1.22fr; gap: 16px; }
-    .join-intro, .join-form-card {
+    .join-grid { display: grid; grid-template-columns: 1.25fr .75fr; gap: 16px; }
+    .join-intro, .qr-card {
       border: 1px solid var(--border);
       border-radius: 14px;
       background: #fff;
     }
-    .join-intro { padding: 26px; background: var(--green-soft); }
-    .join-intro h3, .join-form-card h3 {
+    .join-intro {
+      position: relative;
+      overflow: hidden;
+      padding: 30px;
+      background: var(--green-soft);
+    }
+    .join-intro::after {
+      content: "❧";
+      position: absolute;
+      right: 20px;
+      bottom: -28px;
+      color: rgba(23, 99, 58, .1);
+      font: 120px/1 Georgia, serif;
+      transform: rotate(18deg);
+    }
+    .join-intro h3, .qr-card h3 {
       margin: 0 0 17px;
       color: var(--green-dark);
       font: 800 23px/1.25 "Songti SC", "STSong", serif;
     }
+    .join-intro p {
+      position: relative;
+      z-index: 1;
+      max-width: 590px;
+      margin: 0 0 18px;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.8;
+    }
     .join-steps { margin: 0; padding: 0; list-style: none; counter-reset: step; }
-    .join-steps li { display: flex; align-items: center; gap: 10px; margin: 10px 0; color: #46544b; font-size: 12px; }
+    .join-steps li { position: relative; z-index: 1; display: flex; align-items: center; gap: 10px; margin: 10px 0; color: #46544b; font-size: 12px; }
     .join-steps li::before {
       counter-increment: step;
       content: counter(step);
@@ -478,60 +501,30 @@
       font-size: 10px;
       font-weight: 800;
     }
+    .qr-card {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 26px;
+      text-align: center;
+      background: linear-gradient(135deg, #fffdf3 0%, var(--yellow-soft) 100%);
+      border-color: #f0dd9b;
+    }
+    .qr-card h3 { margin-bottom: 8px; }
+    .qr-card p { margin: 0; color: var(--muted); font-size: 11px; }
     .qr-slot {
-      width: 132px;
-      height: 132px;
-      margin-top: 20px;
+      width: 150px;
+      height: 150px;
+      margin-top: 17px;
       display: grid;
       place-items: center;
-      border: 1px dashed #aebeb2;
+      border: 1px dashed #b9aa6b;
       border-radius: 10px;
       background: #fff;
-      color: #839087;
+      color: #8d835b;
       font-size: 11px;
     }
-    .join-form-card { padding: 26px; }
-    .join-form { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
-    .join-form fieldset { margin: 0; padding: 0; border: 0; }
-    .join-form legend, .join-form label > span { display: block; margin-bottom: 7px; color: var(--muted); font-size: 11px; }
-    .radios { display: flex; align-items: center; gap: 20px; height: 42px; font-size: 13px; }
-    .radios input { accent-color: var(--green); }
-    .join-form input:not([type="radio"]) {
-      width: 100%;
-      height: 42px;
-      padding: 0 12px;
-      outline: none;
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      background: var(--paper);
-      font-size: 12px;
-    }
-    .join-form input:focus { border-color: var(--green); box-shadow: 0 0 0 3px var(--green-soft); }
-    .submit-button {
-      grid-column: 1 / -1;
-      height: 44px;
-      border: 0;
-      border-radius: 8px;
-      background: var(--green);
-      color: #fff;
-      font-weight: 800;
-      cursor: pointer;
-    }
-    .success { display: none; padding: 32px 12px; text-align: center; }
-    .success.show { display: block; }
-    .success-mark {
-      display: grid;
-      place-items: center;
-      width: 48px;
-      height: 48px;
-      margin: 0 auto 13px;
-      border-radius: 50%;
-      background: var(--green);
-      color: #fff;
-      font-weight: 900;
-    }
-    .success p { color: var(--muted); font-size: 13px; }
-    .again-button { padding: 9px 16px; border: 0; border-radius: 7px; background: var(--yellow); cursor: pointer; }
 
     .footer {
       min-height: 78px;
@@ -581,8 +574,6 @@
       .stats-row { gap: 0; }
       .stat b { font-size: 42px; }
       .activity-list { padding: 15px 22px; }
-      .join-form { grid-template-columns: 1fr; }
-      .submit-button { grid-column: 1; }
       .footer-links { display: none; }
       .footer small { margin-left: auto; }
     }
@@ -731,38 +722,20 @@
           <h2 class="section-title">加入我们</h2>
         </div>
         <div class="join-grid">
-          <aside class="join-intro">
+          <article class="join-intro">
             <h3>成为卧附藏喵的一员</h3>
+            <p>我们会通过猫墙发布校园猫近况、科普内容和招新通知。想了解猫协或等待下一次招新，扫描右侧二维码就可以找到我们。</p>
             <ol class="join-steps">
-              <li>选择在校学生或校友身份</li>
-              <li>填写年级班级或毕业届数</li>
-              <li>留下姓名和微信 / QQ</li>
-              <li>提交后扫描二维码加入群聊</li>
+              <li>扫描右侧猫墙二维码</li>
+              <li>关注校园猫近况与猫协动态</li>
+              <li>招新开放时按照猫墙通知报名</li>
             </ol>
-            <div class="qr-slot">群二维码待补充</div>
-          </aside>
-          <article class="join-form-card">
-            <h3>加入信息填写</h3>
-            <form class="join-form" id="join-form">
-              <fieldset>
-                <legend>你的身份</legend>
-                <div class="radios">
-                  <label><input type="radio" name="identity" value="student" checked> 在校学生</label>
-                  <label><input type="radio" name="identity" value="alumni"> 校友</label>
-                </div>
-              </fieldset>
-              <label><span id="class-label">年级与班级</span><input required id="class-input" placeholder="例如：高一（3）班"></label>
-              <label><span>你的名字</span><input required placeholder="怎么称呼你？"></label>
-              <label><span>微信 / QQ 号</span><input required placeholder="方便我们联系你"></label>
-              <button class="submit-button" type="submit">提交加入申请&nbsp; →</button>
-            </form>
-            <div class="success" id="success">
-              <span class="success-mark">✓</span>
-              <h3>信息填写完成</h3>
-              <p>谢谢你愿意加入我们！请扫描左侧二维码进入猫协群。</p>
-              <button class="again-button" id="again" type="button">重新填写</button>
-            </div>
           </article>
+          <aside class="qr-card">
+            <h3>猫墙二维码</h3>
+            <p>扫码关注卧附藏喵</p>
+            <div class="qr-slot">猫墙二维码待补充</div>
+          </aside>
         </div>
       </section>
     </main>
@@ -774,33 +747,5 @@
     </footer>
   </div>
 
-  <script>
-    const form = document.querySelector('#join-form');
-    const success = document.querySelector('#success');
-    const classLabel = document.querySelector('#class-label');
-    const classInput = document.querySelector('#class-input');
-
-    document.querySelectorAll('[name="identity"]').forEach((radio) => {
-      radio.addEventListener('change', () => {
-        const alumni = radio.value === 'alumni' && radio.checked;
-        classLabel.textContent = alumni ? '毕业届数' : '年级与班级';
-        classInput.placeholder = alumni ? '例如：2024 届' : '例如：高一（3）班';
-      });
-    });
-
-    form.addEventListener('submit', (event) => {
-      event.preventDefault();
-      form.style.display = 'none';
-      success.classList.add('show');
-    });
-
-    document.querySelector('#again').addEventListener('click', () => {
-      success.classList.remove('show');
-      form.style.display = 'grid';
-      form.reset();
-      classLabel.textContent = '年级与班级';
-      classInput.placeholder = '例如：高一（3）班';
-    });
-  </script>
 </body>
 </html>
