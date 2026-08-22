@@ -169,72 +169,56 @@
     }
     .outline-button:hover { background: var(--green-soft); }
 
-    .hero-collage { position: relative; min-height: 405px; }
-    .hero-cats-art {
+    .hero-collage {
+      position: relative;
+      min-height: 405px;
+      isolation: isolate;
+    }
+    .hero-art-panel {
       position: absolute;
       z-index: 0;
-      left: -4%;
-      bottom: -5%;
-      width: 190px;
-      height: auto;
-      opacity: .9;
-      transform: rotate(-3deg);
-      pointer-events: none;
-    }
-    .photo-slot {
-      display: grid;
-      place-items: center;
+      inset: 3% 1% 2% 3%;
       overflow: hidden;
       border: 1px solid var(--border);
-      background:
-        linear-gradient(135deg, rgba(234, 243, 236, .65), rgba(252, 251, 245, .78)),
-        repeating-linear-gradient(45deg, transparent, transparent 12px, rgba(23, 99, 58, .025) 12px, rgba(23, 99, 58, .025) 24px);
-      color: #98a49c;
-      font-size: 11px;
-      letter-spacing: .12em;
+      border-radius: 24px;
+      background: rgba(255, 254, 249, .92);
+      box-shadow: 0 16px 34px rgba(23, 35, 28, .09);
+      transform: rotate(1.2deg);
     }
-    .photo-slot::after { content: attr(data-label); }
-    .hero-main {
+    .hero-art-panel::after {
+      content: "";
       position: absolute;
-      z-index: 2;
+      inset: 15px;
+      border: 1px dashed rgba(23, 99, 58, .18);
+      border-radius: 18px;
+    }
+    .hero-block {
+      position: absolute;
+      border-radius: 18px;
+      opacity: .72;
+    }
+    .hero-block.peach { width: 34%; height: 29%; left: 5%; top: 8%; background: #ffd0a0; }
+    .hero-block.pink { width: 40%; height: 26%; left: 36%; top: 2%; background: #f7ced5; }
+    .hero-block.yellow { width: 34%; height: 38%; right: 2%; top: 19%; background: #ffe27a; }
+    .hero-block.mint { width: 38%; height: 40%; left: 2%; bottom: 5%; background: #d9f2df; }
+    .hero-block.blue { width: 31%; height: 28%; left: 31%; bottom: 0; background: #bdeef2; }
+    .hero-cats-art {
+      position: absolute;
+      z-index: 3;
       left: 1%;
-      top: 5%;
-      width: 61%;
-      height: 79%;
-      border: 7px solid #fff;
-      border-radius: 12px;
-      box-shadow: 0 8px 22px rgba(23, 35, 28, .13);
-      transform: rotate(-4.5deg);
-    }
-    .hero-small-top {
-      position: absolute;
-      z-index: 2;
-      top: 2%;
-      right: 1%;
-      width: 36%;
-      height: 43%;
-      border: 7px solid #fff;
-      border-radius: 12px;
-      box-shadow: 0 8px 18px rgba(23, 35, 28, .1);
-      transform: rotate(5deg);
-    }
-    .hero-small-bottom {
-      position: absolute;
-      z-index: 2;
-      right: 0;
-      bottom: 5%;
-      width: 37%;
-      height: 43%;
-      border: 7px solid #fff;
-      border-radius: 12px;
-      box-shadow: 0 8px 18px rgba(23, 35, 28, .1);
-      transform: rotate(-7deg);
+      top: -2%;
+      width: 92%;
+      height: auto;
+      opacity: 1;
+      filter: drop-shadow(0 8px 8px rgba(72, 55, 26, .12));
+      transform: rotate(-1.5deg);
+      pointer-events: none;
     }
     .today-label {
       position: absolute;
       z-index: 5;
-      left: 54%;
-      top: 42%;
+      right: 0;
+      top: 8%;
       padding: 10px 14px;
       border-radius: 7px;
       background: var(--yellow);
@@ -245,8 +229,9 @@
     }
     .hand-note {
       position: absolute;
-      left: 21%;
-      bottom: -1%;
+      z-index: 5;
+      right: 7%;
+      bottom: -4%;
       margin: 0;
       color: #5f625b;
       font: 17px/1.55 "Kaiti SC", "STKaiti", serif;
@@ -744,7 +729,9 @@
       .eyebrow { margin-bottom: 18px; }
       .hero-actions { flex-wrap: wrap; margin-top: 28px; }
       .hero-collage { min-height: 330px; }
-      .hero-cats-art { width: 125px; left: -2%; bottom: -2%; }
+      .hero-art-panel { inset: 4% 0 1%; }
+      .hero-cats-art { width: 96%; left: 0; top: 0; }
+      .today-label { right: 0; top: 7%; padding: 8px 11px; font-size: 11px; }
       .hand-note { display: none; }
       .section { padding: 30px 20px; }
       .section-title { font-size: 22px; }
@@ -796,11 +783,15 @@
             <a class="outline-button" href="#join">加入猫协</a>
           </div>
         </div>
-        <div class="hero-collage" aria-label="首页照片区域">
+        <div class="hero-collage" aria-label="校园猫插画主视觉">
+          <div class="hero-art-panel" aria-hidden="true">
+            <span class="hero-block peach"></span>
+            <span class="hero-block pink"></span>
+            <span class="hero-block yellow"></span>
+            <span class="hero-block mint"></span>
+            <span class="hero-block blue"></span>
+          </div>
           <img class="hero-cats-art" src="hero-cats-cutout.png" alt="三只校园猫插画">
-          <div class="photo-slot hero-main" data-label="主视觉照片待补充"></div>
-          <div class="photo-slot hero-small-top" data-label="校园照片待补充"></div>
-          <div class="photo-slot hero-small-bottom" data-label="猫咪照片待补充"></div>
           <span class="today-label">今日出没&nbsp; 🐾</span>
           <p class="hand-note">它们不是流浪到附中，<br>它们生活在附中。</p>
         </div>
