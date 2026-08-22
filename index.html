@@ -104,7 +104,7 @@
     }
     .nav-links a { padding-block: 12px; transition: color .2s ease; }
     .nav-links a:hover { color: var(--green); }
-    .join-button, .primary-button, .outline-button, .ledger-button {
+    .join-button, .primary-button, .outline-button {
       display: inline-flex;
       align-items: center;
       justify-content: center;
@@ -384,34 +384,114 @@
     }
     .timeline-content p { max-width: 470px; margin: 0; color: var(--muted); font-size: 14px; line-height: 1.9; }
 
-    .ledger-section { position: relative; overflow: hidden; padding-block: 94px; background: var(--green-dark); color: #fff; }
-    .ledger-section::after {
-      content: "账";
-      position: absolute;
-      right: max(-18px, calc((100vw - var(--content)) / 2 - 70px));
-      bottom: -95px;
-      color: rgba(255, 255, 255, .045);
-      font: 800 275px/1 "Songti SC", "STSong", serif;
-      pointer-events: none;
+    .ledger-section { background: #fff; }
+    .ledger-heading {
+      display: flex;
+      justify-content: space-between;
+      gap: 36px;
+      align-items: flex-end;
+      padding-bottom: 30px;
+      border-bottom: 1px solid var(--border);
     }
-    .ledger-layout {
-      position: relative;
-      z-index: 1;
+    .ledger-heading h2 {
+      margin: 0;
+      color: var(--green-dark);
+      font: 800 clamp(38px, 5vw, 54px)/1.16 "Songti SC", "STSong", serif;
+    }
+    .ledger-subtitle { margin: 13px 0 0; color: var(--muted); font-size: 14px; line-height: 1.8; }
+    .ledger-link {
+      flex: 0 0 auto;
+      padding: 9px 0 7px;
+      border-bottom: 1px solid currentColor;
+      color: var(--green);
+      font-size: 13px;
+      font-weight: 700;
+      transition: color .2s ease;
+    }
+    .ledger-link:hover { color: var(--green-dark); }
+    .ledger-records { margin-top: 28px; }
+    .ledger-year + .ledger-year { margin-top: 42px; }
+    .ledger-year-heading {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      margin: 0;
+      color: #78857d;
+      font: 700 11px/1 Georgia, serif;
+      letter-spacing: .16em;
+    }
+    .ledger-year-heading::after { content: ""; height: 1px; flex: 1; background: #e7ece8; }
+    .ledger-list { margin-top: 8px; }
+    .ledger-entry,
+    .ledger-project > summary,
+    .ledger-detail-row {
       display: grid;
-      grid-template-columns: minmax(0, 1.25fr) minmax(260px, .75fr);
-      gap: clamp(56px, 9vw, 130px);
-      align-items: end;
+      grid-template-columns: 116px minmax(0, 1fr) minmax(112px, auto);
+      gap: 24px;
+      align-items: baseline;
     }
-    .ledger-kicker { margin: 0 0 18px; color: var(--yellow); font: 700 11px/1.2 Georgia, sans-serif; letter-spacing: .18em; }
-    .ledger-copy h2 { margin: 0 0 22px; color: #fff; font: 800 clamp(37px, 5vw, 52px)/1.18 "Songti SC", "STSong", serif; }
-    .ledger-description { max-width: 610px; margin: 0; color: rgba(255, 255, 255, .76); font-size: 14px; line-height: 1.95; }
-    .ledger-status { display: flex; flex-wrap: wrap; gap: 10px 24px; margin: 27px 0 0; padding: 0; list-style: none; color: rgba(255, 255, 255, .88); font-size: 12px; }
-    .ledger-status li::before { content: ""; display: inline-block; width: 6px; height: 6px; margin-right: 8px; border-radius: 50%; background: var(--yellow); vertical-align: 1px; }
-    .ledger-cta { padding: 0 0 5px 30px; border-left: 1px solid rgba(255, 255, 255, .22); }
-    .ledger-cta-label { margin: 0 0 17px; color: rgba(255, 255, 255, .94); font: 800 20px/1.3 "Songti SC", "STSong", serif; }
-    .ledger-button { padding: 0 18px; background: var(--yellow); color: #263414; }
-    .ledger-button:hover { background: #ffda67; transform: translateY(-1px); }
-    .ledger-note { max-width: 330px; margin: 17px 0 0; color: rgba(255, 255, 255, .58); font-size: 11px; line-height: 1.75; }
+    .ledger-entry,
+    .ledger-project { border-bottom: 1px solid #e7ece8; }
+    .ledger-entry { padding: 17px 0; }
+    .ledger-date { color: #7d8a82; font: 600 11px/1.45 Georgia, serif; letter-spacing: .035em; }
+    .ledger-name { min-width: 0; color: #24332a; font-size: 13px; line-height: 1.55; }
+    .ledger-amount {
+      justify-self: end;
+      color: #49564f;
+      font: 650 13px/1.4 Georgia, "Times New Roman", serif;
+      font-variant-numeric: tabular-nums;
+      white-space: nowrap;
+    }
+    .ledger-income { color: #17633a; }
+    .ledger-project > summary {
+      position: relative;
+      grid-template-columns: 116px minmax(180px, 1fr) minmax(270px, auto) 34px;
+      align-items: center;
+      min-height: 76px;
+      padding: 14px 0;
+      cursor: pointer;
+      list-style: none;
+    }
+    .ledger-project > summary::-webkit-details-marker { display: none; }
+    .ledger-project > summary:focus-visible { outline: 0; box-shadow: inset 3px 0 rgba(23, 99, 58, .42); }
+    .ledger-project-title { color: var(--green-dark); font: 800 17px/1.4 "Songti SC", "STSong", serif; }
+    .ledger-project-totals { display: flex; align-items: baseline; justify-content: flex-end; gap: 18px; }
+    .ledger-project-total { color: #758078; font-size: 10px; white-space: nowrap; }
+    .ledger-project-total b {
+      display: block;
+      margin-top: 5px;
+      color: #49564f;
+      font: 650 12px/1 Georgia, serif;
+      font-variant-numeric: tabular-nums;
+    }
+    .ledger-project-total.income b { color: #17633a; }
+    .ledger-project-total.net b { color: var(--green-dark); }
+    .ledger-project-total.negative b { color: #49564f; }
+    .ledger-toggle {
+      display: grid;
+      width: 28px;
+      height: 28px;
+      place-items: center;
+      justify-self: end;
+      border: 1px solid #d9e2dc;
+      border-radius: 50%;
+      color: var(--green);
+      font: 500 18px/1 sans-serif;
+    }
+    .ledger-toggle::before { content: "+"; }
+    .ledger-project[open] .ledger-toggle::before { content: "−"; }
+    .ledger-details { padding: 5px 18px 11px; background: #f2f6f3; }
+    .ledger-detail-row {
+      grid-template-columns: 104px minmax(0, 1fr) minmax(100px, auto);
+      padding: 10px 0;
+      color: #68756d;
+      font-size: 11px;
+      line-height: 1.45;
+    }
+    .ledger-detail-row + .ledger-detail-row { border-top: 1px solid #e1e8e3; }
+    .ledger-detail-row .ledger-date,
+    .ledger-detail-row .ledger-amount { font-size: 11px; }
+    .ledger-source-note { margin: 22px 0 0; color: #829087; font-size: 11px; line-height: 1.7; }
 
     .sales-section { background: var(--paper); }
     .sales-gallery { display: grid; grid-template-columns: 1.15fr .85fr; grid-template-rows: auto auto; gap: 26px; }
@@ -524,12 +604,23 @@
       .timeline-media { aspect-ratio: 4 / 3; }
       .timeline-content h3 { font-size: 27px; }
       .timeline-content p { font-size: 13px; }
-      .ledger-section { padding-block: 64px; }
-      .ledger-section::after { right: -25px; bottom: -45px; font-size: 170px; }
-      .ledger-layout { grid-template-columns: 1fr; gap: 38px; }
-      .ledger-copy h2 { font-size: 39px; }
-      .ledger-description br { display: none; }
-      .ledger-cta { padding: 28px 0 0; border-top: 1px solid rgba(255, 255, 255, .2); border-left: 0; }
+      .ledger-heading { display: block; padding-bottom: 24px; }
+      .ledger-link { display: inline-block; margin-top: 18px; }
+      .ledger-records { margin-top: 22px; }
+      .ledger-entry { grid-template-columns: minmax(0, 1fr) auto; gap: 7px 16px; padding: 15px 0; }
+      .ledger-entry .ledger-date { grid-column: 1 / -1; }
+      .ledger-project > summary {
+        grid-template-columns: minmax(0, 1fr) 32px;
+        gap: 8px 14px;
+        padding: 17px 0;
+      }
+      .ledger-project > summary .ledger-date { grid-column: 1; }
+      .ledger-project-title { grid-column: 1; font-size: 16px; }
+      .ledger-toggle { grid-column: 2; grid-row: 1 / span 2; align-self: center; }
+      .ledger-project-totals { grid-column: 1 / -1; justify-content: flex-start; gap: 20px; padding-top: 5px; }
+      .ledger-details { padding: 3px 12px 9px; }
+      .ledger-detail-row { grid-template-columns: minmax(0, 1fr) auto; gap: 4px 12px; }
+      .ledger-detail-row .ledger-date { grid-column: 1 / -1; }
       .sales-gallery { grid-template-columns: 1fr; grid-template-rows: auto; gap: 36px; }
       .sale-feature.large { grid-row: auto; }
       .sale-feature.large .sale-image, .sale-feature:not(.large) .sale-image { height: 300px; }
@@ -560,7 +651,6 @@
       .hero-collage { min-height: 305px; }
       .cat-carousel { height: 280px; }
       .section-title { font-size: 31px; }
-      .ledger-copy h2 { font-size: 36px; }
       .join-copy h2 { font-size: 37px; }
     }
 
@@ -778,25 +868,17 @@
         </div>
       </section>
 
-      <section class="ledger-section" id="ledger" aria-labelledby="ledger-title">
-        <div class="content ledger-layout">
-          <div class="ledger-copy" data-reveal>
-            <p class="ledger-kicker">PUBLIC LEDGER</p>
-            <h2 id="ledger-title">钱花去了哪里？</h2>
-            <p class="ledger-description">猫协所有收入与支出持续公开。<br>义卖所得用于校园猫医疗、猫粮、绝育与日常照护。</p>
-            <ul class="ledger-status" aria-label="账本用途">
-              <li>医疗</li>
-              <li>猫粮</li>
-              <li>绝育</li>
-              <li>周边制作</li>
-            </ul>
-          </div>
-          <div class="ledger-cta" data-reveal>
-            <p class="ledger-cta-label">猫协公开账本</p>
-            <a class="ledger-button" href="https://docs.qq.com/sheet/DWndhWGJwQ2ljc3dH" target="_blank" rel="noopener noreferrer">查看公开账本 <span aria-hidden="true">↗</span></a>
-            <p class="ledger-note">腾讯文档是猫协唯一正式账本，点击即可查看持续更新的最新记录。</p>
-            <!-- Future verified-data interface: 项目名称 / 收入 / 支出 / 净额 / 展开明细。 -->
-          </div>
+      <section class="section ledger-section" id="ledger" aria-labelledby="ledger-title">
+        <div class="content">
+          <header class="ledger-heading">
+            <div>
+              <h2 id="ledger-title">公开账本</h2>
+              <p class="ledger-subtitle">每一笔收入与支出，都留下记录。</p>
+            </div>
+            <a class="ledger-link" href="https://docs.qq.com/sheet/DWndhWGJwQ2ljc3dH" target="_blank" rel="noopener noreferrer">查看完整账本 <span aria-hidden="true">↗</span></a>
+          </header>
+          <div class="ledger-records" id="ledger-records"></div>
+          <p class="ledger-source-note">网站展示为公众阅读摘要，腾讯文档为唯一正式完整账本。</p>
         </div>
       </section>
 
@@ -894,6 +976,163 @@
       const GOATCOUNTER_CODE = "nsfzcat";
       const GOATCOUNTER_PATH = "/";
 
+      // 公众阅读版账本数据。腾讯文档仍是唯一正式完整账本；未来可在这里替换数据来源。
+      const ledgerEntries = [
+        { year: '2026', date: '2026.05.01', title: '特长生吧唧售卖', direction: 'income', amount: 900.21 },
+        { year: '2026', date: '2026.03', title: '流浪猫绝育捐款', direction: 'income', amount: 1005 },
+        { year: '2026', date: '2026.03', title: '流浪猫绝育费用', direction: 'expense', amount: 1700 },
+        { year: '2026', date: '2025.12–2026', title: '芝麻糊生病捐款', direction: 'income', amount: 2946.01 },
+        { year: '2025', date: '2025.12.01', title: '芝麻糊与小白治疗费用', direction: 'expense', amount: 5843 },
+        {
+          year: '2025', date: '2025.10', title: '2025 秋季运动会义卖', type: 'project', details: [
+            { date: '2025.10.01', title: '自封袋', direction: 'expense', amount: 56.46 },
+            { date: '待补', title: '珠串', direction: 'expense', amount: 24.49 },
+            { date: '待补', title: '平口牛皮纸袋', direction: 'expense', amount: 21.98 },
+            { date: '待补', title: '托特包', direction: 'expense', amount: 3669.30 },
+            { date: '待补', title: '纸箱', direction: 'expense', amount: 46.06 },
+            { date: '待补', title: '防撞角', direction: 'expense', amount: 9.76 },
+            { date: '待补', title: '一次性桌布', direction: 'expense', amount: 9.93 },
+            { date: '待补', title: '透明打包带', direction: 'expense', amount: 36.45 },
+            { date: '待补', title: '强力胶', direction: 'expense', amount: 10.24 },
+            { date: '待补', title: '扇子', direction: 'expense', amount: 780 },
+            { date: '待补', title: '笔记本', direction: 'expense', amount: 980.50 },
+            { date: '待补', title: '便利贴', direction: 'expense', amount: 285 },
+            { date: '待补', title: '摇摇乐', direction: 'expense', amount: 6750 },
+            { date: '待补', title: '海报横幅', direction: 'expense', amount: 175 },
+            { date: '待补', title: '运动会义卖收入', direction: 'income', amount: 12111.30 },
+          ],
+        },
+        { year: '2025', date: '2025.09.17', title: '订购猫粮 5 斤', direction: 'expense', amount: 44.39 },
+        { year: '2025', date: '2025.07.08', title: '订购猫粮 5 斤', direction: 'expense', amount: 44.98 },
+        { year: '2025', date: '2025.06.18', title: '订购猫粮 40 斤', direction: 'expense', amount: 213.30 },
+        {
+          year: '2025', date: '2025.06', title: '2025 科技文化节义卖', type: 'project', details: [
+            { date: '2025.06.18', title: '订购便利贴', direction: 'expense', amount: 150 },
+            { date: '2025.06.18', title: '订购亚克力', direction: 'expense', amount: 220.20 },
+            { date: '2025.06.18', title: '订购卡套', direction: 'expense', amount: 260 },
+            { date: '2025.06.18', title: '订购明信片', direction: 'expense', amount: 169.86 },
+            { date: '2025.06.21', title: '订购反光板折叠扇', direction: 'expense', amount: 360 },
+            { date: '2025.06.25', title: '订购单页夹', direction: 'expense', amount: 450 },
+            { date: '2025.06.27', title: '订购卡套配皮绳', direction: 'expense', amount: 49.10 },
+            { date: '2025.06.27', title: '订购亚克力配链条', direction: 'expense', amount: 5.70 },
+            { date: '2025.06.29', title: '科技文化节义卖收入', direction: 'income', amount: 3649.70 },
+          ],
+        },
+        { year: '2025', date: '2025.06.11', title: '救助脏脏', direction: 'expense', amount: 2449 },
+        { year: '2025', date: '2025.05.09', title: '购买猫粮 10 斤', direction: 'expense', amount: 55.08 },
+        { year: '2025', date: '2025.05.02', title: '江心洲毛孩子岛义卖收入', direction: 'income', amount: 273.80 },
+        { year: '2025', date: '2025.04.30', title: '中招两千件礼物收入', direction: 'income', amount: 1330 },
+        { year: '2025', date: '2025.04.27', title: '购买幼猫专用猫粮', direction: 'expense', amount: 120 },
+        { year: '2025', date: '2025.04.24', title: '订购中招小卡（无发票未报销）', direction: 'expense', amount: 64 },
+        { year: '2025', date: '2025.04.23', title: '中招包装打样', direction: 'expense', amount: 6.80 },
+        {
+          year: '2025', date: '2025.04–06', title: '2025 春季周边销售', type: 'project', details: [
+            { date: '2025.04.15', title: '购买打包袋（商家补款 3 元）', direction: 'expense', amount: 8.69 },
+            { date: '2025.04.22', title: '订购贴纸', direction: 'expense', amount: 30 },
+            { date: '2025.04.30', title: '余量售卖收入', direction: 'income', amount: 991 },
+            { date: '2025.05.01', title: '退款', direction: 'expense', amount: 23 },
+            { date: '2025.05.12', title: 'IB 社团购买周边', direction: 'income', amount: 113.40 },
+            { date: '2025.05.23', title: '线上购买周边', direction: 'income', amount: 380 },
+            { date: '2025.06.13', title: '余量售卖（含捐款 30 元）', direction: 'income', amount: 288 },
+          ],
+        },
+        { year: '2025', date: '2025.03.31', title: '微信、支付宝月度收入', direction: 'income', amount: 70.05 },
+        { year: '2025', date: '2025.03.05', title: '购买猫粮 40 斤', direction: 'expense', amount: 217.29 },
+        { year: '2025', date: '2025.02.28', title: '微信、支付宝月度收入', direction: 'income', amount: 270 },
+        { year: '2025', date: '2025.02.21', title: '校园内已逝奶牛猫治疗', direction: 'expense', amount: 1839 },
+        { year: '2025', date: '2025.02.19', title: '购买航空箱', direction: 'expense', amount: 40 },
+        { year: '2025', date: '2025.02.14', title: '购买猫包', direction: 'expense', amount: 48.41 },
+        { year: '2025', date: '2025.02.11', title: '购买猫粮 40 斤', direction: 'expense', amount: 326.70 },
+      ];
+
+      const ledgerCurrency = new Intl.NumberFormat('zh-CN', {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2,
+      });
+
+      function makeLedgerElement(tag, className, text) {
+        const element = document.createElement(tag);
+        if (className) element.className = className;
+        if (text !== undefined) element.textContent = text;
+        return element;
+      }
+
+      function formatLedgerAmount(amount, direction) {
+        const sign = direction === 'income' ? '+' : '−';
+        return `${sign} ¥${ledgerCurrency.format(Math.abs(amount))}`;
+      }
+
+      function getProjectTotals(details) {
+        return details.reduce((totals, entry) => {
+          totals[entry.direction] += entry.amount;
+          return totals;
+        }, { income: 0, expense: 0 });
+      }
+
+      function createLedgerAmount(amount, direction) {
+        return makeLedgerElement('span', `ledger-amount ledger-${direction}`, formatLedgerAmount(amount, direction));
+      }
+
+      function createLedgerEntry(entry, isDetail = false) {
+        const row = makeLedgerElement('div', isDetail ? 'ledger-detail-row' : 'ledger-entry');
+        row.append(
+          makeLedgerElement('span', 'ledger-date', entry.date),
+          makeLedgerElement('span', 'ledger-name', entry.title),
+          createLedgerAmount(entry.amount, entry.direction),
+        );
+        return row;
+      }
+
+      function createProjectTotal(label, amount, className, showSign = false) {
+        const item = makeLedgerElement('span', `ledger-project-total ${className}`, label);
+        const sign = showSign ? (amount >= 0 ? '+ ' : '− ') : '';
+        item.append(makeLedgerElement('b', '', `${sign}¥${ledgerCurrency.format(Math.abs(amount))}`));
+        return item;
+      }
+
+      function createLedgerProject(project) {
+        const totals = getProjectTotals(project.details);
+        const net = totals.income - totals.expense;
+        const details = makeLedgerElement('details', 'ledger-project');
+        const summary = makeLedgerElement('summary');
+        const summaryTotals = makeLedgerElement('span', 'ledger-project-totals');
+        summaryTotals.append(
+          createProjectTotal('收入', totals.income, 'income'),
+          createProjectTotal('支出', totals.expense, 'expense'),
+          createProjectTotal('净额', net, `net${net < 0 ? ' negative' : ''}`, true),
+        );
+        summary.append(
+          makeLedgerElement('span', 'ledger-date', project.date),
+          makeLedgerElement('span', 'ledger-project-title', project.title),
+          summaryTotals,
+          makeLedgerElement('span', 'ledger-toggle'),
+        );
+        summary.lastElementChild.setAttribute('aria-hidden', 'true');
+        const detailList = makeLedgerElement('div', 'ledger-details');
+        project.details.forEach((entry) => detailList.append(createLedgerEntry(entry, true)));
+        details.append(summary, detailList);
+        return details;
+      }
+
+      function renderLedger(data) {
+        const target = document.querySelector('#ledger-records');
+        if (!target) return;
+        target.replaceChildren();
+        const years = [...new Set(data.map((entry) => entry.year))];
+        years.forEach((year) => {
+          const yearSection = makeLedgerElement('section', 'ledger-year');
+          yearSection.setAttribute('aria-labelledby', `ledger-year-${year}`);
+          const heading = makeLedgerElement('h3', 'ledger-year-heading', year);
+          heading.id = `ledger-year-${year}`;
+          const list = makeLedgerElement('div', 'ledger-list');
+          data.filter((entry) => entry.year === year).forEach((entry) => {
+            list.append(entry.type === 'project' ? createLedgerProject(entry) : createLedgerEntry(entry));
+          });
+          yearSection.append(heading, list);
+          target.append(yearSection);
+        });
+      }
+
       function loadGoatCounterAnalytics(code, path) {
         const analyticsScript = document.createElement('script');
         analyticsScript.async = true;
@@ -937,6 +1176,8 @@
           window.clearTimeout(timeout);
         }
       }
+
+      renderLedger(ledgerEntries);
 
       document.querySelectorAll('[data-carousel]').forEach((carousel) => {
         const track = carousel.querySelector('.carousel-track');
