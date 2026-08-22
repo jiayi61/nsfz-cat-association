@@ -391,51 +391,6 @@
     }
     .cat-health { margin: 10px 0 0; color: #57635b; font-size: 11px; line-height: 1.55; }
 
-    .story-card {
-      display: grid;
-      grid-template-columns: .75fr 1.25fr;
-      min-height: 235px;
-      overflow: hidden;
-      border: 1px solid var(--border);
-      border-radius: 14px;
-      background: #fff;
-    }
-    .story-photo { min-height: 235px; border: 0; border-right: 1px solid var(--border); border-radius: 0; }
-    .story-copy {
-      position: relative;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      padding: 27px 38px;
-      overflow: hidden;
-    }
-    .story-copy::after {
-      content: "❧";
-      position: absolute;
-      right: 22px;
-      bottom: -22px;
-      color: #edd57c;
-      font: 100px/1 Georgia, serif;
-      transform: rotate(20deg);
-      opacity: .7;
-    }
-    .story-copy h3 {
-      position: relative;
-      z-index: 1;
-      margin: 0 0 12px;
-      color: var(--green-dark);
-      font: 800 23px/1.35 "Songti SC", "STSong", serif;
-    }
-    .story-copy p {
-      position: relative;
-      z-index: 1;
-      max-width: 620px;
-      margin: 5px 0;
-      color: var(--muted);
-      font-size: 13px;
-      line-height: 1.8;
-    }
-
     .two-card-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
     .info-card {
       min-height: 225px;
@@ -769,8 +724,6 @@
       .hero { grid-template-columns: 1fr; padding-top: 42px; }
       .hero-collage { min-height: 430px; }
       .cat-grid { grid-template-columns: repeat(2, 1fr); }
-      .story-card { grid-template-columns: 1fr; }
-      .story-photo { min-height: 250px; border-right: 0; border-bottom: 1px solid var(--border); }
       .timeline-list::before { left: 19px; transform: none; }
       .timeline-entry { grid-template-columns: 40px minmax(0, 1fr); }
       .timeline-node { grid-column: 1; grid-row: 1; }
@@ -806,7 +759,6 @@
       .sale-card { min-height: auto; }
       .cat-grid { grid-template-columns: 1fr; }
       .cat-carousel { height: 260px; }
-      .story-copy { padding: 25px 22px; }
       .two-card-grid { grid-template-columns: 1fr; }
       .stats-row { gap: 0; }
       .stat b { font-size: 42px; }
@@ -828,7 +780,6 @@
         <a href="#timeline">救助记录</a>
         <a href="#sales">义卖记录</a>
         <a href="#guide">猫咪指南</a>
-        <a href="#about">关于我们</a>
       </div>
       <a class="join-button" href="#join">加入我们</a>
     </nav>
@@ -859,7 +810,6 @@
         <div class="section-head">
           <span class="leaf" aria-hidden="true">❧</span>
           <h2 class="section-title">今天谁在附中？</h2>
-          <a class="section-link" href="#about">了解猫协&nbsp; →</a>
         </div>
         <div class="cat-grid">
           <article class="cat-card">
@@ -935,21 +885,6 @@
             </div>
           </article>
         </div>
-      </section>
-
-      <section class="section" id="about">
-        <div class="section-head">
-          <span class="leaf" aria-hidden="true">❧</span>
-          <h2 class="section-title">它们和附中的故事</h2>
-        </div>
-        <article class="story-card">
-          <div class="photo-slot story-photo" data-label="猫协故事照片待补充"></div>
-          <div class="story-copy">
-            <h3>一群普通的学生，做着认真而温柔的事。</h3>
-            <p>卧附藏喵-南师附中猫协由爱猫、关心校园动物的同学共同组成。我们用科学、克制且长久的方式，关注校园流浪猫的健康与生活。</p>
-            <p>日常照护、健康记录、伤病救助与绝育，是我们对校园生命长期而具体的责任。</p>
-          </div>
-        </article>
       </section>
 
       <section class="section" id="guide">
