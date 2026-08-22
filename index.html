@@ -18,57 +18,72 @@
       --ink: #17231c;
       --muted: #66736b;
       --border: #e2e8e3;
-      --warm-gray: #f3f1e9;
-      --shadow: 0 8px 28px rgba(23, 35, 28, .06);
+      --content: 1120px;
     }
 
     * { box-sizing: border-box; }
-    html { scroll-behavior: smooth; }
+    html { scroll-behavior: smooth; overflow-x: clip; }
     body {
       margin: 0;
-      background: var(--warm-gray);
+      overflow-x: clip;
+      background: var(--white);
       color: var(--ink);
-      font-family: "Noto Sans SC", "PingFang SC", "Microsoft YaHei", sans-serif;
+      font-family: "PingFang SC", "Noto Sans SC", "Microsoft YaHei", sans-serif;
     }
+    img { max-width: 100%; }
     a { color: inherit; text-decoration: none; }
-    button, input { font: inherit; }
+    button { font: inherit; }
     button, a { -webkit-tap-highlight-color: transparent; }
-
-    .site-shell {
-      width: min(1180px, calc(100% - 28px));
-      margin: 14px auto;
+    :focus-visible { outline: 3px solid var(--yellow); outline-offset: 4px; }
+    .site-shell { width: 100%; background: var(--white); }
+    .content { width: min(var(--content), calc(100% - 64px)); margin-inline: auto; }
+    section { scroll-margin-top: 68px; }
+    .skip-link {
+      position: fixed;
+      z-index: 100;
+      left: 16px;
+      top: -80px;
+      padding: 10px 14px;
+      background: var(--yellow);
+      color: var(--green-dark);
+      font-weight: 700;
+    }
+    .skip-link:focus { top: 12px; }
+    .visually-hidden {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
       overflow: hidden;
-      background: var(--paper);
-      border: 1px solid var(--border);
-      border-radius: 22px;
-      box-shadow: var(--shadow);
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
     }
 
     .nav {
       position: sticky;
-      top: 0;
       z-index: 50;
-      height: 74px;
+      top: 0;
+      border-bottom: 1px solid rgba(226, 232, 227, .82);
+      background: rgba(255, 255, 255, .94);
+      backdrop-filter: blur(14px);
+    }
+    .nav-inner {
+      min-height: 66px;
       display: flex;
       align-items: center;
-      padding: 0 30px;
-      border-bottom: 1px solid var(--border);
-      background: rgba(252, 251, 245, .96);
-      backdrop-filter: blur(14px);
     }
     .brand {
       display: flex;
       align-items: center;
-      gap: 10px;
-      min-width: 295px;
-      font-family: "Songti SC", "STSong", "Noto Serif SC", serif;
-      font-size: 18px;
-      font-weight: 800;
+      gap: 9px;
       color: var(--green-dark);
+      font: 800 17px/1.05 "Songti SC", "STSong", "Noto Serif SC", serif;
     }
     .brand-logo, .footer-logo {
-      width: 42px;
-      height: 42px;
+      width: 38px;
+      height: 38px;
       flex: 0 0 auto;
       background: var(--green);
       -webkit-mask: url("assets/brand/cat-association-logo.png") center / contain no-repeat;
@@ -76,127 +91,103 @@
     }
     .brand small {
       display: block;
-      margin-top: 2px;
+      margin-top: 4px;
       color: var(--muted);
-      font: 8px/1.1 Georgia, serif;
-      letter-spacing: .1em;
+      font: 8px/1 Georgia, serif;
+      letter-spacing: .12em;
     }
     .nav-links {
       display: flex;
       align-items: center;
-      justify-content: center;
-      gap: 22px;
+      gap: 28px;
       margin-left: auto;
       font-size: 13px;
     }
-    .nav-links a { transition: color .2s ease; }
+    .nav-links a { padding-block: 12px; transition: color .2s ease; }
     .nav-links a:hover { color: var(--green); }
-    .join-button, .primary-button {
-      border: 1px solid var(--green);
-      border-radius: 8px;
-      background: var(--green);
-      color: #fff;
+    .join-button, .primary-button, .outline-button, .ledger-button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 44px;
+      border-radius: 7px;
+      font-size: 13px;
       font-weight: 700;
-      box-shadow: 0 4px 12px rgba(23, 99, 58, .12);
-      transition: transform .2s ease, background .2s ease;
+      transition: transform .2s ease, background-color .2s ease, color .2s ease;
     }
     .join-button {
-      margin-left: 30px;
-      padding: 12px 22px;
-      font-size: 13px;
+      margin-left: 28px;
+      padding: 0 20px;
+      background: var(--green);
+      color: #fff;
     }
-    .join-button:hover, .primary-button:hover {
-      background: var(--green-dark);
-      transform: translateY(-1px);
-    }
+    .join-button:hover, .primary-button:hover { background: var(--green-dark); transform: translateY(-1px); }
 
     .hero {
       position: relative;
-      min-height: 510px;
-      display: grid;
-      grid-template-columns: .8fr 1.2fr;
-      gap: 38px;
-      align-items: center;
-      padding: 46px 46px 40px;
-      border-bottom: 1px solid var(--border);
       overflow: hidden;
+      background: var(--paper);
     }
     .hero::before {
       content: "❧";
       position: absolute;
-      left: -10px;
-      bottom: -10px;
+      left: max(-24px, calc((100vw - var(--content)) / 2 - 100px));
+      bottom: -34px;
       color: #dce8d9;
-      font: 150px/1 Georgia, serif;
+      font: 170px/1 Georgia, serif;
+      opacity: .68;
       transform: rotate(-24deg);
-      opacity: .72;
+    }
+    .hero-inner {
+      position: relative;
+      min-height: 620px;
+      display: grid;
+      grid-template-columns: .78fr 1.22fr;
+      gap: 54px;
+      align-items: center;
+      padding-block: 82px 88px;
     }
     .hero-copy { position: relative; z-index: 2; }
-    .eyebrow {
-      margin: 0 0 24px;
+    .eyebrow, .section-kicker {
+      margin: 0;
       color: var(--muted);
       font: 10px/1.65 Georgia, serif;
       letter-spacing: .2em;
     }
+    .hero .eyebrow { margin-bottom: 26px; }
     .hero h1 {
       margin: 0;
-      font: 800 clamp(56px, 6.1vw, 78px)/1.02 "Songti SC", "STSong", "Noto Serif SC", serif;
-      letter-spacing: .02em;
+      font: 800 clamp(58px, 6.5vw, 80px)/1.01 "Songti SC", "STSong", "Noto Serif SC", serif;
+      letter-spacing: .015em;
     }
     .hero h1 span { display: block; color: var(--green-dark); }
     .hero-subtitle {
-      margin: 18px 0 0;
-      font-family: "Songti SC", "STSong", serif;
-      font-size: 17px;
+      margin: 20px 0 0;
       color: #344239;
+      font: 17px/1.6 "Songti SC", "STSong", "Noto Serif SC", serif;
     }
-    .hero-actions { display: flex; gap: 10px; margin-top: 34px; }
-    .primary-button, .outline-button {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      min-height: 42px;
-      padding: 0 17px;
-      border-radius: 8px;
-      font-size: 13px;
-    }
-    .outline-button {
-      border: 1px solid var(--green);
-      color: var(--green);
-      background: var(--white);
-      font-weight: 700;
-      transition: background .2s ease;
-    }
-    .outline-button:hover { background: var(--green-soft); }
-
-    .hero-collage {
-      position: relative;
-      min-height: 405px;
-      isolation: isolate;
-    }
+    .hero-actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 38px; }
+    .primary-button { padding: 0 18px; background: var(--green); color: #fff; }
+    .outline-button { padding: 0 17px; color: var(--green); border: 1px solid var(--green); }
+    .outline-button:hover { background: var(--green-soft); transform: translateY(-1px); }
+    .hero-collage { position: relative; min-height: 440px; isolation: isolate; }
     .hero-art-panel {
       position: absolute;
       z-index: 0;
-      inset: 3% 1% 2% 3%;
+      inset: 2% 0 1% 2%;
       overflow: hidden;
-      border: 1px solid var(--border);
-      border-radius: 24px;
-      background: rgba(255, 254, 249, .92);
-      box-shadow: 0 16px 34px rgba(23, 35, 28, .09);
-      transform: rotate(1.2deg);
+      border-radius: 14px;
+      background: rgba(255, 254, 249, .94);
+      transform: rotate(1deg);
     }
     .hero-art-panel::after {
       content: "";
       position: absolute;
       inset: 15px;
-      border: 1px dashed rgba(23, 99, 58, .18);
-      border-radius: 18px;
+      border: 1px dashed rgba(23, 99, 58, .16);
+      border-radius: 10px;
     }
-    .hero-block {
-      position: absolute;
-      border-radius: 18px;
-      opacity: .72;
-    }
+    .hero-block { position: absolute; border-radius: 10px; opacity: .72; }
     .hero-block.peach { width: 34%; height: 29%; left: 5%; top: 8%; background: #ffd0a0; }
     .hero-block.pink { width: 40%; height: 26%; left: 36%; top: 2%; background: #f7ced5; }
     .hero-block.yellow { width: 34%; height: 38%; right: 2%; top: 19%; background: #ffe27a; }
@@ -207,9 +198,8 @@
       z-index: 3;
       left: 1%;
       top: -2%;
-      width: 92%;
+      width: 93%;
       height: auto;
-      opacity: 1;
       filter: drop-shadow(0 8px 8px rgba(72, 55, 26, .12));
       transform: rotate(-1.5deg);
       pointer-events: none;
@@ -220,18 +210,17 @@
       right: 0;
       top: 8%;
       padding: 10px 14px;
-      border-radius: 7px;
+      border-radius: 6px;
       background: var(--yellow);
       color: #54400b;
-      font-size: 13px;
+      font-size: 12px;
       font-weight: 800;
-      box-shadow: 0 5px 14px rgba(114, 84, 5, .16);
     }
     .hand-note {
       position: absolute;
       z-index: 5;
       right: 7%;
-      bottom: -4%;
+      bottom: -5%;
       margin: 0;
       color: #5f625b;
       font: 17px/1.55 "Kaiti SC", "STKaiti", serif;
@@ -248,909 +237,644 @@
       transform: rotate(-5deg);
     }
 
-    .section {
-      padding: 30px;
-      border-bottom: 1px solid var(--border);
-      scroll-margin-top: 74px;
-    }
-    .section-head {
-      display: flex;
-      align-items: center;
-      min-height: 34px;
-      margin-bottom: 15px;
-    }
-    .leaf { margin-right: 8px; color: var(--green); font-size: 24px; transform: rotate(-18deg); }
+    .section { padding-block: 92px; }
+    .section-heading { max-width: 690px; margin-bottom: 42px; }
+    .section-kicker { margin-bottom: 12px; color: var(--green); font-weight: 700; }
     .section-title {
       margin: 0;
       color: var(--green-dark);
-      font: 800 25px/1.2 "Songti SC", "STSong", "Noto Serif SC", serif;
+      font: 800 clamp(34px, 4vw, 43px)/1.2 "Songti SC", "STSong", "Noto Serif SC", serif;
+      letter-spacing: .01em;
     }
-    .section-link {
-      margin-left: auto;
-      color: var(--green);
-      font-size: 12px;
-      font-weight: 700;
-    }
+    .section-intro { margin: 15px 0 0; color: var(--muted); font-size: 14px; line-height: 1.85; }
 
-    .cat-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
-    .cat-card {
-      overflow: hidden;
-      background: #fff;
-      border: 1px solid var(--border);
-      border-radius: 13px;
-      box-shadow: 0 3px 10px rgba(23, 35, 28, .035);
-    }
+    .cat-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 58px 30px; }
+    .cat-card { min-width: 0; background: #fff; }
     .cat-carousel {
       position: relative;
-      height: 178px;
+      height: 330px;
       overflow: hidden;
-      border-bottom: 1px solid var(--border);
-      background: var(--warm-gray);
+      border-radius: 10px;
+      background: var(--green-soft);
       touch-action: pan-y;
     }
     .carousel-track { height: 100%; display: flex; transition: transform .35s cubic-bezier(.22, .61, .36, 1); }
-    .carousel-slide { min-width: 100%; height: 100%; margin: 0; }
-    .carousel-slide img { display: block; width: 100%; height: 100%; object-fit: cover; }
-    .carousel-placeholder { height: 100%; border: 0; }
+    .carousel-slide { min-width: 100%; height: 100%; margin: 0; overflow: hidden; }
+    .carousel-slide img { display: block; width: 100%; height: 100%; object-fit: cover; transition: transform .45s ease; }
+    .cat-card:hover .carousel-slide img { transform: scale(1.01); }
     .carousel-arrow {
       position: absolute;
       z-index: 3;
       top: 50%;
-      width: 30px;
-      height: 30px;
+      width: 44px;
+      height: 44px;
       display: grid;
       place-items: center;
       padding: 0;
-      border: 1px solid rgba(255, 255, 255, .7);
+      border: 0;
       border-radius: 50%;
-      background: rgba(13, 71, 41, .7);
+      background: rgba(13, 71, 41, .72);
       color: #fff;
-      font: 22px/1 Georgia, serif;
+      font: 25px/1 Georgia, serif;
       cursor: pointer;
+      opacity: .24;
       transform: translateY(-50%);
-      backdrop-filter: blur(5px);
-      transition: background .2s ease, transform .2s ease;
+      transition: opacity .2s ease, background .2s ease, transform .2s ease;
     }
-    .carousel-arrow:hover { background: var(--green-dark); transform: translateY(-50%) scale(1.05); }
-    .carousel-arrow.prev { left: 8px; }
-    .carousel-arrow.next { right: 8px; }
+    .cat-carousel:hover .carousel-arrow, .carousel-arrow:focus-visible { opacity: 1; }
+    .carousel-arrow:hover { background: var(--green-dark); transform: translateY(-50%) scale(1.04); }
+    .carousel-arrow.prev { left: 12px; }
+    .carousel-arrow.next { right: 12px; }
     .carousel-arrow[hidden], .carousel-dots[hidden], .carousel-count[hidden] { display: none; }
-    .carousel-dots {
-      position: absolute;
-      z-index: 3;
-      left: 50%;
-      bottom: 8px;
-      display: flex;
-      gap: 5px;
-      transform: translateX(-50%);
-    }
+    .carousel-dots { position: absolute; z-index: 3; left: 50%; bottom: 13px; display: flex; gap: 6px; transform: translateX(-50%); }
     .carousel-dot {
-      width: 6px;
-      height: 6px;
+      width: 7px;
+      height: 7px;
       padding: 0;
       border: 0;
       border-radius: 50%;
-      background: rgba(255, 255, 255, .65);
-      box-shadow: 0 0 0 1px rgba(13, 71, 41, .2);
+      background: rgba(255, 255, 255, .72);
+      box-shadow: 0 0 0 1px rgba(13, 71, 41, .18);
       cursor: pointer;
     }
-    .carousel-dot.active { width: 17px; border-radius: 6px; background: var(--yellow); }
+    .carousel-dot.active { width: 20px; border-radius: 6px; background: var(--yellow); }
     .carousel-count {
       position: absolute;
       z-index: 3;
-      top: 8px;
-      right: 8px;
-      padding: 4px 7px;
-      border-radius: 10px;
+      top: 12px;
+      right: 12px;
+      padding: 5px 8px;
+      border-radius: 5px;
       background: rgba(13, 71, 41, .72);
       color: #fff;
-      font-size: 9px;
+      font-size: 10px;
       letter-spacing: .06em;
-      backdrop-filter: blur(4px);
     }
-    .cat-info { padding: 14px 15px 16px; }
-    .cat-name-row { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
-    .cat-name-row h3 {
-      margin: 0;
-      font: 800 18px/1.2 "Songti SC", "STSong", serif;
-    }
+    .cat-info { padding: 20px 2px 0; }
+    .cat-name-row { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; }
+    .cat-name-row h3 { margin: 0; font: 800 27px/1.2 "Songti SC", "STSong", serif; }
     .status { flex: 0 0 auto; color: var(--green); font-size: 11px; }
     .status::before {
       content: "";
       display: inline-block;
-      width: 7px;
-      height: 7px;
-      margin-right: 5px;
+      width: 6px;
+      height: 6px;
+      margin-right: 6px;
       border-radius: 50%;
       background: var(--green);
+      vertical-align: 1px;
     }
-    .cat-place { margin: 8px 0 0; color: var(--muted); font-size: 12px; }
-    .cat-place b { color: var(--green); font-weight: 700; }
-    .cat-tags { display: flex; gap: 7px; margin-top: 11px; }
-    .tag {
-      padding: 4px 8px;
-      border-radius: 20px;
-      background: var(--green-soft);
-      color: var(--green-dark);
-      font-size: 10px;
-    }
-    .cat-health { margin: 10px 0 0; color: #57635b; font-size: 11px; line-height: 1.55; }
+    .cat-place { margin: 7px 0 0; color: var(--muted); font-size: 12px; }
+    .cat-detail { margin: 15px 0 0; color: #3f5045; font-size: 13px; }
+    .cat-detail span + span::before { content: " · "; color: #a1aba5; }
+    .cat-health { margin: 8px 0 0; color: var(--muted); font-size: 12px; line-height: 1.65; }
 
-    .two-card-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
-    .info-card {
-      min-height: 225px;
-      padding: 25px 27px;
-      overflow: hidden;
-      border: 1px solid var(--border);
-      border-radius: 14px;
-      background: #fff;
-    }
-    .info-card h3 {
-      margin: 0 0 22px;
-      color: var(--green-dark);
-      font: 800 23px/1.2 "Songti SC", "STSong", serif;
-    }
-    .stats-row { display: grid; grid-template-columns: repeat(3, 1fr); }
-    .stat { position: relative; text-align: center; border-right: 1px solid var(--border); }
-    .stat:last-child { border-right: 0; }
-    .stat b { display: block; color: var(--green); font: 400 52px/1 Georgia, serif; }
-    .stat i {
-      display: block;
-      width: 7px;
-      height: 7px;
-      margin: 13px auto 10px;
-      border-radius: 50%;
-      background: var(--yellow);
-    }
-    .stat span { color: #4f5d54; font-size: 12px; }
-    .guide-card {
-      position: relative;
-      border-color: #f0dd9b;
-      background: linear-gradient(135deg, #fffdf3 0%, var(--yellow-soft) 100%);
-    }
-    .guide-card::after {
-      content: "猫";
-      position: absolute;
-      right: 22px;
-      bottom: -24px;
-      color: rgba(244, 200, 74, .28);
-      font: 100px/1 "Songti SC", serif;
-    }
-    .guide-cat-art {
-      position: absolute;
-      z-index: 0;
-      right: -10px;
-      bottom: -16px;
-      width: 145px;
-      height: auto;
-      opacity: .17;
-      pointer-events: none;
-    }
-    .guide-list { position: relative; z-index: 1; display: grid; gap: 10px; }
-    .guide-item { display: flex; align-items: center; gap: 10px; color: #3f4b43; font-size: 13px; }
-    .guide-icon {
+    .stats-band { padding-block: 30px 86px; }
+    .stats-inner {
       display: grid;
-      place-items: center;
-      width: 21px;
-      height: 21px;
-      border: 1px solid var(--green);
-      border-radius: 50%;
-      color: var(--green);
-      font-size: 11px;
-      font-weight: 800;
+      grid-template-columns: repeat(3, 1fr);
+      padding-block: 38px;
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
     }
+    .stat { text-align: center; }
+    .stat + .stat { border-left: 1px solid var(--border); }
+    .stat b { display: block; color: var(--green); font: 400 clamp(48px, 6vw, 70px)/1 Georgia, serif; }
+    .stat span { display: block; margin-top: 12px; color: #4f5d54; font-size: 13px; letter-spacing: .08em; }
 
-    .timeline-section { background: linear-gradient(180deg, var(--paper) 0%, #f8faf6 100%); }
-    .timeline-heading { margin-bottom: 5px; }
-    .timeline-subtitle { margin: 0 0 28px 34px; color: var(--muted); font-size: 13px; line-height: 1.7; }
-    .timeline-list { position: relative; display: grid; gap: 22px; }
-    .timeline-list::before {
-      content: "";
-      position: absolute;
-      top: 10px;
-      bottom: 10px;
-      left: 50%;
-      width: 1px;
-      background: linear-gradient(var(--green-soft), var(--green), var(--yellow));
-      transform: translateX(-50%);
-    }
+    .timeline-section { padding-top: 96px; background: #f8faf7; }
+    .timeline-list { position: relative; border-left: 1px solid #dde7df; padding-left: 28px; }
     .timeline-entry {
       position: relative;
       display: grid;
-      grid-template-columns: minmax(0, 1fr) 58px minmax(0, 1fr);
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: clamp(42px, 6vw, 82px);
       align-items: center;
+      padding: 44px 0 60px;
     }
-    .timeline-node {
-      position: relative;
-      z-index: 2;
-      grid-column: 2;
-      display: grid;
-      place-items: center;
-      width: 34px;
-      height: 34px;
-      margin: 0 auto;
-      border: 5px solid var(--paper);
+    .timeline-entry::before {
+      content: "";
+      position: absolute;
+      left: -33px;
+      top: 54px;
+      width: 9px;
+      height: 9px;
+      border: 3px solid #f8faf7;
       border-radius: 50%;
       background: var(--yellow);
-      color: var(--green-dark);
-      font-size: 11px;
-      box-shadow: 0 0 0 1px #ead78f;
+      box-shadow: 0 0 0 1px #d8e2da;
     }
-    .timeline-card {
-      grid-column: 1;
-      display: grid;
-      grid-template-columns: 155px minmax(0, 1fr);
-      min-height: 176px;
-      overflow: hidden;
-      border: 1px solid var(--border);
-      border-radius: 14px;
-      background: #fff;
-      box-shadow: 0 5px 16px rgba(23, 35, 28, .045);
-    }
-    .timeline-entry:nth-child(even) .timeline-card { grid-column: 3; }
-    .timeline-media { min-height: 176px; overflow: hidden; background: var(--green-soft); }
-    .timeline-media img { display: block; width: 100%; height: 100%; object-fit: cover; }
+    .timeline-entry:nth-child(odd) .timeline-media { order: 2; }
+    .timeline-entry:nth-child(odd) .timeline-content { order: 1; }
+    .timeline-media { aspect-ratio: 4 / 3; overflow: hidden; border-radius: 10px; background: var(--green-soft); }
+    .timeline-media img { display: block; width: 100%; height: 100%; object-fit: cover; transition: transform .45s ease; }
+    .timeline-entry:hover .timeline-media img { transform: scale(1.01); }
     .timeline-media.aodaju img { object-position: center 38%; }
     .timeline-media.tnr img { object-position: center 46%; }
-    .timeline-content { display: flex; flex-direction: column; justify-content: center; padding: 20px 20px 20px 18px; }
     .timeline-date {
-      align-self: flex-start;
-      margin-bottom: 10px;
-      padding: 5px 9px;
-      border-radius: 20px;
-      background: var(--green-soft);
+      display: block;
+      margin-bottom: 16px;
       color: var(--green);
-      font: 700 10px/1 Georgia, "PingFang SC", sans-serif;
-      letter-spacing: .04em;
+      font: 700 11px/1.2 Georgia, serif;
+      letter-spacing: .14em;
     }
-    .timeline-card h3 { margin: 0 0 8px; color: var(--green-dark); font: 800 18px/1.35 "Songti SC", "STSong", serif; }
-    .timeline-card p { margin: 0; color: var(--muted); font-size: 12px; line-height: 1.75; }
-    .timeline-card.text-only {
-      grid-template-columns: 1fr;
-      min-height: 154px;
-      background: linear-gradient(135deg, #fffdf3 0%, var(--yellow-soft) 100%);
-      border-color: #f0dd9b;
+    .timeline-content h3 {
+      margin: 0 0 16px;
+      color: var(--green-dark);
+      font: 800 clamp(27px, 3vw, 33px)/1.28 "Songti SC", "STSong", "Noto Serif SC", serif;
     }
-    .timeline-card.text-only .timeline-content { padding: 24px 26px; }
+    .timeline-content p { max-width: 470px; margin: 0; color: var(--muted); font-size: 14px; line-height: 1.9; }
 
-    .ledger-section {
-      position: relative;
-      scroll-margin-top: 74px;
-      overflow: hidden;
-      padding: 52px 46px;
-      background:
-        radial-gradient(circle at 82% 18%, rgba(36, 123, 73, .32), transparent 310px),
-        linear-gradient(135deg, #0d4729 0%, #103b26 100%);
-      color: #fff;
-    }
+    .ledger-section { position: relative; overflow: hidden; padding-block: 94px; background: var(--green-dark); color: #fff; }
     .ledger-section::after {
       content: "账";
       position: absolute;
-      right: -12px;
-      bottom: -82px;
+      right: max(-18px, calc((100vw - var(--content)) / 2 - 70px));
+      bottom: -95px;
       color: rgba(255, 255, 255, .045);
-      font: 800 250px/1 "Songti SC", "STSong", serif;
+      font: 800 275px/1 "Songti SC", "STSong", serif;
       pointer-events: none;
     }
     .ledger-layout {
       position: relative;
       z-index: 1;
       display: grid;
-      grid-template-columns: minmax(0, 1.15fr) minmax(300px, .85fr);
-      gap: 58px;
-      align-items: center;
+      grid-template-columns: minmax(0, 1.25fr) minmax(260px, .75fr);
+      gap: clamp(56px, 9vw, 130px);
+      align-items: end;
     }
-    .ledger-kicker {
-      margin: 0 0 16px;
-      color: var(--yellow);
-      font: 700 11px/1.2 Georgia, "PingFang SC", sans-serif;
-      letter-spacing: .16em;
-    }
-    .ledger-copy h2 {
-      margin: 0 0 18px;
-      color: #fff;
-      font: 800 38px/1.2 "Songti SC", "STSong", serif;
-      letter-spacing: .02em;
-    }
-    .ledger-description {
-      max-width: 610px;
-      margin: 0;
-      color: rgba(255, 255, 255, .78);
-      font-size: 14px;
-      line-height: 1.9;
-    }
-    .ledger-status {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 12px 22px;
-      margin: 24px 0 0;
-      padding: 0;
-      list-style: none;
-      color: rgba(255, 255, 255, .88);
-      font-size: 11px;
-      letter-spacing: .06em;
-    }
-    .ledger-status li::before {
-      content: "";
-      display: inline-block;
-      width: 6px;
-      height: 6px;
-      margin-right: 7px;
-      border-radius: 50%;
-      background: var(--yellow);
-      vertical-align: 1px;
-    }
-    .ledger-cta {
-      padding: 30px 6px 30px 34px;
-      border-left: 1px solid rgba(255, 255, 255, .2);
-      background: linear-gradient(90deg, rgba(255, 255, 255, .055), transparent 82%);
-    }
-    .ledger-cta-label {
-      margin: 0 0 17px;
-      color: rgba(255, 255, 255, .92);
-      font: 800 20px/1.3 "Songti SC", "STSong", serif;
-    }
-    .ledger-button {
-      display: inline-flex;
-      align-items: center;
-      gap: 9px;
-      padding: 12px 17px;
-      border: 1px solid var(--yellow);
-      border-radius: 8px;
-      background: var(--yellow);
-      color: #293516;
-      font-size: 12px;
-      font-weight: 800;
-      transition: transform .2s ease, background .2s ease;
-    }
-    .ledger-button:hover {
-      background: #ffda67;
-      transform: translateY(-1px);
-    }
-    .ledger-note {
-      max-width: 330px;
-      margin: 16px 0 0;
-      color: rgba(255, 255, 255, .58);
-      font-size: 10px;
-      line-height: 1.7;
-    }
+    .ledger-kicker { margin: 0 0 18px; color: var(--yellow); font: 700 11px/1.2 Georgia, sans-serif; letter-spacing: .18em; }
+    .ledger-copy h2 { margin: 0 0 22px; color: #fff; font: 800 clamp(37px, 5vw, 52px)/1.18 "Songti SC", "STSong", serif; }
+    .ledger-description { max-width: 610px; margin: 0; color: rgba(255, 255, 255, .76); font-size: 14px; line-height: 1.95; }
+    .ledger-status { display: flex; flex-wrap: wrap; gap: 10px 24px; margin: 27px 0 0; padding: 0; list-style: none; color: rgba(255, 255, 255, .88); font-size: 12px; }
+    .ledger-status li::before { content: ""; display: inline-block; width: 6px; height: 6px; margin-right: 8px; border-radius: 50%; background: var(--yellow); vertical-align: 1px; }
+    .ledger-cta { padding: 0 0 5px 30px; border-left: 1px solid rgba(255, 255, 255, .22); }
+    .ledger-cta-label { margin: 0 0 17px; color: rgba(255, 255, 255, .94); font: 800 20px/1.3 "Songti SC", "STSong", serif; }
+    .ledger-button { padding: 0 18px; background: var(--yellow); color: #263414; }
+    .ledger-button:hover { background: #ffda67; transform: translateY(-1px); }
+    .ledger-note { max-width: 330px; margin: 17px 0 0; color: rgba(255, 255, 255, .58); font-size: 11px; line-height: 1.75; }
 
-    .sales-section {
-      background:
-        radial-gradient(circle at 94% 8%, rgba(244, 200, 74, .18), transparent 210px),
-        linear-gradient(180deg, #fffdf6 0%, var(--paper) 100%);
-    }
-    .sales-intro {
-      margin-bottom: 14px;
-    }
-    .sales-note {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      margin: 0;
-      padding: 12px 15px;
-      border-left: 3px solid var(--yellow);
-      background: rgba(255, 252, 235, .7);
-      color: var(--muted);
-      font-size: 12px;
-      line-height: 1.6;
-    }
-    .sales-note strong { flex: 0 0 auto; color: var(--green-dark); }
-    .sales-grid {
-      overflow: hidden;
-      border: 1px solid var(--border);
-      border-radius: 14px;
-      background: #fff;
-    }
-    .sale-card {
-      display: grid;
-      grid-template-columns: 138px minmax(190px, .75fr) minmax(0, 1.25fr);
-      align-items: center;
-      gap: 18px;
-      min-height: 0;
-      padding: 15px 18px;
-      border-bottom: 1px solid var(--border);
-    }
-    .sale-card:last-child { border-bottom: 0; }
-    .sale-meta { display: flex; flex-direction: column; align-items: flex-start; gap: 6px; }
-    .sale-date {
-      color: var(--green);
-      font: 700 11px/1 Georgia, "PingFang SC", sans-serif;
-      letter-spacing: .04em;
-    }
-    .sale-type {
-      padding: 5px 8px;
-      border-radius: 18px;
-      background: var(--yellow-soft);
-      color: #725b10;
-      font-size: 9px;
-      font-weight: 800;
-    }
-    .sale-card h3 {
-      margin: 0;
-      color: var(--green-dark);
-      font: 800 16px/1.4 "Songti SC", "STSong", serif;
-    }
-    .sale-products { display: flex; gap: 9px; margin: 0; color: var(--muted); font-size: 11px; line-height: 1.55; }
-    .sale-products b { flex: 0 0 auto; color: var(--green); font-size: 10px; letter-spacing: .06em; }
-
-    .join-grid { display: grid; grid-template-columns: 1.25fr .75fr; gap: 16px; }
-    .join-intro, .qr-card {
-      border: 1px solid var(--border);
-      border-radius: 14px;
-      background: #fff;
-    }
-    .join-intro {
-      position: relative;
-      overflow: hidden;
-      padding: 30px;
-      background: var(--green-soft);
-    }
-    .join-intro::after {
-      content: "❧";
-      position: absolute;
-      right: 20px;
-      bottom: -28px;
-      color: rgba(23, 99, 58, .1);
-      font: 120px/1 Georgia, serif;
-      transform: rotate(18deg);
-    }
-    .join-intro h3, .qr-card h3 {
-      margin: 0 0 17px;
-      color: var(--green-dark);
-      font: 800 23px/1.25 "Songti SC", "STSong", serif;
-    }
-    .join-intro p {
-      position: relative;
-      z-index: 1;
-      max-width: 590px;
-      margin: 0 0 18px;
-      color: var(--muted);
-      font-size: 13px;
-      line-height: 1.8;
-    }
-    .join-steps { margin: 0; padding: 0; list-style: none; counter-reset: step; }
-    .join-steps li { position: relative; z-index: 1; display: flex; align-items: center; gap: 10px; margin: 10px 0; color: #46544b; font-size: 12px; }
-    .join-steps li::before {
-      counter-increment: step;
-      content: counter(step);
-      display: grid;
-      place-items: center;
-      width: 23px;
-      height: 23px;
-      flex: 0 0 auto;
-      border-radius: 50%;
-      background: var(--green);
-      color: #fff;
-      font-size: 10px;
-      font-weight: 800;
-    }
-    .qr-card {
+    .sales-section { background: var(--paper); }
+    .sales-gallery { display: grid; grid-template-columns: 1.15fr .85fr; grid-template-rows: auto auto; gap: 26px; }
+    .sale-feature { min-width: 0; }
+    .sale-feature.large { grid-row: 1 / span 2; }
+    .sale-image { overflow: hidden; border-radius: 9px; background: #e8eee8; }
+    .sale-feature.large .sale-image { height: 540px; }
+    .sale-feature:not(.large) .sale-image { height: 255px; }
+    .sale-image img { display: block; width: 100%; height: 100%; object-fit: cover; transition: transform .45s ease; }
+    .sale-feature:hover .sale-image img { transform: scale(1.01); }
+    .sale-caption { padding: 17px 1px 0; }
+    .sale-date { color: var(--green); font: 700 10px/1 Georgia, sans-serif; letter-spacing: .14em; }
+    .sale-caption h3, .sale-text h3 { margin: 8px 0 5px; color: var(--green-dark); font: 800 23px/1.35 "Songti SC", "STSong", serif; }
+    .sale-caption p, .sale-text p { margin: 0; color: var(--muted); font-size: 13px; line-height: 1.75; }
+    .sale-text {
+      min-height: 225px;
       display: flex;
       flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      padding: 26px;
-      text-align: center;
-      background: linear-gradient(135deg, #fffdf3 0%, var(--yellow-soft) 100%);
-      border-color: #f0dd9b;
+      justify-content: flex-end;
+      padding: 35px;
+      background: var(--green-soft);
     }
-    .qr-card h3 { margin-bottom: 8px; }
-    .qr-card p { margin: 0; color: var(--muted); font-size: 11px; }
-    .qr-slot {
-      width: 180px;
-      height: 180px;
-      margin-top: 17px;
-      display: grid;
-      place-items: center;
-      border: 1px dashed #b9aa6b;
-      border-radius: 10px;
-      background: #fff;
-      color: #8d835b;
-      font-size: 11px;
-    }
-    .qr-slot img { display: block; width: 100%; height: 100%; object-fit: contain; border-radius: 9px; }
-    .qq-number { margin-top: 11px; color: var(--green-dark); font-size: 12px; letter-spacing: .04em; }
+    .sale-text.accent { background: var(--yellow-soft); }
+    .sale-text.sale-wide { min-height: 160px; margin-top: 26px; }
 
-    .footer {
-      min-height: 78px;
-      display: flex;
-      align-items: center;
-      padding: 18px 30px;
-      background: #fff;
-    }
-    .footer-brand { display: flex; align-items: center; gap: 10px; color: var(--green-dark); font: 800 16px "Songti SC", serif; }
-    .footer-logo { width: 38px; height: 38px; }
-    .footer-links { display: flex; gap: 26px; margin: 0 auto; color: var(--muted); font-size: 11px; }
-    .footer small { color: var(--muted); }
+    .guide-section { background: #fff; }
+    .guide-list { display: grid; grid-template-columns: repeat(4, 1fr); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+    .guide-item { min-height: 175px; padding: 28px 25px 25px 0; }
+    .guide-item + .guide-item { padding-left: 25px; border-left: 1px solid var(--border); }
+    .guide-number { display: block; margin-bottom: 35px; color: var(--green); font: 700 12px/1 Georgia, serif; letter-spacing: .14em; }
+    .guide-item p { margin: 0; color: #38483e; font: 700 16px/1.7 "Songti SC", "STSong", serif; }
 
-    @media (max-width: 920px) {
-      .brand { min-width: auto; }
+    .join-section { position: relative; overflow: hidden; padding-block: 96px; background: var(--green-soft); }
+    .join-section::before { content: "❧"; position: absolute; left: -30px; bottom: -80px; color: rgba(23, 99, 58, .07); font: 220px/1 Georgia, serif; transform: rotate(-18deg); }
+    .join-layout { position: relative; display: grid; grid-template-columns: minmax(0, 1fr) 260px; gap: 80px; align-items: center; }
+    .join-copy h2 { max-width: 650px; margin: 0; color: var(--green-dark); font: 800 clamp(40px, 5vw, 58px)/1.18 "Songti SC", "STSong", serif; }
+    .join-copy p { max-width: 580px; margin: 22px 0 0; color: var(--muted); font-size: 14px; line-height: 1.9; }
+    .join-roles { display: flex; flex-wrap: wrap; gap: 9px 20px; margin: 28px 0 0; padding: 0; list-style: none; color: var(--green-dark); font-size: 13px; font-weight: 700; }
+    .join-roles li::before { content: ""; display: inline-block; width: 5px; height: 5px; margin-right: 8px; border-radius: 50%; background: var(--yellow); vertical-align: 2px; }
+    .qr-area { text-align: center; }
+    .qr-area img { display: block; width: 220px; height: 220px; margin: 0 auto; object-fit: contain; background: #fff; }
+    .qr-area strong { display: block; margin-top: 14px; color: var(--green-dark); font-size: 13px; letter-spacing: .06em; }
+    .qr-area span { display: block; margin-top: 5px; color: var(--muted); font-size: 11px; }
+
+    .footer { border-top: 1px solid var(--border); background: #fff; }
+    .footer-inner { min-height: 92px; display: flex; align-items: center; }
+    .footer-brand { display: flex; align-items: center; gap: 9px; color: var(--green-dark); font: 800 16px/1.05 "Songti SC", serif; }
+    .footer-brand small { display: block; margin-top: 4px; color: var(--muted); font: 8px/1 Georgia, serif; letter-spacing: .1em; }
+    .footer-logo { width: 34px; height: 34px; }
+    .footer-links { display: flex; gap: 24px; margin: 0 auto; color: var(--muted); font-size: 11px; }
+    .footer-year { color: var(--muted); font-size: 11px; }
+
+    [data-reveal] { opacity: 0; transform: translateY(18px); transition: opacity .7s ease, transform .7s ease; }
+    [data-reveal].is-visible { opacity: 1; transform: none; }
+
+    @media (max-width: 980px) {
+      .content { width: min(var(--content), calc(100% - 44px)); }
       .nav-links { display: none; }
       .join-button { margin-left: auto; }
-      .hero { grid-template-columns: 1fr; padding-top: 42px; }
-      .hero-collage { min-height: 430px; }
-      .cat-grid { grid-template-columns: repeat(2, 1fr); }
-      .timeline-list::before { left: 19px; transform: none; }
-      .timeline-entry { grid-template-columns: 40px minmax(0, 1fr); }
-      .timeline-node { grid-column: 1; grid-row: 1; }
-      .timeline-card, .timeline-entry:nth-child(even) .timeline-card { grid-column: 2; grid-row: 1; width: 100%; }
-      .ledger-layout { grid-template-columns: minmax(0, 1fr) minmax(270px, .72fr); gap: 34px; }
-      .sale-card { grid-template-columns: 120px minmax(165px, .7fr) minmax(0, 1.3fr); gap: 14px; }
-      .join-grid { grid-template-columns: 1fr; }
+      .hero-inner { min-height: auto; grid-template-columns: 1fr; padding-block: 68px 78px; }
+      .hero-copy { max-width: 560px; }
+      .hero-collage { min-height: 520px; }
+      .timeline-entry { gap: 40px; }
+      .sale-feature.large .sale-image { height: 480px; }
+      .join-layout { gap: 48px; }
     }
 
-    @media (max-width: 620px) {
-      .site-shell { width: 100%; margin: 0; border: 0; border-radius: 0; }
-      .nav { height: 66px; padding: 0 15px; }
-      .brand { font-size: 14px; }
-      .brand-logo { width: 37px; height: 37px; }
+    @media (max-width: 680px) {
+      .content { width: min(100% - 40px, var(--content)); }
+      section { scroll-margin-top: 62px; }
+      .nav-inner { min-height: 62px; }
+      .brand { font-size: 15px; }
+      .brand-logo { width: 35px; height: 35px; }
       .brand small { display: none; }
-      .join-button { padding: 10px 13px; font-size: 12px; }
-      .hero { min-height: auto; padding: 38px 21px 32px; gap: 18px; }
-      .hero h1 { font-size: 52px; }
-      .eyebrow { margin-bottom: 18px; }
-      .hero-actions { flex-wrap: wrap; margin-top: 28px; }
-      .hero-collage { min-height: 330px; }
+      .join-button { min-height: 44px; padding: 0 14px; font-size: 12px; }
+      .hero-inner { gap: 30px; padding-block: 52px 60px; }
+      .hero h1 { font-size: clamp(52px, 15vw, 66px); }
+      .hero-actions { margin-top: 30px; }
+      .hero-collage { min-height: 340px; }
       .hero-art-panel { inset: 4% 0 1%; }
-      .hero-cats-art { width: 96%; left: 0; top: 0; }
-      .today-label { right: 0; top: 7%; padding: 8px 11px; font-size: 11px; }
+      .hero-cats-art { width: 98%; left: 0; top: 0; }
+      .today-label { top: 7%; right: 0; padding: 8px 10px; font-size: 10px; }
       .hand-note { display: none; }
-      .section { padding: 30px 20px; }
-      .section-title { font-size: 22px; }
-      .section-link { display: none; }
-      .timeline-subtitle { margin-left: 0; }
-      .timeline-list { gap: 16px; }
-      .timeline-card { grid-template-columns: 1fr; }
-      .timeline-media { height: 190px; min-height: 190px; }
-      .timeline-content { padding: 19px 18px 21px; }
-      .ledger-section { padding: 38px 22px 42px; }
-      .ledger-section::after { right: -12px; bottom: -42px; font-size: 160px; }
-      .ledger-layout { grid-template-columns: 1fr; gap: 28px; }
-      .ledger-copy h2 { font-size: 31px; }
-      .ledger-description { font-size: 13px; }
-      .ledger-status { gap: 10px 17px; margin-top: 20px; }
-      .ledger-cta { padding: 24px 0 0; border-top: 1px solid rgba(255, 255, 255, .2); border-left: 0; background: none; }
-      .sales-note { align-items: flex-start; flex-direction: column; gap: 2px; }
-      .sale-card { grid-template-columns: 105px minmax(0, 1fr); gap: 9px 12px; padding: 14px 15px; }
-      .sale-products { grid-column: 1 / -1; padding-top: 3px; }
-      .cat-grid { grid-template-columns: 1fr; }
-      .cat-carousel { height: 260px; }
-      .two-card-grid { grid-template-columns: 1fr; }
-      .stats-row { gap: 0; }
-      .stat b { font-size: 42px; }
-      .activity-list { padding: 15px 22px; }
-      .footer-links { display: none; }
-      .footer small { margin-left: auto; }
+      .section { padding-block: 60px; }
+      .section-heading { margin-bottom: 32px; }
+      .section-title { font-size: 34px; }
+      .section-intro { font-size: 13px; }
+      .cat-grid { grid-template-columns: 1fr; gap: 46px; }
+      .cat-carousel { height: 280px; }
+      .carousel-arrow { opacity: .72; }
+      .cat-name-row h3 { font-size: 25px; }
+      .stats-band { padding-block: 8px 52px; }
+      .stats-inner { grid-template-columns: 1fr; gap: 28px; padding-block: 30px; }
+      .stat + .stat { padding-top: 28px; border-top: 1px solid var(--border); border-left: 0; }
+      .stat b { font-size: 54px; }
+      .timeline-section { padding-top: 62px; }
+      .timeline-list { padding-left: 20px; }
+      .timeline-entry { grid-template-columns: 1fr; gap: 23px; padding: 30px 0 50px; }
+      .timeline-entry::before { left: -25px; top: 40px; }
+      .timeline-entry:nth-child(odd) .timeline-media, .timeline-entry:nth-child(odd) .timeline-content { order: initial; }
+      .timeline-media { aspect-ratio: 4 / 3; }
+      .timeline-content h3 { font-size: 27px; }
+      .timeline-content p { font-size: 13px; }
+      .ledger-section { padding-block: 64px; }
+      .ledger-section::after { right: -25px; bottom: -45px; font-size: 170px; }
+      .ledger-layout { grid-template-columns: 1fr; gap: 38px; }
+      .ledger-copy h2 { font-size: 39px; }
+      .ledger-description br { display: none; }
+      .ledger-cta { padding: 28px 0 0; border-top: 1px solid rgba(255, 255, 255, .2); border-left: 0; }
+      .sales-gallery { grid-template-columns: 1fr; grid-template-rows: auto; gap: 36px; }
+      .sale-feature.large { grid-row: auto; }
+      .sale-feature.large .sale-image, .sale-feature:not(.large) .sale-image { height: 300px; }
+      .sale-text { min-height: 200px; padding: 28px; }
+      .sale-text.sale-wide { min-height: 180px; margin-top: 20px; }
+      .guide-list { grid-template-columns: 1fr; }
+      .guide-item { min-height: 0; padding: 24px 0; }
+      .guide-item + .guide-item { padding-left: 0; border-top: 1px solid var(--border); border-left: 0; }
+      .guide-number { margin-bottom: 14px; }
+      .join-section { padding-block: 64px; }
+      .join-layout { grid-template-columns: 1fr; gap: 44px; }
+      .join-copy h2 { font-size: 41px; }
+      .qr-area { text-align: left; }
+      .qr-area img { width: 200px; height: 200px; margin: 0; }
+      .footer-inner { min-height: 110px; flex-wrap: wrap; align-content: center; gap: 16px; }
+      .footer-links { order: 3; width: 100%; margin: 0; gap: 16px; overflow-x: auto; white-space: nowrap; padding-bottom: 4px; }
+      .footer-year { margin-left: auto; }
+    }
+
+    @media (max-width: 390px) {
+      .content { width: calc(100% - 32px); }
+      .brand { font-size: 14px; }
+      .join-button { padding-inline: 12px; }
+      .hero h1 { font-size: 50px; }
+      .hero-subtitle { font-size: 15px; }
+      .hero-actions { gap: 9px; }
+      .primary-button, .outline-button { padding-inline: 13px; font-size: 12px; }
+      .hero-collage { min-height: 305px; }
+      .cat-carousel { height: 280px; }
+      .section-title { font-size: 31px; }
+      .ledger-copy h2 { font-size: 36px; }
+      .join-copy h2 { font-size: 37px; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      *, *::before, *::after { scroll-behavior: auto !important; transition-duration: .01ms !important; animation-duration: .01ms !important; animation-iteration-count: 1 !important; }
+      [data-reveal] { opacity: 1; transform: none; }
     }
   </style>
 </head>
 <body>
+  <a class="skip-link" href="#main-content">跳到主要内容</a>
   <div class="site-shell">
     <nav class="nav" aria-label="主导航">
-      <a class="brand" href="#home" aria-label="返回首页">
-        <span class="brand-logo" aria-hidden="true"></span>
-        <span>卧附藏喵-南师附中猫协<small>NSFZ CAT ASSOCIATION</small></span>
-      </a>
-      <div class="nav-links">
-        <a href="#cats">猫咪档案</a>
-        <a href="#timeline">救助记录</a>
-        <a href="#ledger">公开账本</a>
-        <a href="#sales">义卖记录</a>
-        <a href="#guide">猫咪指南</a>
+      <div class="content nav-inner">
+        <a class="brand" href="#home" aria-label="返回首页">
+          <span class="brand-logo" aria-hidden="true"></span>
+          <span>卧附藏喵<small>NSFZ CAT ASSOCIATION</small></span>
+        </a>
+        <div class="nav-links">
+          <a href="#cats">校园猫</a>
+          <a href="#timeline">我们的故事</a>
+          <a href="#ledger">公开账本</a>
+          <a href="#sales">义卖</a>
+          <a href="#guide">猫咪指南</a>
+        </div>
+        <a class="join-button" href="#join">加入我们</a>
       </div>
-      <a class="join-button" href="#join">加入我们</a>
     </nav>
 
-    <main>
+    <main id="main-content">
       <section class="hero" id="home">
-        <div class="hero-copy">
-          <p class="eyebrow">HIGH SCHOOL AFFILIATED TO<br>NANJING NORMAL UNIVERSITY</p>
-          <h1><span>南师附中</span>猫协</h1>
-          <p class="hero-subtitle">和生活在附中的它们，好好相处。</p>
-          <div class="hero-actions">
-            <a class="primary-button" href="#cats">认识校园猫&nbsp; →</a>
-            <a class="outline-button" href="#guide">遇到猫怎么办？</a>
-            <a class="outline-button" href="#join">加入猫协</a>
+        <div class="content hero-inner">
+          <div class="hero-copy">
+            <p class="eyebrow">HIGH SCHOOL AFFILIATED TO<br>NANJING NORMAL UNIVERSITY</p>
+            <h1><span>南师附中</span>猫协</h1>
+            <p class="hero-subtitle">和生活在附中的它们，好好相处。</p>
+            <div class="hero-actions">
+              <a class="primary-button" href="#cats">认识校园猫&nbsp; →</a>
+              <a class="outline-button" href="#timeline">看看我们做过什么&nbsp; ↓</a>
+            </div>
+          </div>
+          <div class="hero-collage" aria-label="校园猫插画主视觉">
+            <div class="hero-art-panel" aria-hidden="true">
+              <span class="hero-block peach"></span>
+              <span class="hero-block pink"></span>
+              <span class="hero-block yellow"></span>
+              <span class="hero-block mint"></span>
+              <span class="hero-block blue"></span>
+            </div>
+            <img class="hero-cats-art" src="assets/illustrations/hero-cats-cutout.png" alt="三只校园猫插画">
+            <span class="today-label">今日出没</span>
+            <p class="hand-note">它们不是流浪到附中，<br>它们生活在附中。</p>
           </div>
         </div>
-        <div class="hero-collage" aria-label="校园猫插画主视觉">
-          <div class="hero-art-panel" aria-hidden="true">
-            <span class="hero-block peach"></span>
-            <span class="hero-block pink"></span>
-            <span class="hero-block yellow"></span>
-            <span class="hero-block mint"></span>
-            <span class="hero-block blue"></span>
+      </section>
+
+      <section class="section" id="cats" aria-labelledby="cats-title">
+        <div class="content">
+          <header class="section-heading" data-reveal>
+            <p class="section-kicker">CAMPUS CATS</p>
+            <h2 class="section-title" id="cats-title">今天谁在附中？</h2>
+            <p class="section-intro">认识这些生活在校园里的老朋友。左右滑动照片，看看它们在附中的日常。</p>
+          </header>
+          <div class="cat-grid">
+            <article class="cat-card" data-reveal>
+              <div class="cat-carousel" data-carousel tabindex="0" aria-label="李十六照片相册">
+                <div class="carousel-track">
+                  <figure class="carousel-slide"><img src="assets/cats/li-shiliu-01.jpg" alt="李十六在教室里靠近镜头" loading="eager"></figure>
+                  <figure class="carousel-slide"><img src="assets/cats/li-shiliu-02.jpg" alt="李十六坐在校园草坪旁" loading="lazy"></figure>
+                  <figure class="carousel-slide"><img src="assets/cats/li-shiliu-03.webp" alt="李十六沿校园水池边走过" loading="lazy"></figure>
+                  <figure class="carousel-slide"><img src="assets/cats/li-shiliu-04.webp" alt="李十六在校园长椅上晒太阳" loading="lazy"></figure>
+                </div>
+                <button class="carousel-arrow prev" type="button" aria-label="李十六相册上一张">‹</button>
+                <button class="carousel-arrow next" type="button" aria-label="李十六相册下一张">›</button>
+                <div class="carousel-dots" aria-label="选择李十六的照片"></div>
+                <span class="carousel-count" aria-live="polite"></span>
+              </div>
+              <div class="cat-info">
+                <div class="cat-name-row"><h3>李十六</h3><span class="status">常驻</span></div>
+                <p class="cat-place">别名：李石榴 / 十六 / 石榴</p>
+                <p class="cat-detail"><span>母</span><span>已绝育</span></p>
+                <p class="cat-health">2023.04 打架外伤，已清创并恢复良好</p>
+              </div>
+            </article>
+
+            <article class="cat-card" data-reveal>
+              <div class="cat-carousel" data-carousel tabindex="0" aria-label="芝麻糊照片相册">
+                <div class="carousel-track">
+                  <figure class="carousel-slide"><img src="assets/cats/zhimahu-01.webp" alt="芝麻糊坐在校园草地旁" loading="lazy"></figure>
+                  <figure class="carousel-slide"><img src="assets/cats/zhimahu-02.webp" alt="芝麻糊夜晚站在校园里看向镜头" loading="lazy"></figure>
+                  <figure class="carousel-slide"><img src="assets/cats/zhimahu-03.webp" alt="芝麻糊夜晚坐在石台上" loading="lazy"></figure>
+                  <figure class="carousel-slide"><img src="assets/cats/zhimahu-04.webp" alt="芝麻糊在阳光下的草丛里打滚" loading="lazy"></figure>
+                </div>
+                <button class="carousel-arrow prev" type="button" aria-label="芝麻糊相册上一张">‹</button>
+                <button class="carousel-arrow next" type="button" aria-label="芝麻糊相册下一张">›</button>
+                <div class="carousel-dots" aria-label="选择芝麻糊的照片"></div>
+                <span class="carousel-count" aria-live="polite"></span>
+              </div>
+              <div class="cat-info">
+                <div class="cat-name-row"><h3>芝麻糊</h3><span class="status">常驻</span></div>
+                <p class="cat-place">别名：大海参</p>
+                <p class="cat-detail"><span>公</span><span>已绝育</span></p>
+                <p class="cat-health">2025.12 外伤手术缝合，现已恢复良好</p>
+              </div>
+            </article>
+
+            <article class="cat-card" data-reveal>
+              <div class="cat-carousel" data-carousel tabindex="0" aria-label="小白照片相册">
+                <div class="carousel-track">
+                  <figure class="carousel-slide"><img src="assets/cats/xiaobai-01.jpg" alt="异瞳的小白坐在校园长椅上" loading="lazy"></figure>
+                  <figure class="carousel-slide"><img src="assets/cats/xiaobai-02.jpg" alt="小白在阳光下的近景照片" loading="lazy"></figure>
+                  <figure class="carousel-slide"><img src="assets/cats/xiaobai-03.webp" alt="小白在校园长椅上休息" loading="lazy"></figure>
+                  <figure class="carousel-slide"><img src="assets/cats/xiaobai-04.webp" alt="小白在校园围墙边吃猫条" loading="lazy"></figure>
+                </div>
+                <button class="carousel-arrow prev" type="button" aria-label="小白相册上一张">‹</button>
+                <button class="carousel-arrow next" type="button" aria-label="小白相册下一张">›</button>
+                <div class="carousel-dots" aria-label="选择小白的照片"></div>
+                <span class="carousel-count" aria-live="polite"></span>
+              </div>
+              <div class="cat-info">
+                <div class="cat-name-row"><h3>小白</h3><span class="status">常驻</span></div>
+                <p class="cat-place">别名：白雪 / 异瞳</p>
+                <p class="cat-detail"><span>公</span><span>已绝育</span></p>
+                <p class="cat-health">2025.12 右耳外伤，已清创并恢复良好</p>
+              </div>
+            </article>
+
+            <article class="cat-card" data-reveal>
+              <div class="cat-carousel" data-carousel tabindex="0" aria-label="奥大橘照片相册">
+                <div class="carousel-track">
+                  <figure class="carousel-slide"><img src="assets/cats/aodaju-01.webp" alt="奥大橘在教室窗边安静坐着" loading="lazy"></figure>
+                  <figure class="carousel-slide"><img src="assets/cats/aodaju-02.webp" alt="治疗恢复期的奥大橘在室内行走" loading="lazy"></figure>
+                </div>
+                <button class="carousel-arrow prev" type="button" aria-label="奥大橘相册上一张">‹</button>
+                <button class="carousel-arrow next" type="button" aria-label="奥大橘相册下一张">›</button>
+                <div class="carousel-dots" aria-label="选择奥大橘的照片"></div>
+                <span class="carousel-count" aria-live="polite"></span>
+              </div>
+              <div class="cat-info">
+                <div class="cat-name-row"><h3>奥大橘</h3><span class="status">常驻</span></div>
+                <p class="cat-place">别名：暂无</p>
+                <p class="cat-detail"><span>公</span><span>已绝育</span></p>
+                <p class="cat-health">2025.03 外伤，已清创并恢复良好</p>
+              </div>
+            </article>
           </div>
-          <img class="hero-cats-art" src="assets/illustrations/hero-cats-cutout.png" alt="三只校园猫插画">
-          <span class="today-label">今日出没&nbsp; 🐾</span>
-          <p class="hand-note">它们不是流浪到附中，<br>它们生活在附中。</p>
         </div>
       </section>
 
-      <section class="section" id="cats">
-        <div class="section-head">
-          <span class="leaf" aria-hidden="true">❧</span>
-          <h2 class="section-title">今天谁在附中？</h2>
-        </div>
-        <div class="cat-grid">
-          <article class="cat-card">
-            <div class="cat-carousel" data-carousel tabindex="0" aria-label="李十六照片相册">
-              <div class="carousel-track">
-                <figure class="carousel-slide"><img src="assets/cats/li-shiliu-01.jpg" alt="李十六在教室里靠近镜头" loading="eager"></figure>
-                <figure class="carousel-slide"><img src="assets/cats/li-shiliu-02.jpg" alt="李十六坐在校园草坪旁" loading="lazy"></figure>
-                <figure class="carousel-slide"><img src="assets/cats/li-shiliu-03.webp" alt="李十六沿校园水池边走过" loading="lazy"></figure>
-                <figure class="carousel-slide"><img src="assets/cats/li-shiliu-04.webp" alt="李十六在校园长椅上晒太阳" loading="lazy"></figure>
-              </div>
-              <button class="carousel-arrow prev" type="button" aria-label="上一张照片">‹</button>
-              <button class="carousel-arrow next" type="button" aria-label="下一张照片">›</button>
-              <div class="carousel-dots" aria-label="选择照片"></div>
-              <span class="carousel-count" aria-live="polite"></span>
-            </div>
-            <div class="cat-info">
-              <div class="cat-name-row"><h3>李十六</h3><span class="status">常驻</span></div>
-              <p class="cat-place">别名：李石榴 / 十六 / 石榴</p>
-              <div class="cat-tags"><span class="tag">母</span><span class="tag">已绝育</span></div>
-              <p class="cat-health">2023.04 打架外伤，已清创并恢复良好</p>
-            </div>
-          </article>
-          <article class="cat-card">
-            <div class="cat-carousel" data-carousel tabindex="0" aria-label="芝麻糊照片相册">
-              <div class="carousel-track">
-                <figure class="carousel-slide"><img src="assets/cats/zhimahu-01.webp" alt="芝麻糊坐在校园草地旁" loading="lazy"></figure>
-                <figure class="carousel-slide"><img src="assets/cats/zhimahu-02.webp" alt="芝麻糊夜晚站在校园里看向镜头" loading="lazy"></figure>
-                <figure class="carousel-slide"><img src="assets/cats/zhimahu-03.webp" alt="芝麻糊夜晚坐在石台上" loading="lazy"></figure>
-                <figure class="carousel-slide"><img src="assets/cats/zhimahu-04.webp" alt="芝麻糊在阳光下的草丛里打滚" loading="lazy"></figure>
-              </div>
-              <button class="carousel-arrow prev" type="button" aria-label="上一张照片">‹</button><button class="carousel-arrow next" type="button" aria-label="下一张照片">›</button>
-              <div class="carousel-dots" aria-label="选择照片"></div><span class="carousel-count" aria-live="polite"></span>
-            </div>
-            <div class="cat-info">
-              <div class="cat-name-row"><h3>芝麻糊</h3><span class="status">常驻</span></div>
-              <p class="cat-place">别名：大海参</p>
-              <div class="cat-tags"><span class="tag">公</span><span class="tag">已绝育</span></div>
-              <p class="cat-health">2025.12 外伤手术缝合，现已恢复良好</p>
-            </div>
-          </article>
-          <article class="cat-card">
-            <div class="cat-carousel" data-carousel tabindex="0" aria-label="小白照片相册">
-              <div class="carousel-track">
-                <figure class="carousel-slide"><img src="assets/cats/xiaobai-01.jpg" alt="异瞳的小白坐在校园长椅上" loading="lazy"></figure>
-                <figure class="carousel-slide"><img src="assets/cats/xiaobai-02.jpg" alt="小白在阳光下的近景照片" loading="lazy"></figure>
-                <figure class="carousel-slide"><img src="assets/cats/xiaobai-03.webp" alt="小白在校园长椅上休息" loading="lazy"></figure>
-                <figure class="carousel-slide"><img src="assets/cats/xiaobai-04.webp" alt="小白在校园围墙边吃猫条" loading="lazy"></figure>
-              </div>
-              <button class="carousel-arrow prev" type="button" aria-label="上一张照片">‹</button><button class="carousel-arrow next" type="button" aria-label="下一张照片">›</button>
-              <div class="carousel-dots" aria-label="选择照片"></div><span class="carousel-count" aria-live="polite"></span>
-            </div>
-            <div class="cat-info">
-              <div class="cat-name-row"><h3>小白</h3><span class="status">常驻</span></div>
-              <p class="cat-place">别名：白雪 / 异瞳</p>
-              <div class="cat-tags"><span class="tag">公</span><span class="tag">已绝育</span></div>
-              <p class="cat-health">2025.12 右耳外伤，已清创并恢复良好</p>
-            </div>
-          </article>
-          <article class="cat-card">
-            <div class="cat-carousel" data-carousel tabindex="0" aria-label="奥大橘照片相册">
-              <div class="carousel-track">
-                <figure class="carousel-slide"><img src="assets/cats/aodaju-01.webp" alt="奥大橘在教室窗边安静坐着" loading="lazy"></figure>
-                <figure class="carousel-slide"><img src="assets/cats/aodaju-02.webp" alt="治疗恢复期的奥大橘在室内行走" loading="lazy"></figure>
-              </div>
-              <button class="carousel-arrow prev" type="button" aria-label="上一张照片">‹</button><button class="carousel-arrow next" type="button" aria-label="下一张照片">›</button>
-              <div class="carousel-dots" aria-label="选择照片"></div><span class="carousel-count" aria-live="polite"></span>
-            </div>
-            <div class="cat-info">
-              <div class="cat-name-row"><h3>奥大橘</h3><span class="status">常驻</span></div>
-              <p class="cat-place">别名：暂无</p>
-              <div class="cat-tags"><span class="tag">公</span><span class="tag">已绝育</span></div>
-              <p class="cat-health">2025.03 外伤，已清创并恢复良好</p>
-            </div>
-          </article>
+      <section class="stats-band" aria-labelledby="stats-title">
+        <div class="content">
+          <h2 id="stats-title" class="visually-hidden">我们在做什么</h2>
+          <div class="stats-inner" data-reveal>
+            <div class="stat"><b>5</b><span>救助与照护</span></div>
+            <div class="stat"><b>3</b><span>完成绝育</span></div>
+            <div class="stat"><b>8</b><span>校园与公益义卖</span></div>
+          </div>
         </div>
       </section>
 
-      <section class="section" id="guide">
-        <div class="two-card-grid">
-          <article class="info-card">
-            <h3>❧&nbsp; 我们在做什么？</h3>
-            <div class="stats-row">
-              <div class="stat"><b>5</b><i></i><span>救助与照护记录</span></div>
-              <div class="stat"><b>3</b><i></i><span>完成绝育的猫咪</span></div>
-              <div class="stat"><b>8</b><i></i><span>校园与公益义卖</span></div>
-            </div>
-          </article>
-          <aside class="info-card guide-card">
-            <h3>🐾&nbsp; 在学校遇到猫了？</h3>
-            <div class="guide-list">
-              <div class="guide-item"><span class="guide-icon">×</span><span>不要追猫或强行抱猫</span></div>
-              <div class="guide-item"><span class="guide-icon">×</span><span>不要喂高盐食物和牛奶</span></div>
-              <div class="guide-item"><span class="guide-icon">!</span><span>发现明显受伤，请及时联系猫协</span></div>
-              <div class="guide-item"><span class="guide-icon">×</span><span>不要擅自带走校园猫</span></div>
-            </div>
-            <img class="guide-cat-art" src="assets/illustrations/guide-cat-cutout.png" alt="打哈欠的猫咪插画">
-          </aside>
-        </div>
-      </section>
+      <section class="section timeline-section" id="timeline" aria-labelledby="timeline-title">
+        <div class="content">
+          <header class="section-heading" data-reveal>
+            <p class="section-kicker">OUR STORIES</p>
+            <h2 class="section-title" id="timeline-title">猫猫救助与照护</h2>
+            <p class="section-intro">送医、康复、领养与绝育，记录每一次具体的照护行动。</p>
+          </header>
 
-      <section class="section timeline-section" id="timeline">
-        <div class="section-head timeline-heading">
-          <span class="leaf" aria-hidden="true">❧</span>
-          <h2 class="section-title">猫猫救助与照护</h2>
-        </div>
-        <p class="timeline-subtitle">送医、康复、领养与绝育，记录每一次具体的照护行动。</p>
-
-        <div class="timeline-list">
-          <article class="timeline-entry">
-            <span class="timeline-node" aria-hidden="true">🐾</span>
-            <div class="timeline-card">
+          <div class="timeline-list">
+            <article class="timeline-entry" data-reveal>
               <div class="timeline-media"><img src="assets/timeline/2025-02-calf-rescue.webp" alt="住院观察中的小奶牛猫，佩戴着伊丽莎白圈" loading="lazy"></div>
               <div class="timeline-content">
                 <time class="timeline-date" datetime="2025-02">2025.02</time>
                 <h3>小奶牛猫救助与纪念</h3>
                 <p>校内发现一只主动向人求助的小奶牛猫。猫协立即送医并展开救助，虽然没能将它救回，但及时处置也避免疾病继续传向其他校园猫。</p>
               </div>
-            </div>
-          </article>
+            </article>
 
-          <article class="timeline-entry">
-            <span class="timeline-node" aria-hidden="true">🐾</span>
-            <div class="timeline-card">
+            <article class="timeline-entry" data-reveal>
               <div class="timeline-media aodaju"><img src="assets/cats/aodaju-01.webp" alt="奥大橘在教室窗边安静坐着" loading="lazy"></div>
               <div class="timeline-content">
-                <time class="timeline-date" datetime="2025-02">2025.02-03</time>
+                <time class="timeline-date" datetime="2025-02">2025.02–03</time>
                 <h3>奥大橘救治与康复</h3>
                 <p>奥大橘因打架导致后腿伤口感染，猫协组织送医、救助与募捐。一个月后的总结里，它已经恢复，也正式成为被持续关注的校园常驻猫。</p>
               </div>
-            </div>
-          </article>
+            </article>
 
-          <article class="timeline-entry">
-            <span class="timeline-node" aria-hidden="true">🐾</span>
-            <div class="timeline-card">
+            <article class="timeline-entry" data-reveal>
               <div class="timeline-media"><img src="assets/timeline/2025-04-kitten-adoption.webp" alt="接受检查和照顾的宋秋分幼崽" loading="lazy"></div>
               <div class="timeline-content">
                 <time class="timeline-date" datetime="2025-04-30">2025.04.30</time>
                 <h3>宋秋分幼崽救助与领养</h3>
                 <p>猫协为宋秋分的幼崽检查身体、准备幼猫粮，并认真审核领养家庭的经验与陪伴条件。送养不是“谁想领就领”，而是一次负责任的托付。</p>
               </div>
-            </div>
-          </article>
+            </article>
 
-          <article class="timeline-entry">
-            <span class="timeline-node" aria-hidden="true">🐾</span>
-            <div class="timeline-card">
+            <article class="timeline-entry" data-reveal>
               <div class="timeline-media"><img src="assets/timeline/2025-12-zhimahu.webp" alt="正常状态下的芝麻糊侧脸照片" loading="lazy"></div>
               <div class="timeline-content">
                 <time class="timeline-date" datetime="2025-12-29">2025.12.29</time>
                 <h3>芝麻糊紧急送医</h3>
                 <p>发现芝麻糊腿部伤口红肿后，猫协第一时间将它送医并完成清创。日常观察让不易发现的伤情得到及时处理，也留下了后续照护记录。</p>
               </div>
-            </div>
-          </article>
+            </article>
 
-          <article class="timeline-entry">
-            <span class="timeline-node" aria-hidden="true">TNR</span>
-            <div class="timeline-card">
+            <article class="timeline-entry" data-reveal>
               <div class="timeline-media tnr"><img src="assets/timeline/2026-03-tnr.webp" alt="完成绝育后在笼中休息的 IB 楼流浪猫" loading="lazy"></div>
               <div class="timeline-content">
                 <time class="timeline-date" datetime="2026-03-13">2026.03.13</time>
                 <h3>IB 楼三只流浪猫完成绝育</h3>
                 <p>面对 IB 楼周边流浪猫数量增加，猫协在同学协助下捕捉一只公猫和两只母猫，并完成绝育。三只猫术后恢复良好，准备回归校园。</p>
               </div>
-            </div>
-          </article>
+            </article>
+          </div>
         </div>
       </section>
 
       <section class="ledger-section" id="ledger" aria-labelledby="ledger-title">
-        <div class="ledger-layout">
-          <div class="ledger-copy">
-            <p class="ledger-kicker">OPEN LEDGER · 公开透明</p>
-            <h2 id="ledger-title">猫协公开账本</h2>
-            <p class="ledger-description">每一笔收入、支出和补款，都应该有迹可循。<br>猫协账本在腾讯文档中持续维护；这里不再复制第二份数据，点击即可查看最新记录。</p>
-            <ul class="ledger-status" aria-label="账本状态">
-              <li>逐笔记录</li>
-              <li>持续更新</li>
-              <li>公开可查</li>
+        <div class="content ledger-layout">
+          <div class="ledger-copy" data-reveal>
+            <p class="ledger-kicker">PUBLIC LEDGER</p>
+            <h2 id="ledger-title">钱花去了哪里？</h2>
+            <p class="ledger-description">猫协所有收入与支出持续公开。<br>义卖所得用于校园猫医疗、猫粮、绝育与日常照护。</p>
+            <ul class="ledger-status" aria-label="账本用途">
+              <li>医疗</li>
+              <li>猫粮</li>
+              <li>绝育</li>
+              <li>周边制作</li>
             </ul>
           </div>
-          <div class="ledger-cta">
-            <p class="ledger-cta-label">查看最新账目</p>
-            <a class="ledger-button" href="https://docs.qq.com/sheet/DWndhWGJwQ2ljc3dH" target="_blank" rel="noopener noreferrer">打开公开账本 <span aria-hidden="true">↗</span></a>
-            <p class="ledger-note">腾讯文档作为猫协唯一账本，后续更新无需再次修改网站。</p>
+          <div class="ledger-cta" data-reveal>
+            <p class="ledger-cta-label">猫协公开账本</p>
+            <a class="ledger-button" href="https://docs.qq.com/sheet/DWndhWGJwQ2ljc3dH" target="_blank" rel="noopener noreferrer">查看公开账本 <span aria-hidden="true">↗</span></a>
+            <p class="ledger-note">腾讯文档是猫协唯一正式账本，点击即可查看持续更新的最新记录。</p>
+            <!-- Future verified-data interface: 项目名称 / 收入 / 支出 / 净额 / 展开明细。 -->
           </div>
         </div>
       </section>
 
-      <section class="section sales-section" id="sales">
-        <div class="section-head">
-          <span class="leaf" aria-hidden="true">❧</span>
-          <h2 class="section-title">历次义卖与新品记录</h2>
-        </div>
-        <div class="sales-intro">
-          <p class="sales-note"><strong>8 次义卖记录</strong><span>义卖所得用于校园猫日常照护、医疗与绝育。</span></p>
-        </div>
+      <section class="section sales-section" id="sales" aria-labelledby="sales-title">
+        <div class="content">
+          <header class="section-heading" data-reveal>
+            <p class="section-kicker">CLUB LIFE</p>
+            <h2 class="section-title" id="sales-title">我们也自己养活猫协。</h2>
+            <p class="section-intro">设计周边、摆摊、义卖，再把所得重新花在校园猫身上。</p>
+          </header>
 
-        <div class="sales-grid">
-          <article class="sale-card">
-            <div class="sale-meta"><time class="sale-date" datetime="2024-09-21">2024.09.21 起</time><span class="sale-type">首次预售</span></div>
-            <h3>猫猫便利贴首轮预售</h3>
-            <p class="sale-products"><b>新品</b><span>灰白李十六便利贴 · 棕李十六便利贴 · 棕小白便利贴</span></p>
-          </article>
+          <div class="sales-gallery">
+            <article class="sale-feature large" data-reveal>
+              <div class="sale-image"><img src="assets/timeline/2025-05-charity-sale.webp" alt="江心洲公益义卖现场的猫协摊位与周边" loading="lazy"></div>
+              <div class="sale-caption">
+                <time class="sale-date" datetime="2025-05-01">2025.05</time>
+                <h3>江心洲公益义卖</h3>
+                <p>和 AWA 流浪动物保护社一起，把校园文化与动物保护带到校外。</p>
+              </div>
+            </article>
 
-          <article class="sale-card">
-            <div class="sale-meta"><time class="sale-date" datetime="2024-10-18">2024.10.18</time><span class="sale-type">新品发售</span></div>
-            <h3>猫猫乐园帆布包上新</h3>
-            <p class="sale-products"><b>新品</b><span>猫猫乐园立体托特包</span></p>
-          </article>
+            <article class="sale-feature" data-reveal>
+              <div class="sale-image"><img src="assets/timeline/2025-06-tech-festival.webp" alt="科技文化节义卖摊位上的猫协周边" loading="lazy"></div>
+              <div class="sale-caption">
+                <time class="sale-date" datetime="2025-06-27">2025.06</time>
+                <h3>科技文化节</h3>
+                <p>明信片、校猫卡套、邮票挂件和单页夹在校园里第一次见面。</p>
+              </div>
+            </article>
 
-          <article class="sale-card">
-            <div class="sale-meta"><time class="sale-date" datetime="2024-10-27">2024.10.27</time><span class="sale-type">新品发售</span></div>
-            <h3>猫猫乐园贴纸上新</h3>
-            <p class="sale-products"><b>新品</b><span>12 × 9 cm 猫猫乐园贴纸</span></p>
-          </article>
+            <article class="sale-text accent" data-reveal>
+              <time class="sale-date" datetime="2025-10-24">2025.10</time>
+              <h3>秋季运动会义卖</h3>
+              <p>开售约 1.5 小时售罄。</p>
+            </article>
+          </div>
 
-          <article class="sale-card">
-            <div class="sale-meta"><time class="sale-date" datetime="2024-11">2024.11 运动会期间</time><span class="sale-type">首次线下义卖</span></div>
-            <h3>运动会线下义卖</h3>
-            <p class="sale-products"><b>新品</b><span>猫猫摇摇乐 DIY 包 · A5 猫咪笔记本 · B5 猫咪笔记本</span></p>
-          </article>
-
-          <article class="sale-card">
-            <div class="sale-meta"><time class="sale-date" datetime="2025-04-12">2025.04.12</time><span class="sale-type">余量再贩</span></div>
-            <h3>周边库存再贩</h3>
-            <p class="sale-products"><b>在售</b><span>既有周边库存 · 猫咪贴纸（无新增品）</span></p>
-          </article>
-
-          <article class="sale-card">
-            <div class="sale-meta"><time class="sale-date" datetime="2025-05-01">2025.05.01-02</time><span class="sale-type">公益义卖</span></div>
-            <h3>江心洲公益义卖</h3>
-            <p class="sale-products"><b>在售</b><span>既有猫协周边（原记录未单列新品）</span></p>
-          </article>
-
-          <article class="sale-card">
-            <div class="sale-meta"><time class="sale-date" datetime="2025-06-27">2025.06.27-29</time><span class="sale-type">科技文化节</span></div>
-            <h3>科技文化节新品义卖</h3>
-            <p class="sale-products"><b>新品</b><span>李十六与四季明信片 · 校猫卡套 · 亚克力邮票挂件 · 瞌睡李十六单页夹</span></p>
-          </article>
-
-          <article class="sale-card">
-            <div class="sale-meta"><time class="sale-date" datetime="2025-10-24">2025.10.24-25</time><span class="sale-type">运动会义卖</span></div>
-            <h3>秋季义卖，开售 1.5 小时售罄</h3>
-            <p class="sale-products"><b>在售</b><span>便利贴 · 贴纸 · 折叠扇 · 托特包 · 摇摇乐 · B5 笔记本（封面升级）</span></p>
+          <article class="sale-text sale-wide" data-reveal>
+            <time class="sale-date" datetime="2024-11">2024.11</time>
+            <h3>第一次线下义卖</h3>
+            <p>猫猫摇摇乐和 A5、B5 猫咪笔记本，第一次来到运动会现场。</p>
           </article>
         </div>
       </section>
 
-      <section class="section" id="join">
-        <div class="section-head">
-          <span class="leaf" aria-hidden="true">❧</span>
-          <h2 class="section-title">加入我们</h2>
+      <section class="section guide-section" id="guide" aria-labelledby="guide-title">
+        <div class="content">
+          <header class="section-heading" data-reveal>
+            <p class="section-kicker">CAMPUS CAT GUIDE</p>
+            <h2 class="section-title" id="guide-title">在学校遇到猫了？</h2>
+          </header>
+          <div class="guide-list" data-reveal>
+            <article class="guide-item"><span class="guide-number">01</span><p>不要追猫或强行抱猫</p></article>
+            <article class="guide-item"><span class="guide-number">02</span><p>不要喂高盐食物和牛奶</p></article>
+            <article class="guide-item"><span class="guide-number">03</span><p>发现明显受伤，请及时联系猫协</p></article>
+            <article class="guide-item"><span class="guide-number">04</span><p>不要擅自带走校园猫</p></article>
+          </div>
         </div>
-        <div class="join-grid">
-          <article class="join-intro">
-            <h3>成为卧附藏喵的一员</h3>
-            <p>我们会通过猫墙发布校园猫近况、科普内容和招新通知。想了解猫协或等待下一次招新，扫描右侧二维码就可以找到我们。</p>
-            <ol class="join-steps">
-              <li>扫描右侧猫墙二维码</li>
-              <li>关注校园猫近况与猫协动态</li>
-              <li>招新开放时按照猫墙通知报名</li>
-            </ol>
-          </article>
-          <aside class="qr-card">
-            <h3>猫墙二维码</h3>
-            <p>扫码关注卧附藏喵</p>
-            <div class="qr-slot"><img src="assets/join/cat-wall-qq-qr.jpg" alt="卧附藏喵 QQ 猫墙二维码"></div>
-            <strong class="qq-number">QQ：3782499640</strong>
+      </section>
+
+      <section class="join-section" id="join" aria-labelledby="join-title">
+        <div class="content join-layout">
+          <div class="join-copy" data-reveal>
+            <p class="section-kicker">JOIN US</p>
+            <h2 id="join-title">下一届卧附藏喵，等你。</h2>
+            <p>我们会通过猫墙发布校园猫近况、科普内容和招新通知。扫描二维码关注猫墙，在下一次招新开放时找到我们。</p>
+            <ul class="join-roles" aria-label="可以参与的猫协工作">
+              <li>救助</li><li>摄影</li><li>设计</li><li>义卖</li><li>运营</li>
+            </ul>
+          </div>
+          <aside class="qr-area" data-reveal>
+            <img src="assets/join/cat-wall-qq-qr.jpg" alt="卧附藏喵 QQ 猫墙二维码">
+            <strong>QQ：3782499640</strong>
+            <span>扫码关注卧附藏喵猫墙</span>
           </aside>
         </div>
       </section>
     </main>
 
     <footer class="footer">
-      <div class="footer-brand"><span class="footer-logo" aria-hidden="true"></span><span>卧附藏喵-南师附中猫协</span></div>
-      <div class="footer-links"><a href="#cats">猫咪档案</a><a href="#timeline">救助记录</a><a href="#ledger">公开账本</a><a href="#sales">义卖记录</a><a href="#guide">猫咪指南</a></div>
-      <small>© 2026</small>
+      <div class="content footer-inner">
+        <div class="footer-brand"><span class="footer-logo" aria-hidden="true"></span><span>卧附藏喵<small>NSFZ CAT ASSOCIATION</small></span></div>
+        <div class="footer-links"><a href="#cats">校园猫</a><a href="#timeline">故事</a><a href="#ledger">公开账本</a><a href="#guide">猫咪指南</a></div>
+        <small class="footer-year">© 2026</small>
+      </div>
     </footer>
   </div>
 
@@ -1191,8 +915,8 @@
         previous.addEventListener('click', () => show(index - 1));
         next.addEventListener('click', () => show(index + 1));
         carousel.addEventListener('keydown', (event) => {
-          if (event.key === 'ArrowLeft') show(index - 1);
-          if (event.key === 'ArrowRight') show(index + 1);
+          if (event.key === 'ArrowLeft') { event.preventDefault(); show(index - 1); }
+          if (event.key === 'ArrowRight') { event.preventDefault(); show(index + 1); }
         });
         carousel.addEventListener('pointerdown', (event) => { startX = event.clientX; });
         carousel.addEventListener('pointerup', (event) => {
@@ -1206,6 +930,20 @@
 
       show(0);
     });
+
+    const revealItems = [...document.querySelectorAll('[data-reveal]')];
+    if ('IntersectionObserver' in window && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      const revealObserver = new IntersectionObserver((entries, observer) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting) return;
+          entry.target.classList.add('is-visible');
+          observer.unobserve(entry.target);
+        });
+      }, { threshold: .08, rootMargin: '0px 0px -30px' });
+      revealItems.forEach((item) => revealObserver.observe(item));
+    } else {
+      revealItems.forEach((item) => item.classList.add('is-visible'));
+    }
   </script>
 
 </body>
