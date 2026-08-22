@@ -35,7 +35,6 @@
     button { font: inherit; }
     button, a { -webkit-tap-highlight-color: transparent; }
     :focus-visible { outline: 3px solid var(--yellow); outline-offset: 4px; }
-    .site-shell { width: 100%; background: var(--white); }
     .content { width: min(var(--content), calc(100% - 64px)); margin-inline: auto; }
     section { scroll-margin-top: 68px; }
     .skip-link {
@@ -565,8 +564,7 @@
 </head>
 <body>
   <a class="skip-link" href="#main-content">跳到主要内容</a>
-  <div class="site-shell">
-    <nav class="nav" aria-label="主导航">
+  <nav class="nav" aria-label="主导航">
       <div class="content nav-inner">
         <a class="brand" href="#home" aria-label="返回首页">
           <span class="brand-logo" aria-hidden="true"></span>
@@ -876,7 +874,6 @@
         <small class="footer-year">© 2026</small>
       </div>
     </footer>
-  </div>
 
   <script>
     document.querySelectorAll('[data-carousel]').forEach((carousel) => {
