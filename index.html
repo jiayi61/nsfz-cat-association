@@ -513,6 +513,108 @@
     }
     .timeline-card.text-only .timeline-content { padding: 24px 26px; }
 
+    .ledger-section {
+      position: relative;
+      scroll-margin-top: 74px;
+      overflow: hidden;
+      padding: 52px 46px;
+      background:
+        radial-gradient(circle at 82% 18%, rgba(36, 123, 73, .32), transparent 310px),
+        linear-gradient(135deg, #0d4729 0%, #103b26 100%);
+      color: #fff;
+    }
+    .ledger-section::after {
+      content: "账";
+      position: absolute;
+      right: -12px;
+      bottom: -82px;
+      color: rgba(255, 255, 255, .045);
+      font: 800 250px/1 "Songti SC", "STSong", serif;
+      pointer-events: none;
+    }
+    .ledger-layout {
+      position: relative;
+      z-index: 1;
+      display: grid;
+      grid-template-columns: minmax(0, 1.15fr) minmax(300px, .85fr);
+      gap: 58px;
+      align-items: center;
+    }
+    .ledger-kicker {
+      margin: 0 0 16px;
+      color: var(--yellow);
+      font: 700 11px/1.2 Georgia, "PingFang SC", sans-serif;
+      letter-spacing: .16em;
+    }
+    .ledger-copy h2 {
+      margin: 0 0 18px;
+      color: #fff;
+      font: 800 38px/1.2 "Songti SC", "STSong", serif;
+      letter-spacing: .02em;
+    }
+    .ledger-description {
+      max-width: 610px;
+      margin: 0;
+      color: rgba(255, 255, 255, .78);
+      font-size: 14px;
+      line-height: 1.9;
+    }
+    .ledger-status {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px 22px;
+      margin: 24px 0 0;
+      padding: 0;
+      list-style: none;
+      color: rgba(255, 255, 255, .88);
+      font-size: 11px;
+      letter-spacing: .06em;
+    }
+    .ledger-status li::before {
+      content: "";
+      display: inline-block;
+      width: 6px;
+      height: 6px;
+      margin-right: 7px;
+      border-radius: 50%;
+      background: var(--yellow);
+      vertical-align: 1px;
+    }
+    .ledger-cta {
+      padding: 30px 6px 30px 34px;
+      border-left: 1px solid rgba(255, 255, 255, .2);
+      background: linear-gradient(90deg, rgba(255, 255, 255, .055), transparent 82%);
+    }
+    .ledger-cta-label {
+      margin: 0 0 17px;
+      color: rgba(255, 255, 255, .92);
+      font: 800 20px/1.3 "Songti SC", "STSong", serif;
+    }
+    .ledger-button {
+      display: inline-flex;
+      align-items: center;
+      gap: 9px;
+      padding: 12px 17px;
+      border: 1px solid var(--yellow);
+      border-radius: 8px;
+      background: var(--yellow);
+      color: #293516;
+      font-size: 12px;
+      font-weight: 800;
+      transition: transform .2s ease, background .2s ease;
+    }
+    .ledger-button:hover {
+      background: #ffda67;
+      transform: translateY(-1px);
+    }
+    .ledger-note {
+      max-width: 330px;
+      margin: 16px 0 0;
+      color: rgba(255, 255, 255, .58);
+      font-size: 10px;
+      line-height: 1.7;
+    }
+
     .sales-section {
       background:
         radial-gradient(circle at 94% 8%, rgba(244, 200, 74, .18), transparent 210px),
@@ -673,6 +775,7 @@
       .timeline-entry { grid-template-columns: 40px minmax(0, 1fr); }
       .timeline-node { grid-column: 1; grid-row: 1; }
       .timeline-card, .timeline-entry:nth-child(even) .timeline-card { grid-column: 2; grid-row: 1; width: 100%; }
+      .ledger-layout { grid-template-columns: minmax(0, 1fr) minmax(270px, .72fr); gap: 34px; }
       .sale-card { grid-template-columns: 120px minmax(165px, .7fr) minmax(0, 1.3fr); gap: 14px; }
       .join-grid { grid-template-columns: 1fr; }
     }
@@ -701,6 +804,13 @@
       .timeline-card { grid-template-columns: 1fr; }
       .timeline-media { height: 190px; min-height: 190px; }
       .timeline-content { padding: 19px 18px 21px; }
+      .ledger-section { padding: 38px 22px 42px; }
+      .ledger-section::after { right: -12px; bottom: -42px; font-size: 160px; }
+      .ledger-layout { grid-template-columns: 1fr; gap: 28px; }
+      .ledger-copy h2 { font-size: 31px; }
+      .ledger-description { font-size: 13px; }
+      .ledger-status { gap: 10px 17px; margin-top: 20px; }
+      .ledger-cta { padding: 24px 0 0; border-top: 1px solid rgba(255, 255, 255, .2); border-left: 0; background: none; }
       .sales-note { align-items: flex-start; flex-direction: column; gap: 2px; }
       .sale-card { grid-template-columns: 105px minmax(0, 1fr); gap: 9px 12px; padding: 14px 15px; }
       .sale-products { grid-column: 1 / -1; padding-top: 3px; }
@@ -725,6 +835,7 @@
       <div class="nav-links">
         <a href="#cats">猫咪档案</a>
         <a href="#timeline">救助记录</a>
+        <a href="#ledger">公开账本</a>
         <a href="#sales">义卖记录</a>
         <a href="#guide">猫咪指南</a>
       </div>
@@ -931,6 +1042,26 @@
         </div>
       </section>
 
+      <section class="ledger-section" id="ledger" aria-labelledby="ledger-title">
+        <div class="ledger-layout">
+          <div class="ledger-copy">
+            <p class="ledger-kicker">OPEN LEDGER · 公开透明</p>
+            <h2 id="ledger-title">猫协公开账本</h2>
+            <p class="ledger-description">每一笔收入、支出和补款，都应该有迹可循。<br>猫协账本在腾讯文档中持续维护；这里不再复制第二份数据，点击即可查看最新记录。</p>
+            <ul class="ledger-status" aria-label="账本状态">
+              <li>逐笔记录</li>
+              <li>持续更新</li>
+              <li>公开可查</li>
+            </ul>
+          </div>
+          <div class="ledger-cta">
+            <p class="ledger-cta-label">查看最新账目</p>
+            <a class="ledger-button" href="https://docs.qq.com/sheet/DWnBhWXhIVWFYRXhG" target="_blank" rel="noopener noreferrer">打开公开账本 <span aria-hidden="true">↗</span></a>
+            <p class="ledger-note">腾讯文档作为猫协唯一账本，后续更新无需再次修改网站。</p>
+          </div>
+        </div>
+      </section>
+
       <section class="section sales-section" id="sales">
         <div class="section-head">
           <span class="leaf" aria-hidden="true">❧</span>
@@ -1018,7 +1149,7 @@
 
     <footer class="footer">
       <div class="footer-brand"><span class="footer-logo" aria-hidden="true"></span><span>卧附藏喵-南师附中猫协</span></div>
-      <div class="footer-links"><a href="#cats">猫咪档案</a><a href="#timeline">救助记录</a><a href="#sales">义卖记录</a><a href="#guide">猫咪指南</a></div>
+      <div class="footer-links"><a href="#cats">猫咪档案</a><a href="#timeline">救助记录</a><a href="#ledger">公开账本</a><a href="#sales">义卖记录</a><a href="#guide">猫咪指南</a></div>
       <small>© 2026</small>
     </footer>
   </div>
