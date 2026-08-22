@@ -519,58 +519,38 @@
         linear-gradient(180deg, #fffdf6 0%, var(--paper) 100%);
     }
     .sales-intro {
-      display: grid;
-      grid-template-columns: 210px minmax(0, 1fr);
-      gap: 20px;
-      align-items: stretch;
-      margin-bottom: 18px;
+      margin-bottom: 14px;
     }
-    .sales-count {
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      min-height: 132px;
-      padding: 22px;
-      border: 1px solid #efd98a;
-      border-radius: 14px;
-      background: var(--yellow-soft);
-    }
-    .sales-count strong { color: var(--green); font: 400 52px/1 Georgia, serif; }
-    .sales-count span { margin-top: 8px; color: #695b2d; font-size: 12px; line-height: 1.6; }
     .sales-note {
       display: flex;
       align-items: center;
+      gap: 10px;
       margin: 0;
-      padding: 24px 27px;
-      border: 1px solid var(--border);
-      border-radius: 14px;
-      background: #fff;
+      padding: 12px 15px;
+      border-left: 3px solid var(--yellow);
+      background: rgba(255, 252, 235, .7);
       color: var(--muted);
-      font-size: 13px;
-      line-height: 1.8;
+      font-size: 12px;
+      line-height: 1.6;
     }
-    .sales-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 13px; }
-    .sale-card {
-      position: relative;
-      min-height: 224px;
-      padding: 22px 23px 23px;
+    .sales-note strong { flex: 0 0 auto; color: var(--green-dark); }
+    .sales-grid {
       overflow: hidden;
       border: 1px solid var(--border);
       border-radius: 14px;
       background: #fff;
-      box-shadow: 0 4px 14px rgba(23, 35, 28, .035);
     }
-    .sale-card::after {
-      content: "";
-      position: absolute;
-      right: -23px;
-      bottom: -28px;
-      width: 82px;
-      height: 82px;
-      border: 20px solid rgba(234, 243, 236, .7);
-      border-radius: 50%;
+    .sale-card {
+      display: grid;
+      grid-template-columns: 138px minmax(190px, .75fr) minmax(0, 1.25fr);
+      align-items: center;
+      gap: 18px;
+      min-height: 0;
+      padding: 15px 18px;
+      border-bottom: 1px solid var(--border);
     }
-    .sale-meta { position: relative; z-index: 1; display: flex; align-items: center; gap: 8px; margin-bottom: 13px; }
+    .sale-card:last-child { border-bottom: 0; }
+    .sale-meta { display: flex; flex-direction: column; align-items: flex-start; gap: 6px; }
     .sale-date {
       color: var(--green);
       font: 700 11px/1 Georgia, "PingFang SC", sans-serif;
@@ -585,32 +565,12 @@
       font-weight: 800;
     }
     .sale-card h3 {
-      position: relative;
-      z-index: 1;
-      margin: 0 0 9px;
+      margin: 0;
       color: var(--green-dark);
-      font: 800 19px/1.35 "Songti SC", "STSong", serif;
+      font: 800 16px/1.4 "Songti SC", "STSong", serif;
     }
-    .sale-card > p {
-      position: relative;
-      z-index: 1;
-      margin: 0 0 16px;
-      color: var(--muted);
-      font-size: 12px;
-      line-height: 1.7;
-    }
-    .sale-products { position: relative; z-index: 1; padding-top: 13px; border-top: 1px dashed var(--border); }
-    .sale-products b { display: block; margin-bottom: 9px; color: #4a5a50; font-size: 10px; letter-spacing: .06em; }
-    .product-tags { display: flex; flex-wrap: wrap; gap: 6px; }
-    .product-tags span {
-      padding: 5px 8px;
-      border-radius: 7px;
-      background: var(--green-soft);
-      color: var(--green-dark);
-      font-size: 10px;
-      line-height: 1.35;
-    }
-    .product-tags .product-note { background: var(--warm-gray); color: var(--muted); }
+    .sale-products { display: flex; gap: 9px; margin: 0; color: var(--muted); font-size: 11px; line-height: 1.55; }
+    .sale-products b { flex: 0 0 auto; color: var(--green); font-size: 10px; letter-spacing: .06em; }
 
     .join-grid { display: grid; grid-template-columns: 1.25fr .75fr; gap: 16px; }
     .join-intro, .qr-card {
@@ -713,7 +673,7 @@
       .timeline-entry { grid-template-columns: 40px minmax(0, 1fr); }
       .timeline-node { grid-column: 1; grid-row: 1; }
       .timeline-card, .timeline-entry:nth-child(even) .timeline-card { grid-column: 2; grid-row: 1; width: 100%; }
-      .sales-intro { grid-template-columns: 180px minmax(0, 1fr); }
+      .sale-card { grid-template-columns: 120px minmax(165px, .7fr) minmax(0, 1.3fr); gap: 14px; }
       .join-grid { grid-template-columns: 1fr; }
     }
 
@@ -741,9 +701,9 @@
       .timeline-card { grid-template-columns: 1fr; }
       .timeline-media { height: 190px; min-height: 190px; }
       .timeline-content { padding: 19px 18px 21px; }
-      .sales-intro, .sales-grid { grid-template-columns: 1fr; }
-      .sales-count { min-height: 118px; }
-      .sale-card { min-height: auto; }
+      .sales-note { align-items: flex-start; flex-direction: column; gap: 2px; }
+      .sale-card { grid-template-columns: 105px minmax(0, 1fr); gap: 9px 12px; padding: 14px 15px; }
+      .sale-products { grid-column: 1 / -1; padding-top: 3px; }
       .cat-grid { grid-template-columns: 1fr; }
       .cat-carousel { height: 260px; }
       .two-card-grid { grid-template-columns: 1fr; }
@@ -977,65 +937,56 @@
           <h2 class="section-title">历次义卖与新品记录</h2>
         </div>
         <div class="sales-intro">
-          <div class="sales-count"><strong>8</strong><span>次可从猫墙现有记录中确认的发售与义卖</span></div>
-          <p class="sales-note">这里单独记录每一次售卖的时间、场合与新品。没有明确写出新品的活动会如实标注，不把旧款再贩写成“上新”。义卖所得持续用于校园猫日常照护、医疗与绝育。</p>
+          <p class="sales-note"><strong>8 次义卖记录</strong><span>义卖所得用于校园猫日常照护、医疗与绝育。</span></p>
         </div>
 
         <div class="sales-grid">
           <article class="sale-card">
             <div class="sale-meta"><time class="sale-date" datetime="2024-09-21">2024.09.21 起</time><span class="sale-type">首次预售</span></div>
             <h3>猫猫便利贴首轮预售</h3>
-            <p>猫协开启首批自制周边预售，第一批在 9 月 21 日当晚告罄，随后追加第二批。</p>
-            <div class="sale-products"><b>本次新品</b><div class="product-tags"><span>灰白李十六便利贴</span><span>棕李十六便利贴</span><span>棕小白便利贴</span></div></div>
+            <p class="sale-products"><b>新品</b><span>灰白李十六便利贴 · 棕李十六便利贴 · 棕小白便利贴</span></p>
           </article>
 
           <article class="sale-card">
             <div class="sale-meta"><time class="sale-date" datetime="2024-10-18">2024.10.18</time><span class="sale-type">新品发售</span></div>
             <h3>猫猫乐园帆布包上新</h3>
-            <p>根据同学票选完成打样，首批限量制作 100 份，义卖收入用于校园猫生活与医疗。</p>
-            <div class="sale-products"><b>本次新品</b><div class="product-tags"><span>猫猫乐园立体托特包</span></div></div>
+            <p class="sale-products"><b>新品</b><span>猫猫乐园立体托特包</span></p>
           </article>
 
           <article class="sale-card">
             <div class="sale-meta"><time class="sale-date" datetime="2024-10-27">2024.10.27</time><span class="sale-type">新品发售</span></div>
             <h3>猫猫乐园贴纸上新</h3>
-            <p>以摇摇乐中的猫咪元素延展出贴纸，作为运动会前的又一次线上发售。</p>
-            <div class="sale-products"><b>本次新品</b><div class="product-tags"><span>12 × 9 cm 猫猫乐园贴纸</span></div></div>
+            <p class="sale-products"><b>新品</b><span>12 × 9 cm 猫猫乐园贴纸</span></p>
           </article>
 
           <article class="sale-card">
             <div class="sale-meta"><time class="sale-date" datetime="2024-11">2024.11 运动会期间</time><span class="sale-type">首次线下义卖</span></div>
             <h3>运动会线下义卖</h3>
-            <p>猫协第一次开展线下义卖，现场同时再贩便利贴、托特包和贴纸，并为缺货商品准备兑换券。</p>
-            <div class="sale-products"><b>本次新品</b><div class="product-tags"><span>猫猫摇摇乐 DIY 包</span><span>A5 猫咪笔记本</span><span>B5 猫咪笔记本</span></div></div>
+            <p class="sale-products"><b>新品</b><span>猫猫摇摇乐 DIY 包 · A5 猫咪笔记本 · B5 猫咪笔记本</span></p>
           </article>
 
           <article class="sale-card">
             <div class="sale-meta"><time class="sale-date" datetime="2025-04-12">2025.04.12</time><span class="sale-type">余量再贩</span></div>
             <h3>周边库存再贩</h3>
-            <p>本次主要清理既有周边库存，猫咪贴纸限时不限量；4 月记录显示余量售卖收入 991 元。</p>
-            <div class="sale-products"><b>新品情况</b><div class="product-tags"><span class="product-note">无新增品，以既有库存和猫咪贴纸为主</span></div></div>
+            <p class="sale-products"><b>在售</b><span>既有周边库存 · 猫咪贴纸（无新增品）</span></p>
           </article>
 
           <article class="sale-card">
             <div class="sale-meta"><time class="sale-date" datetime="2025-05-01">2025.05.01-02</time><span class="sale-type">公益义卖</span></div>
             <h3>江心洲公益义卖</h3>
-            <p>受 AWA 流浪动物保护社邀请，猫协在江心洲毛孩子岛设摊两天，把校园周边与动物保护活动连接起来。</p>
-            <div class="sale-products"><b>新品情况</b><div class="product-tags"><span class="product-note">原记录未单列新品，以既有猫协周边为主</span></div></div>
+            <p class="sale-products"><b>在售</b><span>既有猫协周边（原记录未单列新品）</span></p>
           </article>
 
           <article class="sale-card">
             <div class="sale-meta"><time class="sale-date" datetime="2025-06-27">2025.06.27-29</time><span class="sale-type">科技文化节</span></div>
             <h3>科技文化节新品义卖</h3>
-            <p>线上售卖与 6 月 29 日线下摊位同步进行，并与青物社开展联合活动；折叠扇因未到货没有在现场发售。</p>
-            <div class="sale-products"><b>本次实际到场新品</b><div class="product-tags"><span>李十六与四季明信片</span><span>校猫卡套</span><span>亚克力邮票挂件</span><span>瞌睡李十六单页夹</span><span class="product-note">反光折叠扇原定首发但未到货</span></div></div>
+            <p class="sale-products"><b>新品</b><span>李十六与四季明信片 · 校猫卡套 · 亚克力邮票挂件 · 瞌睡李十六单页夹</span></p>
           </article>
 
           <article class="sale-card">
             <div class="sale-meta"><time class="sale-date" datetime="2025-10-24">2025.10.24-25</time><span class="sale-type">运动会义卖</span></div>
             <h3>秋季义卖，开售 1.5 小时售罄</h3>
-            <p>首场开售约 1.5 小时便售罄，次日继续接受预售；后续订单由察哈尔路、奥南和晓庄三校区协作派发。</p>
-            <div class="sale-products"><b>本次在售 / 更新</b><div class="product-tags"><span>便利贴</span><span>贴纸</span><span>折叠扇</span><span>托特包</span><span>摇摇乐</span><span>B5 笔记本</span><span class="product-note">B5 封面升级为哑光覆膜</span></div></div>
+            <p class="sale-products"><b>在售</b><span>便利贴 · 贴纸 · 折叠扇 · 托特包 · 摇摇乐 · B5 笔记本（封面升级）</span></p>
           </article>
         </div>
       </section>
