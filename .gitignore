@@ -1,0 +1,8 @@
+.env
+.env.*
+!.env.example
+.dev.vars
+worker/.dev.vars
+worker/.wrangler/
+node_modules/
+.DS_Store

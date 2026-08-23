@@ -1,0 +1,14 @@
+name = "nsfz-cat-ledger"
+main = "src/index.js"
+compatibility_date = "2026-08-23"
+workers_dev = true
+
+[vars]
+TENCENT_DOCS_ENCODED_ID = "DWndhWGJwQ2ljc3dH"
+TENCENT_DOCS_RANGE_END = "Z2000"
+ALLOWED_ORIGINS = "https://jiayi61.github.io,https://nsfzcat.com,http://localhost:8000,http://127.0.0.1:8000"
+
+# Recommended after creating a KV namespace:
+# [[kv_namespaces]]
+# binding = "TOKEN_STORE"
+# id = "PASTE_THE_KV_NAMESPACE_ID_HERE"

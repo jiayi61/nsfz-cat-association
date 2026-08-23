@@ -977,8 +977,13 @@
       const GOATCOUNTER_CODE = "nsfzcat";
       const GOATCOUNTER_PATH = "/";
 
-      // 公众阅读版账本数据。腾讯文档仍是唯一正式完整账本；未来可在这里替换数据来源。
-      const ledgerEntries = [
+      // Ledger Sync 配置：部署 Cloudflare Worker 后，只需把这里替换为它的 /ledger 地址。
+      // 未配置或请求失败时，页面会自动使用下方的只读快照。
+      const LEDGER_API_URL = 'https://REPLACE_WITH_WORKER_DOMAIN/ledger';
+
+      // ONLY FALLBACK SNAPSHOT：仅在同步接口不可用时展示，不是正式账本数据源。
+      // 腾讯文档始终是唯一正式、完整的账本。
+      const fallbackLedgerEntries = [
         { year: '2026', date: '2026.05.01', title: '特长生吧唧售卖', direction: 'income', amount: 900.21 },
         { year: '2026', date: '2026.03', title: '流浪猫绝育捐款', direction: 'income', amount: 1005 },
         { year: '2026', date: '2026.03', title: '流浪猫绝育费用', direction: 'expense', amount: 1700 },
@@ -1063,9 +1068,26 @@
         return `${sign} ¥${ledgerCurrency.format(Math.abs(amount))}`;
       }
 
+      function getLedgerAmount(entry) {
+        if (Number.isFinite(entry.amount) && entry.direction) {
+          return { amount: entry.amount, direction: entry.direction };
+        }
+        if (Number.isFinite(entry.income)) {
+          return { amount: entry.income, direction: 'income' };
+        }
+        if (Number.isFinite(entry.expense)) {
+          return { amount: entry.expense, direction: 'expense' };
+        }
+        if (Number.isFinite(entry.net)) {
+          return { amount: Math.abs(entry.net), direction: entry.net >= 0 ? 'income' : 'expense' };
+        }
+        return null;
+      }
+
       function getProjectTotals(details) {
         return details.reduce((totals, entry) => {
-          totals[entry.direction] += entry.amount;
+          const value = getLedgerAmount(entry);
+          if (value) totals[value.direction] += value.amount;
           return totals;
         }, { income: 0, expense: 0 });
       }
@@ -1076,11 +1098,9 @@
 
       function createLedgerEntry(entry, isDetail = false) {
         const row = makeLedgerElement('div', isDetail ? 'ledger-detail-row' : 'ledger-entry');
-        row.append(
-          makeLedgerElement('span', 'ledger-date', entry.date),
-          makeLedgerElement('span', 'ledger-name', entry.title),
-          createLedgerAmount(entry.amount, entry.direction),
-        );
+        row.append(makeLedgerElement('span', 'ledger-date', entry.date), makeLedgerElement('span', 'ledger-name', entry.title));
+        const value = getLedgerAmount(entry);
+        row.append(value ? createLedgerAmount(value.amount, value.direction) : makeLedgerElement('span', 'ledger-amount', '—'));
         return row;
       }
 
@@ -1092,8 +1112,12 @@
       }
 
       function createLedgerProject(project) {
-        const totals = getProjectTotals(project.details);
-        const net = totals.income - totals.expense;
+        const detailTotals = getProjectTotals(project.details || []);
+        const totals = {
+          income: Number.isFinite(project.income) ? project.income : detailTotals.income,
+          expense: Number.isFinite(project.expense) ? project.expense : detailTotals.expense,
+        };
+        const net = Number.isFinite(project.net) ? project.net : totals.income - totals.expense;
         const details = makeLedgerElement('details', 'ledger-project');
         const summary = makeLedgerElement('summary');
         const summaryTotals = makeLedgerElement('span', 'ledger-project-totals');
@@ -1110,7 +1134,7 @@
         );
         summary.lastElementChild.setAttribute('aria-hidden', 'true');
         const detailList = makeLedgerElement('div', 'ledger-details');
-        project.details.forEach((entry) => detailList.append(createLedgerEntry(entry, true)));
+        (project.details || []).forEach((entry) => detailList.append(createLedgerEntry(entry, true)));
         details.append(summary, detailList);
         return details;
       }
@@ -1119,19 +1143,55 @@
         const target = document.querySelector('#ledger-records');
         if (!target) return;
         target.replaceChildren();
-        const years = [...new Set(data.map((entry) => entry.year))];
+        const yearFor = (entry) => entry.year || String(entry.date || '').match(/20\d{2}/)?.[0] || '其他';
+        const years = [...new Set(data.map(yearFor))];
         years.forEach((year) => {
           const yearSection = makeLedgerElement('section', 'ledger-year');
           yearSection.setAttribute('aria-labelledby', `ledger-year-${year}`);
           const heading = makeLedgerElement('h3', 'ledger-year-heading', year);
           heading.id = `ledger-year-${year}`;
           const list = makeLedgerElement('div', 'ledger-list');
-          data.filter((entry) => entry.year === year).forEach((entry) => {
-            list.append(entry.type === 'project' ? createLedgerProject(entry) : createLedgerEntry(entry));
+          data.filter((entry) => yearFor(entry) === year).forEach((entry) => {
+            list.append(entry.type === 'group' || entry.type === 'project' ? createLedgerProject(entry) : createLedgerEntry(entry));
           });
           yearSection.append(heading, list);
           target.append(yearSection);
         });
+      }
+
+      async function fetchLedgerData() {
+        if (!LEDGER_API_URL || LEDGER_API_URL.includes('REPLACE_WITH_')) {
+          throw new Error('Ledger API is not configured');
+        }
+
+        const controller = new AbortController();
+        const timeout = window.setTimeout(() => controller.abort(), 6000);
+        try {
+          const response = await fetch(LEDGER_API_URL, {
+            cache: 'no-store',
+            credentials: 'omit',
+            headers: { Accept: 'application/json' },
+            signal: controller.signal,
+          });
+          if (!response.ok) throw new Error('Ledger API request failed');
+          const data = await response.json();
+          if (data?.source !== 'tencent-docs' || !Array.isArray(data.entries) || !data.entries.length) {
+            throw new Error('Ledger API returned invalid data');
+          }
+          return data;
+        } finally {
+          window.clearTimeout(timeout);
+        }
+      }
+
+      async function initLedger() {
+        renderLedger(fallbackLedgerEntries);
+        try {
+          const data = await fetchLedgerData();
+          renderLedger(data.entries);
+        } catch (_) {
+          // The ledger is non-blocking. Keep the last reviewed fallback snapshot visible.
+        }
       }
 
       function loadGoatCounterAnalytics(code, path) {
@@ -1178,7 +1238,7 @@
         }
       }
 
-      renderLedger(ledgerEntries);
+      initLedger();
 
       document.querySelectorAll('[data-carousel]').forEach((carousel) => {
         const track = carousel.querySelector('.carousel-track');
