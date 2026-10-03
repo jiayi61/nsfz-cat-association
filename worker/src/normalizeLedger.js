@@ -9,6 +9,16 @@ const HEADER_ALIASES = {
   groupRef: ['所属项目', '归属项目', '项目汇总'],
 };
 
+// 腾讯账本里，义卖项目的明细行靠在“项目 / 明细”前加空格缩进来标记。
+const INDENTED = /^[ \t 　]+(?=\S)/;
+const PAYMENT_CHANNEL = /支付宝|微信|现金/;
+const TRAILING_PAYMENT_CHANNELS = /(?:[、+＋和\s]*(?:支付宝|微信|现金))+\s*$/;
+// “支付宝81+95…”“现金498” 这类收款算式（多行单元格被压成一行时会出现）
+const PAYMENT_ARITHMETIC = /(?:支付宝|微信|现金)\s*\d+(?:\.\d+)?\s*(?:[+\-=＋－]|$)/;
+const CJK = '\\u3400-\\u4dbf\\u4e00-\\u9fff';
+const CJK_BEFORE_LATIN = new RegExp(`([${CJK}])([A-Za-z0-9])`, 'g');
+const LATIN_BEFORE_CJK = new RegExp(`([A-Za-z0-9])([${CJK}])`, 'g');
+
 function normalizeHeader(value) {
   return String(value ?? '')
     .trim()
@@ -31,6 +41,29 @@ export function parseMoney(value) {
   const amount = Number(cleaned);
   if (!Number.isFinite(amount)) return null;
   return negativeByParentheses ? -Math.abs(amount) : amount;
+}
+
+/**
+ * 把表格里的项目名整理成适合公开展示的标题：
+ * - 只取第一行（多行单元格的后几行通常是内部算式）
+ * - 去掉括号里的支付渠道拆分，例如“（支付宝733.2+微信257.8）”
+ * - 去掉结尾单独列出的支付渠道，例如“…收入支付宝微信”
+ * - 汉字与数字、字母之间补一个空格，和网站排版一致
+ */
+export function cleanTitle(value) {
+  const firstLine = String(value ?? '').split(/\r?\n/)[0];
+  let title = firstLine.replace(/[（(]([^（）()]*)[）)]/g, (match, inner) => (
+    PAYMENT_CHANNEL.test(inner) && /\d/.test(inner) ? '' : match
+  ));
+  const arithmetic = title.search(PAYMENT_ARITHMETIC);
+  if (arithmetic > 0) title = title.slice(0, arithmetic);
+  const withoutChannels = title.replace(TRAILING_PAYMENT_CHANNELS, '');
+  if (withoutChannels.trim()) title = withoutChannels;
+  return title
+    .replace(/\s+/g, ' ')
+    .trim()
+    .replace(CJK_BEFORE_LATIN, '$1 $2')
+    .replace(LATIN_BEFORE_CJK, '$1 $2');
 }
 
 function buildColumnMap(headerRow) {
@@ -68,9 +101,11 @@ function rowToEntry(row, columns) {
   const income = parseMoney(columns.income >= 0 ? row[columns.income] : null);
   const expense = parseMoney(columns.expense >= 0 ? row[columns.expense] : null);
   const explicitNet = parseMoney(columns.net >= 0 ? row[columns.net] : null);
+  const rawTitle = columns.title >= 0 ? String(row[columns.title] ?? '') : '';
   return {
     date: readCell(row, columns.date),
-    title: readCell(row, columns.title),
+    title: cleanTitle(rawTitle),
+    indented: INDENTED.test(rawTitle),
     category: readCell(row, columns.category),
     income,
     expense,
@@ -91,6 +126,7 @@ function isGroupSummary(record) {
 function isExplicitDetail(record, currentGroup) {
   const type = record.recordType.toLowerCase();
   return (
+    record.indented ||
     record.category === '义卖明细' ||
     record.recordType === '义卖明细' ||
     type === 'detail' ||
@@ -147,4 +183,36 @@ export function normalizeLedgerRows(rows) {
 
   flushGroup();
   return entries;
+}
+
+function toCents(value) {
+  return Number.isFinite(value) ? Math.round(value * 100) : 0;
+}
+
+function entryCents(entry) {
+  if (entry.income === null && entry.expense === null && Number.isFinite(entry.net)) {
+    return entry.net >= 0 ? { income: toCents(entry.net), expense: 0 } : { income: 0, expense: toCents(-entry.net) };
+  }
+  return { income: toCents(entry.income), expense: toCents(entry.expense) };
+}
+
+/** 收入、支出合计（按分计算，避免浮点误差）。义卖项目优先用汇总行，没有汇总值时再加总明细。 */
+export function summarizeLedger(entries) {
+  let income = 0;
+  let expense = 0;
+  let records = 0;
+  for (const entry of entries) {
+    if (entry.type === 'group') {
+      const details = (entry.details || []).map(entryCents);
+      income += Number.isFinite(entry.income) ? toCents(entry.income) : details.reduce((sum, item) => sum + item.income, 0);
+      expense += Number.isFinite(entry.expense) ? toCents(entry.expense) : details.reduce((sum, item) => sum + item.expense, 0);
+      records += details.length;
+    } else {
+      const cents = entryCents(entry);
+      income += cents.income;
+      expense += cents.expense;
+      records += 1;
+    }
+  }
+  return { income: income / 100, expense: expense / 100, records };
 }
