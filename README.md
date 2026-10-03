@@ -1,63 +1,118 @@
 # 卧附藏喵 · 南师附中猫协
 
-南师附中猫协静态网站，包含校园猫档案、救助与照护记录、历次义卖、校园遇猫指南和猫墙联系方式。
+南师附中猫协的网站：校园猫档案、照护记录、公开账本、义卖记录、遇猫指南和猫墙二维码。
 
-网站地址：https://jiayi61.github.io/nsfz-cat-association/
+- 网站：https://jiayi61.github.io/nsfz-cat-association/
+- 正式账本：[腾讯文档《南师附中猫协账本》](https://docs.qq.com/sheet/DWndhWGJwQ2ljc3dH)（网站上的账本以它为准）
 
 ## 文件结构
 
 ```text
-index.html                 网站页面、样式与交互
+index.html                       网页内容、样式和交互（纯静态，由 GitHub Pages 发布）
+data/ledger-snapshot.js          网站显示的账本数据，由脚本从腾讯账本生成，不要手动改
+scripts/build-ledger-snapshot.mjs 把腾讯账本导出的 CSV 转成 data/ledger-snapshot.js
 assets/
-  brand/                   猫协徽标
-  cats/                    校园猫档案照片
-  illustrations/           首页与指南插画
-  join/                    猫墙二维码
-  timeline/                救助时间线图片
+  brand/                         猫协徽标
+  cats/                          校园猫档案照片
+  illustrations/                 首页插画
+  join/                          猫墙二维码
+  timeline/                      照护记录与义卖照片
+worker/                          （可选）实时同步腾讯账本的 Cloudflare Worker，目前未部署
 ```
 
-网站为纯静态页面，可直接打开 `index.html` 预览，由 GitHub Pages 发布。
-
-## Ledger Sync
-
-唯一正式账本（source of truth）：[腾讯文档](https://docs.qq.com/sheet/DWndhWGJwQ2ljc3dH)
-
-```text
-腾讯文档
-→ Cloudflare Worker
-→ GET /ledger
-→ GitHub Pages
-```
-
-主站仍由 GitHub Pages 托管。`worker/` 仅负责通过腾讯文档官方 Open API 读取在线表格、按表头整理公开字段，并返回统一 JSON。浏览器不会接触腾讯凭证；接口失败时，页面继续显示最后一次人工核对的 fallback 快照。
-
-### 1. 腾讯文档配置
-
-1. 在[腾讯文档开放平台](https://docs.qq.com/open/document/app/)注册开发者并创建第三方应用，等待应用审核通过。
-2. 为应用申请 `scope.sheet.readonly`，以及转换 URL encodedID 所需的 `scope.drive.file.metadata.readonly`（或官方列出的等价只读权限）。
-3. 配置 OAuth 回调地址，并用账本所有者账号完成一次授权。
-4. 用授权回调中的 `code` 换取 `access_token`、`refresh_token` 与 `user_id`。其中 `user_id` 即 Open ID；换取和刷新 Token 必须在服务端完成。
-5. 确认该账号对“南师附中猫协账本”拥有读取权限。
-
-这份文档是普通在线表格，不是 SmartSheet。Worker 使用官方接口：
-
-- `GET /openapi/drive/v2/util/converter`：把 URL 中的 `DWndhWGJwQ2ljc3dH` 转为 fileID
-- `GET /openapi/spreadsheet/v3/files/{fileId}`：读取工作表 sheetID
-- `GET /openapi/sheetbook/v2/{bookID}/values/{range}`：读取单元格二维数组
-- `GET /oauth/v2/token?grant_type=refresh_token...`：刷新 Access Token
-
-### 2. Cloudflare 配置
-
-进入 `worker/` 后登录 Cloudflare，并创建一个可选的 KV namespace 用于复用 Access Token：
+## 本地预览
 
 ```sh
-npx wrangler login
-npx wrangler kv namespace create TOKEN_STORE
+python3 -m http.server 8000
 ```
 
-把命令返回的 namespace ID 填入 `worker/wrangler.toml` 注释中的 `[[kv_namespaces]]` 配置。未绑定 KV 时 Worker 仍可运行，但不同实例可能更频繁地刷新 Access Token。
+然后打开 http://localhost:8000 。直接双击 `index.html` 也能看，只是访问统计不会加载。
 
-依次添加以下 Worker secrets；不要把真实值写进仓库：
+## 修改网站内容
+
+所有文字都在 `index.html` 里，按页面顺序排列：
+
+| 板块 | 在 `index.html` 里找 | 照片放在 |
+| --- | --- | --- |
+| 校园猫档案 | `<article class="cat-card">` | `assets/cats/` |
+| 首页三个数字 | `<section class="stats-band">` | — |
+| 照护记录 | `<article class="timeline-entry">` | `assets/timeline/` |
+| 义卖亮点和全部义卖列表 | `<section … id="sales">`、`<ol class="sales-history-list">` | `assets/timeline/` |
+| 遇猫指南 | `<article class="guide-item">` | — |
+| 加入猫协 | `<section class="join-section">` | `assets/join/` |
+
+几个需要一起改的地方：
+
+- 新增一次义卖时，在 `sales-history-list` 里加一行，同时把首页的“9 次义卖与周边发售”和列表标题“全部 9 次……”改成新数字。
+- 新增或减少常驻猫时，同步改首页的“4 只常驻猫”。
+- “花在送医和绝育上”的金额会从账本里自动计算（分类含“医疗”“绝育”或“TNR”的支出），不用手改。
+- 照护记录里的 `账本 ·` 小字是对应的账本金额，改账本时顺手核对一下。
+
+写作约定：
+
+- 数字、英文和汉字之间空一格，例如“IB 楼”“1.5 小时”；日期写成 `2025.06.18`。
+- 只写有记录可查的事实；金额以账本为准。
+- 标题里两个短语用 `<span class="phrase">…</span>` 分开（例如 `义卖，` 和 `也是照护的一部分。`），手机上会在短语之间换行，不会只剩一个字掉到下一行。段落结尾由页面脚本自动处理，最后一行至少保留 4 个字。
+
+## 更新账本
+
+腾讯账本改动以后，按下面三步把网站上的账本更新到最新：
+
+1. 在腾讯文档打开账本，点右上角菜单 → 导出为 → **本地CSV文件（当前工作表）**。
+2. 在仓库根目录运行（`--date` 填腾讯文档显示的“上次修改”日期）：
+
+   ```sh
+   node scripts/build-ledger-snapshot.mjs ~/Downloads/南师附中猫协账本.csv --date 2026-08-22
+   ```
+
+3. 脚本会打印收入合计和支出合计。和腾讯账本核对一致后，提交 `data/ledger-snapshot.js`。
+
+也可以在腾讯文档里全选、复制，粘贴成一个 `.tsv` 文本文件再交给脚本。
+
+### 账本表格约定
+
+网站按表头文字找列，列的顺序可以调整：
+
+- 表头需要有：`日期 / 时间`、`项目 / 明细`、`分类`、`收入`、`支出`、`净额`。
+- 一次义卖记成一个项目：汇总行的分类写 `义卖汇总`，下面每笔明细在“项目 / 明细”前**加空格缩进**（现在账本里就是这样写的）。遇到下一条没有缩进的记录，这个项目就结束。
+- 网站只公开日期、项目、分类、收入、支出、净额。预付款、已补款、支付方式等其他列不会出现在网站上。
+- 项目名只取单元格第一行；括号里的收款拆分（如“（支付宝733.2+微信257.8）”）和结尾的“支付宝微信”会自动去掉。
+- 金额可以写成 `¥1,005.00`、`1005` 或 `(23.50)`（表示负数）；空着就是没有。日期原样显示，写“待补”也可以。
+- 网站把账本倒过来显示，最新的记录在最上面，所以账本里请按时间顺序往下记。
+
+## 实时同步（可选）：Cloudflare Worker
+
+**状态：未部署。** 现在网站显示的是 `data/ledger-snapshot.js` 快照。部署 Worker 以后，网页会先显示快照，再自动换成腾讯账本的实时数据；接口出错时继续显示快照。
+
+```text
+腾讯文档 → Cloudflare Worker（GET /ledger）→ 网站
+```
+
+Worker 和快照脚本用的是同一套解析规则（`worker/src/normalizeLedger.js`），两边显示的内容一致。浏览器不会接触任何腾讯凭证。
+
+### 1. 腾讯文档开放平台
+
+1. 在[腾讯文档开放平台](https://docs.qq.com/open/document/app/)注册开发者，创建第三方应用并等待审核。
+2. 申请 `scope.sheet.readonly`，以及把链接里的 ID 转成 fileID 所需的 `scope.drive.file.metadata.readonly`（或官方列出的等价只读权限）。
+3. 配置 OAuth 回调地址，用账本所有者的账号授权一次。
+4. 用回调里的 `code` 换取 `access_token`、`refresh_token` 和 `user_id`（即 Open ID）。换取和刷新 Token 都必须在服务端完成。
+
+Worker 用到的官方接口：
+
+- `GET /openapi/drive/v2/util/converter`：把链接里的 `DWndhWGJwQ2ljc3dH` 转成 fileID
+- `GET /openapi/spreadsheet/v3/files/{fileId}`：读取工作表 ID
+- `GET /openapi/sheetbook/v2/{bookID}/values/{range}`：读取单元格
+- `GET /oauth/v2/token?grant_type=refresh_token…`：刷新 Access Token
+
+### 2. Cloudflare
+
+```sh
+cd worker
+npx wrangler login
+npx wrangler kv namespace create TOKEN_STORE   # 可选，用来缓存 Access Token
+```
+
+把返回的 namespace ID 填进 `worker/wrangler.toml` 里注释掉的 `[[kv_namespaces]]`。然后添加 secrets（不要把真实值写进仓库）：
 
 ```sh
 npx wrangler secret put TENCENT_DOCS_CLIENT_ID
@@ -66,9 +121,9 @@ npx wrangler secret put TENCENT_DOCS_REFRESH_TOKEN
 npx wrangler secret put TENCENT_DOCS_OPEN_ID
 ```
 
-如果账本不在第一个工作表，可在 Cloudflare Worker variables 中再设置 `TENCENT_DOCS_SHEET_ID` 或 `TENCENT_DOCS_SHEET_NAME`。表格读取范围默认是 `A1:Z2000`。
+账本不在第一个工作表时，再设置变量 `TENCENT_DOCS_SHEET_ID` 或 `TENCENT_DOCS_SHEET_NAME`。默认读取 `A1:Z2000`。
 
-### 3. 部署与接入主站
+### 3. 部署并接入网站
 
 ```sh
 cd worker
@@ -76,18 +131,13 @@ npm test
 npm run deploy
 ```
 
-部署后，把 `index.html` 顶部脚本区的 `LEDGER_API_URL` 替换成 Worker 返回的完整地址，例如：
+把 `index.html` 脚本里的 `LEDGER_API_URL` 换成 Worker 的完整地址，例如 `https://nsfz-cat-ledger.example.workers.dev/ledger`。之后只需修改腾讯文档，Worker 的响应缓存 5 分钟。
 
-```js
-const LEDGER_API_URL = 'https://nsfz-cat-ledger.example.workers.dev/ledger';
+## 测试
+
+```sh
+cd worker
+npm test
 ```
 
-这一步只做一次。之后只需修改腾讯文档；Worker 的公开响应缓存 5 分钟，网站通常会在几分钟内显示新数据。
-
-### 4. 表格约定
-
-Worker 按表头文字查找列，不依赖固定列号。支持的核心表头包括“日期 / 时间”“项目 / 明细”“分类”“收入”“支出”“净额”。空金额保持为 `null`，异常日期原样展示，原表净额优先于自动计算。
-
-只有分类或记录类型为“义卖汇总”的行会成为折叠项目。其后的“义卖明细”行，或分类、记录类型、所属项目均为空的连续行，会进入该项目 `details`；遇到下一条普通分类记录即结束。若表格结构更复杂，建议增加“记录类型”和“所属项目”列明确标记。
-
-公开 API 只返回 `date`、`title`、`category`、`income`、`expense`、`net` 和 `details`。即使腾讯表格新增内部备注、成员姓名或付款信息，这些列也不会进入网站响应。
+测试覆盖账本解析（包括 2026-08-22 真实账本结构的回归测试）、快照文件只含公开字段、义卖项目合计与明细一致，以及 Worker 的跨域和出错处理。推送到 GitHub 时会自动运行（`.github/workflows/test.yml`）。

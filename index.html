@@ -3,8 +3,17 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>卧附藏喵-南师附中猫协</title>
-  <meta name="description" content="南师附中猫协的校园猫档案、照护记录、义卖记录与公开账本。">
+  <title>卧附藏喵 · 南师附中猫协</title>
+  <meta name="description" content="卧附藏喵是南师附中的学生猫协：照顾校园猫，送医、绝育、找领养，靠义卖周边和捐款筹钱，每一笔收支都公开。">
+  <meta name="theme-color" content="#17633a">
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="zh_CN">
+  <meta property="og:site_name" content="卧附藏喵">
+  <meta property="og:title" content="卧附藏喵 · 南师附中猫协">
+  <meta property="og:description" content="照顾校园猫：送医、绝育、找领养。钱从义卖和捐款里来，每一笔都公开。">
+  <meta property="og:image" content="https://jiayi61.github.io/nsfz-cat-association/assets/cats/li-shiliu-01.jpg">
+  <meta property="og:image:alt" content="校园猫李十六在教室里凑近镜头">
+  <meta name="twitter:card" content="summary_large_image">
   <link rel="icon" href="assets/brand/cat-association-logo.png">
   <style>
     :root {
@@ -35,6 +44,11 @@
     button { font: inherit; }
     button, a { -webkit-tap-highlight-color: transparent; }
     :focus-visible { outline: 3px solid var(--yellow); outline-offset: 4px; }
+    /* 标题按短语均衡换行；段落结尾的处理见页面底部的 keepParagraphEndingsTogether() */
+    h1, h2, h3, .hero-lede, .section-intro, .ledger-subtitle { text-wrap: balance; }
+    /* 标题里的短语整体换行，例如“义卖，/ 也是照护的一部分。” */
+    .phrase { display: inline-block; }
+    .nowrap { white-space: nowrap; }
     .content { width: min(var(--content), calc(100% - 64px)); margin-inline: auto; }
     section { scroll-margin-top: 68px; }
     .skip-link {
@@ -165,7 +179,14 @@
       color: #344239;
       font: 17px/1.6 "Songti SC", "STSong", "Noto Serif SC", serif;
     }
-    .hero-actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 38px; }
+    .hero-lede {
+      max-width: 27em;
+      margin: 16px 0 0;
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.9;
+    }
+    .hero-actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 34px; }
     .primary-button { padding: 0 18px; background: var(--green); color: #fff; }
     .outline-button { padding: 0 17px; color: var(--green); border: 1px solid var(--green); }
     .outline-button:hover { background: var(--green-soft); transform: translateY(-1px); }
@@ -340,6 +361,9 @@
     .stat + .stat { border-left: 1px solid var(--border); }
     .stat b { display: block; color: var(--green); font: 400 clamp(48px, 6vw, 70px)/1 Georgia, serif; }
     .stat span { display: block; margin-top: 12px; color: #4f5d54; font-size: 13px; letter-spacing: .08em; }
+    .stats-note { margin: 16px 0 0; color: #829087; font-size: 11px; line-height: 1.7; text-align: center; }
+    .stats-note a { border-bottom: 1px solid currentColor; }
+    .stats-note a:hover { color: var(--green); }
 
     .timeline-section { padding-top: 96px; background: #f8faf7; }
     .timeline-list { position: relative; border-left: 1px solid #dde7df; padding-left: 28px; }
@@ -383,6 +407,16 @@
       font: 800 clamp(27px, 3vw, 33px)/1.28 "Songti SC", "STSong", "Noto Serif SC", serif;
     }
     .timeline-content p { max-width: 470px; margin: 0; color: var(--muted); font-size: 14px; line-height: 1.9; }
+    .timeline-content .timeline-ledger {
+      margin-top: 18px;
+      padding-left: 11px;
+      border-left: 2px solid var(--yellow);
+      color: #4f5d54;
+      font-size: 12px;
+      line-height: 1.7;
+    }
+    .timeline-ledger a { margin-right: 8px; color: var(--green); font-weight: 700; }
+    .timeline-ledger a:hover { color: var(--green-dark); }
 
     .ledger-section { background: #fff; }
     .ledger-heading {
@@ -409,7 +443,29 @@
       transition: color .2s ease;
     }
     .ledger-link:hover { color: var(--green-dark); }
+    .ledger-summary {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: flex-end;
+      gap: 16px 48px;
+      padding: 26px 0 24px;
+      border-bottom: 1px solid var(--border);
+    }
+    .ledger-total { margin: 0; }
+    .ledger-total span { display: block; color: #758078; font-size: 11px; letter-spacing: .08em; }
+    .ledger-total b {
+      display: block;
+      margin-top: 9px;
+      color: #33413a;
+      font: 400 clamp(27px, 3.2vw, 34px)/1 Georgia, "Times New Roman", serif;
+      font-variant-numeric: tabular-nums;
+      white-space: nowrap;
+    }
+    .ledger-total b.ledger-income { color: var(--green); }
+    .ledger-meta { margin: 0 0 2px auto; color: #829087; font-size: 11px; line-height: 1.6; text-align: right; }
     .ledger-records { margin-top: 28px; }
+    .ledger-empty { margin: 0; padding: 22px 0; color: var(--muted); font-size: 13px; line-height: 1.8; }
+    .ledger-empty a { color: var(--green); border-bottom: 1px solid currentColor; }
     .ledger-year + .ledger-year { margin-top: 42px; }
     .ledger-year-heading {
       display: flex;
@@ -515,7 +571,30 @@
       background: var(--green-soft);
     }
     .sale-text.accent { background: var(--yellow-soft); }
-    .sale-text.sale-wide { min-height: 160px; margin-top: 26px; }
+    .sales-history { margin-top: 64px; }
+    .sales-history-title {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      margin: 0;
+      color: #5f6d64;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: .12em;
+    }
+    .sales-history-title::after { content: ""; height: 1px; flex: 1; background: #e3e9e1; }
+    .sales-history-list { margin: 8px 0 0; padding: 0; list-style: none; }
+    .sales-history-list li {
+      display: grid;
+      grid-template-columns: 116px minmax(140px, 200px) minmax(0, 1fr);
+      gap: 24px;
+      align-items: baseline;
+      padding: 15px 0;
+      border-bottom: 1px solid #e3e9e1;
+    }
+    .sales-history-list time { color: #7d8a82; font: 600 11px/1.45 Georgia, serif; letter-spacing: .035em; }
+    .sales-history-list b { color: var(--green-dark); font: 800 15px/1.45 "Songti SC", "STSong", "Noto Serif SC", serif; }
+    .sales-history-list span { color: var(--muted); font-size: 13px; line-height: 1.75; }
 
     .guide-section { background: #fff; }
     .guide-list { display: grid; grid-template-columns: repeat(4, 1fr); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
@@ -606,6 +685,8 @@
       .timeline-content p { font-size: 13px; }
       .ledger-heading { display: block; padding-bottom: 24px; }
       .ledger-link { display: inline-block; margin-top: 18px; }
+      .ledger-summary { gap: 14px 34px; padding: 22px 0 20px; }
+      .ledger-meta { flex-basis: 100%; margin: 0; text-align: left; }
       .ledger-records { margin-top: 22px; }
       .ledger-entry { grid-template-columns: minmax(0, 1fr) auto; gap: 7px 16px; padding: 15px 0; }
       .ledger-entry .ledger-date { grid-column: 1 / -1; }
@@ -625,14 +706,15 @@
       .sale-feature.large { grid-row: auto; }
       .sale-feature.large .sale-image, .sale-feature:not(.large) .sale-image { height: 300px; }
       .sale-text { min-height: 200px; padding: 28px; }
-      .sale-text.sale-wide { min-height: 180px; margin-top: 20px; }
+      .sales-history { margin-top: 48px; }
+      .sales-history-list li { grid-template-columns: minmax(0, 1fr); gap: 5px; padding: 16px 0; }
       .guide-list { grid-template-columns: 1fr; }
       .guide-item { min-height: 0; padding: 24px 0; }
       .guide-item + .guide-item { padding-left: 0; border-top: 1px solid var(--border); border-left: 0; }
       .guide-number { margin-bottom: 14px; }
       .join-section { padding-block: 64px; }
       .join-layout { grid-template-columns: 1fr; gap: 44px; }
-      .join-copy h2 { font-size: 41px; }
+      .join-copy h2 { font-size: clamp(30px, 9.5vw, 41px); }
       .qr-area { text-align: left; }
       .qr-area img { width: 200px; height: 200px; margin: 0; }
       .footer-inner { min-height: 110px; flex-wrap: wrap; align-content: center; gap: 16px; }
@@ -651,7 +733,6 @@
       .hero-collage { min-height: 305px; }
       .cat-carousel { height: 280px; }
       .section-title { font-size: 31px; }
-      .join-copy h2 { font-size: 37px; }
     }
 
     @media (prefers-reduced-motion: reduce) {
@@ -674,7 +755,7 @@
           <a href="#timeline">照护记录</a>
           <a href="#ledger">公开账本</a>
           <a href="#sales">义卖</a>
-          <a href="#guide">猫咪指南</a>
+          <a href="#guide">遇猫指南</a>
         </div>
         <a class="join-button" href="#join">加入我们</a>
       </div>
@@ -687,6 +768,7 @@
             <p class="eyebrow">HIGH SCHOOL AFFILIATED TO<br>NANJING NORMAL UNIVERSITY</p>
             <h1><span>南师附中</span>猫协</h1>
             <p class="hero-subtitle">和生活在附中的它们，好好相处。</p>
+            <p class="hero-lede"><span class="phrase">我们是一群附中学生，</span><span class="phrase">照顾校园里的猫：</span><span class="phrase">喂养、送医、绝育、找领养。</span><span class="phrase">钱从义卖周边和捐款里来，</span><span class="phrase">每一笔都记在公开账本上。</span></p>
             <div class="hero-actions">
               <a class="primary-button" href="#cats">认识校园猫&nbsp; →</a>
               <a class="outline-button" href="#timeline">看照护记录&nbsp; ↓</a>
@@ -701,7 +783,7 @@
               <span class="hero-block blue"></span>
             </div>
             <img class="hero-cats-art" src="assets/illustrations/hero-cats-cutout.png" alt="三只校园猫插画">
-            <span class="today-label">今日出没</span>
+            <span class="today-label">认得它们吗？</span>
             <p class="hand-note">它们不是流浪到附中，<br>它们生活在附中。</p>
           </div>
         </div>
@@ -711,8 +793,8 @@
         <div class="content">
           <header class="section-heading" data-reveal>
             <p class="section-kicker">01 / 校园猫档案</p>
-            <h2 class="section-title" id="cats-title">今天谁在附中？</h2>
-            <p class="section-intro">它们有自己的名字、活动范围和脾气。这里留下一些我们在校园里见到它们的样子。</p>
+            <h2 class="section-title" id="cats-title"><span class="phrase">在附中，</span><span class="phrase">你多半会遇见它们。</span></h2>
+            <p class="section-intro">下面是猫协长期照看的四只常驻猫。左右滑动看照片，记住它们的样子；哪天发现它们受伤或状态不对，请联系猫协。</p>
           </header>
           <div class="cat-grid">
             <article class="cat-card" data-reveal>
@@ -731,7 +813,7 @@
               <div class="cat-info">
                 <div class="cat-name-row"><h3>李十六</h3><span class="status">常驻</span></div>
                 <p class="cat-place">别名：李石榴 / 十六 / 石榴</p>
-                <p class="cat-detail"><span>母</span><span>已绝育</span></p>
+                <p class="cat-detail"><span>灰白</span><span>母</span><span>已绝育</span></p>
                 <p class="cat-health">2023.04 因打架受伤，清创后恢复。</p>
               </div>
             </article>
@@ -752,7 +834,7 @@
               <div class="cat-info">
                 <div class="cat-name-row"><h3>芝麻糊</h3><span class="status">常驻</span></div>
                 <p class="cat-place">别名：大海参</p>
-                <p class="cat-detail"><span>公</span><span>已绝育</span></p>
+                <p class="cat-detail"><span>狸花白</span><span>公</span><span>已绝育</span></p>
                 <p class="cat-health">2025.12 外伤送医缝合，现已恢复。</p>
               </div>
             </article>
@@ -773,7 +855,7 @@
               <div class="cat-info">
                 <div class="cat-name-row"><h3>小白</h3><span class="status">常驻</span></div>
                 <p class="cat-place">别名：白雪 / 异瞳</p>
-                <p class="cat-detail"><span>公</span><span>已绝育</span></p>
+                <p class="cat-detail"><span>白猫</span><span>公</span><span>已绝育</span></p>
                 <p class="cat-health">2025.12 右耳受伤，清创后恢复。</p>
               </div>
             </article>
@@ -791,9 +873,8 @@
               </div>
               <div class="cat-info">
                 <div class="cat-name-row"><h3>奥大橘</h3><span class="status">常驻</span></div>
-                <p class="cat-place">别名：暂无</p>
-                <p class="cat-detail"><span>公</span><span>已绝育</span></p>
-                <p class="cat-health">2025.03 外伤送医，清创后恢复。</p>
+                <p class="cat-detail"><span>橘猫</span><span>公</span><span>已绝育</span></p>
+                <p class="cat-health">2025.02–03 后腿伤口感染，送医治疗一个月后回到校园。</p>
               </div>
             </article>
           </div>
@@ -804,10 +885,11 @@
         <div class="content">
           <h2 id="stats-title" class="visually-hidden">我们在做什么</h2>
           <div class="stats-inner" data-reveal>
-            <div class="stat"><b>5</b><span>救助与照护</span></div>
-            <div class="stat"><b>3</b><span>完成绝育</span></div>
-            <div class="stat"><b>8</b><span>校园与公益义卖</span></div>
+            <div class="stat"><b>4</b><span>只常驻猫，均已绝育</span></div>
+            <div class="stat"><b id="care-spending">¥11,831</b><span>花在送医和绝育上</span></div>
+            <div class="stat"><b>9</b><span>次义卖与周边发售</span></div>
           </div>
+          <p class="stats-note">金额按下方<a href="#ledger">公开账本</a>统计，自 2025 年 2 月起。</p>
         </div>
       </section>
 
@@ -816,7 +898,7 @@
           <header class="section-heading" data-reveal>
             <p class="section-kicker">02 / 照护记录</p>
             <h2 class="section-title" id="timeline-title">我们和它们经历过的事</h2>
-            <p class="section-intro">有些后来好了，有些没有。送医、领养、绝育，以及那些没能救回来的，我们都留下记录。</p>
+            <p class="section-intro">有些后来好了，有些没有。送医、领养、绝育，以及没能救回来的，我们都记了下来。</p>
           </header>
 
           <div class="timeline-list">
@@ -825,7 +907,8 @@
               <div class="timeline-content">
                 <time class="timeline-date" datetime="2025-02">2025.02</time>
                 <h3>小奶牛猫救助与纪念</h3>
-                <p>2025 年 2 月，一只小奶牛猫在校园里主动靠近人求助。发现后，我们把它送去医院并开始住院治疗。它最终没能撑过去；及时送医和后续处置，也尽量避免疾病继续传给其他校园猫。</p>
+                <p>2025 年 2 月，一只小奶牛猫在校园里主动凑近人，像是在求助。我们把它送去医院住院治疗，它最终没能撑过去。及时送医和后续处置，也是为了不让疾病传给其他校园猫。</p>
+                <p class="timeline-ledger"><a href="#ledger">账本</a>治疗费 ¥1,839</p>
               </div>
             </article>
 
@@ -834,7 +917,7 @@
               <div class="timeline-content">
                 <time class="timeline-date" datetime="2025-02">2025.02–03</time>
                 <h3>奥大橘救治与康复</h3>
-                <p>一次打架让奥大橘后腿受伤并感染。我们把它送医处理，也为医药费筹款。一个月后，它恢复并回到校园。</p>
+                <p>奥大橘打架后，后腿伤口感染。我们送它去医院，也为医药费发起募捐。一个月后它康复回到校园，从此成了猫协长期照看的常驻猫。</p>
               </div>
             </article>
 
@@ -843,16 +926,18 @@
               <div class="timeline-content">
                 <time class="timeline-date" datetime="2025-04-30">2025.04.30</time>
                 <h3>宋秋分幼崽救助与领养</h3>
-                <p>我们为宋秋分的幼崽检查身体、准备幼猫粮，也和领养人确认养猫经验与日常照料条件。4 月 30 日，它完成领养。</p>
+                <p>我们带校园猫宋秋分的幼崽做了体检，买了幼猫专用粮，也和想领养的家庭仔细聊过养猫经验和照顾条件。4 月 30 日，小猫被领养回家。送养不是谁想领就领，而是一次托付。</p>
+                <p class="timeline-ledger"><a href="#ledger">账本</a>幼猫专用粮 ¥120</p>
               </div>
             </article>
 
             <article class="timeline-entry" data-reveal>
               <div class="timeline-media"><img src="assets/timeline/2025-12-zhimahu.webp" alt="正常状态下的芝麻糊侧脸照片" loading="lazy"></div>
               <div class="timeline-content">
-                <time class="timeline-date" datetime="2025-12-29">2025.12.29</time>
-                <h3>芝麻糊紧急送医</h3>
-                <p>12 月 29 日，芝麻糊腿部出现明显红肿的伤口。发现后送医清创，之后继续观察恢复。对常驻猫来说，平时多看一眼，往往就是最早的一次预警。</p>
+                <time class="timeline-date" datetime="2025-12">2025.12</time>
+                <h3>芝麻糊和小白送医</h3>
+                <p>12 月 29 日，我们发现芝麻糊腿上的伤口红肿得厉害，立刻送医清创，之后持续观察恢复。同一个月，小白右耳受伤，也送医清创。对常驻猫来说，平时多看一眼，往往就是最早的预警。</p>
+                <p class="timeline-ledger"><a href="#ledger">账本</a>两只猫治疗费 ¥5,843 · 为芝麻糊募得捐款 ¥2,946.01</p>
               </div>
             </article>
 
@@ -860,8 +945,9 @@
               <div class="timeline-media tnr"><img src="assets/timeline/2026-03-tnr.webp" alt="完成绝育后在笼中休息的 IB 楼流浪猫" loading="lazy"></div>
               <div class="timeline-content">
                 <time class="timeline-date" datetime="2026-03-13">2026.03.13</time>
-                <h3>IB 楼三只流浪猫完成绝育</h3>
-                <p>IB 楼周边流浪猫数量增加后，我们陆续捕捉到 1 只公猫和 2 只母猫并送医绝育。术后状态稳定，准备按计划回到原来的活动区域。</p>
+                <h3>IB 楼三只猫完成绝育</h3>
+                <p>IB 楼附近的流浪猫越来越多。在同学帮忙下，我们陆续捉到一只公猫和两只母猫，送医做了绝育，三只猫术后恢复良好。这就是 TNR：捕捉、绝育，等恢复好再放回原来的活动区域，让校园猫的数量慢慢稳定下来。</p>
+                <p class="timeline-ledger"><a href="#ledger">账本</a>绝育费 ¥1,700 · 专项捐款 ¥1,005</p>
               </div>
             </article>
           </div>
@@ -873,13 +959,18 @@
           <header class="ledger-heading">
             <div>
               <p class="section-kicker">03 / 公开账本</p>
-              <h2 id="ledger-title">公开账本</h2>
-              <p class="ledger-subtitle">义卖赚了多少，看病、猫粮和绝育花了多少，都放在这里。</p>
+              <h2 id="ledger-title"><span class="phrase">钱从哪里来，</span><span class="phrase">花到了哪里。</span></h2>
+              <p class="ledger-subtitle">收入来自义卖和捐款，支出用在送医、绝育、猫粮和制作周边上。下面逐笔列出，内容与腾讯文档上的正式账本一致。</p>
             </div>
-            <a class="ledger-link" href="https://docs.qq.com/sheet/DWndhWGJwQ2ljc3dH" target="_blank" rel="noopener noreferrer">查看完整腾讯账本 <span aria-hidden="true">↗</span></a>
+            <a class="ledger-link" href="https://docs.qq.com/sheet/DWndhWGJwQ2ljc3dH" target="_blank" rel="noopener noreferrer">查看腾讯文档原表 <span aria-hidden="true">↗</span></a>
           </header>
+          <div class="ledger-summary" id="ledger-summary" hidden>
+            <p class="ledger-total"><span>收入合计</span><b class="ledger-income" id="ledger-income-total"></b></p>
+            <p class="ledger-total"><span>支出合计</span><b id="ledger-expense-total"></b></p>
+            <p class="ledger-meta" id="ledger-meta"></p>
+          </div>
           <div class="ledger-records" id="ledger-records"></div>
-          <p class="ledger-source-note">网站展示为公众阅读摘要，腾讯文档为唯一正式完整账本。</p>
+          <p class="ledger-source-note">以腾讯文档上的账本为准。最新的记录在最上面；带“+”的是义卖项目，点开能看到这次义卖的每一笔成本和收入。</p>
         </div>
       </section>
 
@@ -887,8 +978,8 @@
         <div class="content">
           <header class="section-heading" data-reveal>
             <p class="section-kicker">04 / 义卖与周边</p>
-            <h2 class="section-title" id="sales-title">义卖，也是照护的一部分。</h2>
-            <p class="section-intro">从画图、打样到摆摊，周边收入最后又回到猫粮、医疗和绝育里。</p>
+            <h2 class="section-title" id="sales-title"><span class="phrase">义卖，</span><span class="phrase">也是照护的一部分。</span></h2>
+            <p class="section-intro">画图、打样、摆摊，都是我们自己来。卖周边的钱，最后变成猫粮、医药费和绝育费。</p>
           </header>
 
           <div class="sales-gallery">
@@ -897,7 +988,7 @@
               <div class="sale-caption">
                 <time class="sale-date" datetime="2025-05-01">2025.05</time>
                 <h3>江心洲公益义卖</h3>
-                <p>第一次把猫协周边带出校园。我们和 AWA 一起摆摊，也第一次在校外做公益义卖。</p>
+                <p>受 AWA 流浪动物保护社邀请，我们在江心洲毛孩子岛摆了两天摊，这也是猫协周边第一次走出校园。</p>
               </div>
             </article>
 
@@ -906,36 +997,45 @@
               <div class="sale-caption">
                 <time class="sale-date" datetime="2025-06-27">2025.06</time>
                 <h3>科技文化节</h3>
-                <p>这一批新周边从设计稿变成实物：明信片、校猫卡套、亚克力邮票挂件和单页夹。</p>
+                <p>明信片、校猫卡套、亚克力邮票挂件和单页夹在这里首发。线上预售和 29 日的线下摊位同时进行，还和青物社办了联合活动。</p>
               </div>
             </article>
 
             <article class="sale-text accent" data-reveal>
               <time class="sale-date" datetime="2025-10-24">2025.10</time>
               <h3>秋季运动会义卖</h3>
-              <p>开售约 1.5 小时售罄。</p>
+              <p>开售约 1.5 小时就卖完了，第二天继续接受预售；之后的订单由<span class="nowrap">察哈尔路</span>、奥南、晓庄三个校区的同学一起派发。</p>
             </article>
           </div>
 
-          <article class="sale-text sale-wide" data-reveal>
-            <time class="sale-date" datetime="2024-11">2024.11</time>
-            <h3>第一次线下义卖</h3>
-            <p>运动会上的第一次线下摊位。摇摇乐和猫咪笔记本，也是我们第一次把自己设计的东西真正卖出去。</p>
-          </article>
+          <section class="sales-history" aria-labelledby="sales-history-title" data-reveal>
+            <h3 class="sales-history-title" id="sales-history-title">全部 9 次义卖与周边发售</h3>
+            <ol class="sales-history-list">
+              <li><time datetime="2024-09-21">2024.09.21</time><b>首批便利贴预售</b><span>灰白李十六、棕李十六、棕小白三款。第一批当晚卖完，又加印了第二批。</span></li>
+              <li><time datetime="2024-10-18">2024.10.18</time><b>立体托特包</b><span>同学投票选出设计，首批限量做了 100 份。</span></li>
+              <li><time datetime="2024-10-27">2024.10.27</time><b>猫猫乐园贴纸</b><span>把摇摇乐里的猫做成 12 × 9 cm 的贴纸，运动会前在线上发售。</span></li>
+              <li><time datetime="2024-11">2024.11</time><b>第一次线下义卖</b><span>运动会上的第一个摊位。摇摇乐 DIY 包和 A5、B5 猫咪笔记本首发，缺货的商品发了兑换券。</span></li>
+              <li><time datetime="2025-04-12">2025.04.12</time><b>余量再贩</b><span>清理库存，猫咪贴纸限时不限量。</span></li>
+              <li><time datetime="2025-05-01">2025.05.01–02</time><b>江心洲公益义卖</b><span>受 AWA 流浪动物保护社邀请，在江心洲毛孩子岛摆摊两天。</span></li>
+              <li><time datetime="2025-06-27">2025.06.27–29</time><b>科技文化节</b><span>明信片、校猫卡套、亚克力邮票挂件、单页夹首发。</span></li>
+              <li><time datetime="2025-10-24">2025.10.24–25</time><b>秋季运动会</b><span>约 1.5 小时卖完，第二天继续预售，三个校区协作派发；B5 笔记本换成了哑光覆膜封面。</span></li>
+              <li><time datetime="2026-05-01">2026.05.01</time><b>特长生吧唧售卖</b><span>吧唧（徽章）售卖，是账本里最近的一笔义卖收入。</span></li>
+            </ol>
+          </section>
         </div>
       </section>
 
       <section class="section guide-section" id="guide" aria-labelledby="guide-title">
         <div class="content">
           <header class="section-heading" data-reveal>
-            <p class="section-kicker">05 / 校园猫指南</p>
-            <h2 class="section-title" id="guide-title">在学校遇到猫，可以这样做。</h2>
+            <p class="section-kicker">05 / 遇猫指南</p>
+            <h2 class="section-title" id="guide-title"><span class="phrase">在学校遇到猫，</span><span class="phrase">可以这样做。</span></h2>
           </header>
           <div class="guide-list" data-reveal>
-            <article class="guide-item"><span class="guide-number">01</span><p>别追、别强抱，给它留一点距离。</p></article>
-            <article class="guide-item"><span class="guide-number">02</span><p>别喂人吃的东西；猫粮和清水更合适。</p></article>
-            <article class="guide-item"><span class="guide-number">03</span><p>看到明显伤口或异常，记下位置并联系猫协。</p></article>
-            <article class="guide-item"><span class="guide-number">04</span><p>不确定它是否需要救助时，先联系猫协，不要直接带走。</p></article>
+            <article class="guide-item"><span class="guide-number">01</span><p>别追、别强抱，给它留出距离。</p></article>
+            <article class="guide-item"><span class="guide-number">02</span><p>只喂猫粮和清水。人吃的东西太咸，牛奶会让猫拉肚子。</p></article>
+            <article class="guide-item"><span class="guide-number">03</span><p>发现受伤或精神不好，拍张照片、记下时间地点，联系猫协。</p></article>
+            <article class="guide-item"><span class="guide-number">04</span><p>别把猫带离校园。拿不准它要不要帮忙，先问猫协。</p></article>
           </div>
         </div>
       </section>
@@ -944,16 +1044,16 @@
         <div class="content join-layout">
           <div class="join-copy" data-reveal>
             <p class="section-kicker">06 / 加入猫协</p>
-            <h2 id="join-title">猫协需要的不只会救猫的人。</h2>
-            <p>拍照、设计周边、整理账目、摆摊、跑医院、做科普，都是猫协的一部分。想参与的话，先来猫墙看看我们最近在做什么。</p>
+            <h2 id="join-title"><span class="phrase">猫协需要的，</span><span class="phrase">不只是会救猫的人。</span></h2>
+            <p>拍照、画周边、记账、摆摊、送猫去医院、写科普，都是猫协的日常。校园猫近况、科普和招新通知都发在猫墙上，扫码就能找到我们。</p>
             <ul class="join-roles" aria-label="可以参与的猫协工作">
-              <li>救助</li><li>摄影</li><li>设计</li><li>义卖</li><li>运营</li>
+              <li>救助</li><li>摄影</li><li>设计</li><li>义卖</li><li>记账</li><li>运营</li>
             </ul>
           </div>
           <aside class="qr-area" data-reveal>
             <img src="assets/join/cat-wall-qq-qr.jpg" alt="卧附藏喵 QQ 猫墙二维码">
             <strong>QQ：3782499640</strong>
-            <span>关注猫墙，查看近况与招新通知。</span>
+            <span>猫墙：校园猫近况、科普和招新通知</span>
           </aside>
         </div>
       </section>
@@ -962,7 +1062,7 @@
     <footer class="footer">
       <div class="content footer-inner">
         <div class="footer-brand"><span class="footer-logo" aria-hidden="true"></span><span>卧附藏喵<small>NSFZ CAT ASSOCIATION</small></span></div>
-        <div class="footer-links"><a href="#cats">校园猫</a><a href="#timeline">照护记录</a><a href="#ledger">公开账本</a><a href="#guide">猫咪指南</a></div>
+        <div class="footer-links"><a href="#cats">校园猫</a><a href="#timeline">照护记录</a><a href="#ledger">公开账本</a><a href="#sales">义卖</a><a href="#guide">遇猫指南</a></div>
         <div class="footer-meta">
           <span class="visitor-count" id="visitor-count" title="自启用访问统计以来" aria-live="polite" hidden></span>
           <small class="footer-year">© 2026</small>
@@ -970,6 +1070,7 @@
       </div>
     </footer>
 
+  <script src="data/ledger-snapshot.js"></script>
   <script>
     (() => {
       // GoatCounter 配置：创建站点后，只需在下方引号内填写 site code。
@@ -977,79 +1078,10 @@
       const GOATCOUNTER_CODE = "nsfzcat";
       const GOATCOUNTER_PATH = "/";
 
-      // Ledger Sync 配置：部署 Cloudflare Worker 后，只需把这里替换为它的 /ledger 地址。
-      // 未配置或请求失败时，页面会自动使用下方的只读快照。
+      // 账本实时同步（可选）：部署 worker/ 里的 Cloudflare Worker 后，把这里换成它的 /ledger 地址。
+      // 没有配置或请求失败时，页面显示 data/ledger-snapshot.js 里的账本快照。
       const LEDGER_API_URL = 'https://REPLACE_WITH_WORKER_DOMAIN/ledger';
-
-      // ONLY FALLBACK SNAPSHOT：仅在同步接口不可用时展示，不是正式账本数据源。
-      // 腾讯文档始终是唯一正式、完整的账本。
-      const fallbackLedgerEntries = [
-        { year: '2026', date: '2026.05.01', title: '特长生吧唧售卖', direction: 'income', amount: 900.21 },
-        { year: '2026', date: '2026.03', title: '流浪猫绝育捐款', direction: 'income', amount: 1005 },
-        { year: '2026', date: '2026.03', title: '流浪猫绝育费用', direction: 'expense', amount: 1700 },
-        { year: '2026', date: '2025.12–2026', title: '芝麻糊生病捐款', direction: 'income', amount: 2946.01 },
-        { year: '2025', date: '2025.12.01', title: '芝麻糊与小白治疗费用', direction: 'expense', amount: 5843 },
-        {
-          year: '2025', date: '2025.10', title: '2025 秋季运动会义卖', type: 'project', details: [
-            { date: '2025.10.01', title: '自封袋', direction: 'expense', amount: 56.46 },
-            { date: '待补', title: '珠串', direction: 'expense', amount: 24.49 },
-            { date: '待补', title: '平口牛皮纸袋', direction: 'expense', amount: 21.98 },
-            { date: '待补', title: '托特包', direction: 'expense', amount: 3669.30 },
-            { date: '待补', title: '纸箱', direction: 'expense', amount: 46.06 },
-            { date: '待补', title: '防撞角', direction: 'expense', amount: 9.76 },
-            { date: '待补', title: '一次性桌布', direction: 'expense', amount: 9.93 },
-            { date: '待补', title: '透明打包带', direction: 'expense', amount: 36.45 },
-            { date: '待补', title: '强力胶', direction: 'expense', amount: 10.24 },
-            { date: '待补', title: '扇子', direction: 'expense', amount: 780 },
-            { date: '待补', title: '笔记本', direction: 'expense', amount: 980.50 },
-            { date: '待补', title: '便利贴', direction: 'expense', amount: 285 },
-            { date: '待补', title: '摇摇乐', direction: 'expense', amount: 6750 },
-            { date: '待补', title: '海报横幅', direction: 'expense', amount: 175 },
-            { date: '待补', title: '运动会义卖收入', direction: 'income', amount: 12111.30 },
-          ],
-        },
-        { year: '2025', date: '2025.09.17', title: '订购猫粮 5 斤', direction: 'expense', amount: 44.39 },
-        { year: '2025', date: '2025.07.08', title: '订购猫粮 5 斤', direction: 'expense', amount: 44.98 },
-        { year: '2025', date: '2025.06.18', title: '订购猫粮 40 斤', direction: 'expense', amount: 213.30 },
-        {
-          year: '2025', date: '2025.06', title: '2025 科技文化节义卖', type: 'project', details: [
-            { date: '2025.06.18', title: '订购便利贴', direction: 'expense', amount: 150 },
-            { date: '2025.06.18', title: '订购亚克力', direction: 'expense', amount: 220.20 },
-            { date: '2025.06.18', title: '订购卡套', direction: 'expense', amount: 260 },
-            { date: '2025.06.18', title: '订购明信片', direction: 'expense', amount: 169.86 },
-            { date: '2025.06.21', title: '订购反光板折叠扇', direction: 'expense', amount: 360 },
-            { date: '2025.06.25', title: '订购单页夹', direction: 'expense', amount: 450 },
-            { date: '2025.06.27', title: '订购卡套配皮绳', direction: 'expense', amount: 49.10 },
-            { date: '2025.06.27', title: '订购亚克力配链条', direction: 'expense', amount: 5.70 },
-            { date: '2025.06.29', title: '科技文化节义卖收入', direction: 'income', amount: 3649.70 },
-          ],
-        },
-        { year: '2025', date: '2025.06.11', title: '救助脏脏', direction: 'expense', amount: 2449 },
-        { year: '2025', date: '2025.05.09', title: '购买猫粮 10 斤', direction: 'expense', amount: 55.08 },
-        { year: '2025', date: '2025.05.02', title: '江心洲毛孩子岛义卖收入', direction: 'income', amount: 273.80 },
-        { year: '2025', date: '2025.04.30', title: '中招两千件礼物收入', direction: 'income', amount: 1330 },
-        { year: '2025', date: '2025.04.27', title: '购买幼猫专用猫粮', direction: 'expense', amount: 120 },
-        { year: '2025', date: '2025.04.24', title: '订购中招小卡（无发票未报销）', direction: 'expense', amount: 64 },
-        { year: '2025', date: '2025.04.23', title: '中招包装打样', direction: 'expense', amount: 6.80 },
-        {
-          year: '2025', date: '2025.04–06', title: '2025 春季周边销售', type: 'project', details: [
-            { date: '2025.04.15', title: '购买打包袋（商家补款 3 元）', direction: 'expense', amount: 8.69 },
-            { date: '2025.04.22', title: '订购贴纸', direction: 'expense', amount: 30 },
-            { date: '2025.04.30', title: '余量售卖收入', direction: 'income', amount: 991 },
-            { date: '2025.05.01', title: '退款', direction: 'expense', amount: 23 },
-            { date: '2025.05.12', title: 'IB 社团购买周边', direction: 'income', amount: 113.40 },
-            { date: '2025.05.23', title: '线上购买周边', direction: 'income', amount: 380 },
-            { date: '2025.06.13', title: '余量售卖（含捐款 30 元）', direction: 'income', amount: 288 },
-          ],
-        },
-        { year: '2025', date: '2025.03.31', title: '微信、支付宝月度收入', direction: 'income', amount: 70.05 },
-        { year: '2025', date: '2025.03.05', title: '购买猫粮 40 斤', direction: 'expense', amount: 217.29 },
-        { year: '2025', date: '2025.02.28', title: '微信、支付宝月度收入', direction: 'income', amount: 270 },
-        { year: '2025', date: '2025.02.21', title: '校园内已逝奶牛猫治疗', direction: 'expense', amount: 1839 },
-        { year: '2025', date: '2025.02.19', title: '购买航空箱', direction: 'expense', amount: 40 },
-        { year: '2025', date: '2025.02.14', title: '购买猫包', direction: 'expense', amount: 48.41 },
-        { year: '2025', date: '2025.02.11', title: '购买猫粮 40 斤', direction: 'expense', amount: 326.70 },
-      ];
+      const ledgerSnapshot = window.LEDGER_SNAPSHOT;
 
       const ledgerCurrency = new Intl.NumberFormat('zh-CN', {
         minimumFractionDigits: 2,
@@ -1139,24 +1171,107 @@
         return details;
       }
 
+      const isLedgerProject = (entry) => entry.type === 'group' || entry.type === 'project';
+      const toCents = (value) => (Number.isFinite(value) ? Math.round(value * 100) : 0);
+
+      // 把一条记录拆成收入、支出（单位：分）
+      function entryCents(entry) {
+        if (!Number.isFinite(entry.income) && !Number.isFinite(entry.expense) && Number.isFinite(entry.net)) {
+          return entry.net >= 0 ? { income: toCents(entry.net), expense: 0 } : { income: 0, expense: toCents(-entry.net) };
+        }
+        return { income: toCents(entry.income), expense: toCents(entry.expense) };
+      }
+
+      function getLedgerTotals(entries) {
+        let income = 0;
+        let expense = 0;
+        let records = 0;
+        entries.forEach((entry) => {
+          if (isLedgerProject(entry)) {
+            const details = (entry.details || []).map(entryCents);
+            income += Number.isFinite(entry.income) ? toCents(entry.income) : details.reduce((sum, item) => sum + item.income, 0);
+            expense += Number.isFinite(entry.expense) ? toCents(entry.expense) : details.reduce((sum, item) => sum + item.expense, 0);
+            records += details.length;
+          } else {
+            const cents = entryCents(entry);
+            income += cents.income;
+            expense += cents.expense;
+            records += 1;
+          }
+        });
+        return { income: income / 100, expense: expense / 100, records };
+      }
+
+      // 首页“花在送医和绝育上”：分类里带“医疗”“绝育”或“TNR”的支出
+      function getCareSpending(entries) {
+        const rows = entries.flatMap((entry) => (isLedgerProject(entry) ? entry.details || [] : [entry]));
+        const cents = rows
+          .filter((entry) => /医疗|绝育|TNR/i.test(entry.category || ''))
+          .reduce((sum, entry) => sum + entryCents(entry).expense, 0);
+        return cents / 100;
+      }
+
+      function renderLedgerSummary(entries, metaText) {
+        const summary = document.querySelector('#ledger-summary');
+        if (!summary) return;
+        const totals = getLedgerTotals(entries);
+        document.querySelector('#ledger-income-total').textContent = `¥${ledgerCurrency.format(totals.income)}`;
+        document.querySelector('#ledger-expense-total').textContent = `¥${ledgerCurrency.format(totals.expense)}`;
+        document.querySelector('#ledger-meta').textContent = `${totals.records} 笔记录 · ${metaText}`;
+        summary.hidden = false;
+
+        const careSpending = getCareSpending(entries);
+        const careStat = document.querySelector('#care-spending');
+        if (careStat && careSpending > 0) {
+          careStat.textContent = `¥${new Intl.NumberFormat('zh-CN', { maximumFractionDigits: 0 }).format(careSpending)}`;
+        }
+      }
+
       function renderLedger(data) {
         const target = document.querySelector('#ledger-records');
         if (!target) return;
         target.replaceChildren();
+        // 腾讯账本按时间顺序记账，网站倒过来显示，最新的在最上面
+        const entries = [...data].reverse();
         const yearFor = (entry) => entry.year || String(entry.date || '').match(/20\d{2}/)?.[0] || '其他';
-        const years = [...new Set(data.map(yearFor))];
+        const years = [...new Set(entries.map(yearFor))];
         years.forEach((year) => {
           const yearSection = makeLedgerElement('section', 'ledger-year');
           yearSection.setAttribute('aria-labelledby', `ledger-year-${year}`);
           const heading = makeLedgerElement('h3', 'ledger-year-heading', year);
           heading.id = `ledger-year-${year}`;
           const list = makeLedgerElement('div', 'ledger-list');
-          data.filter((entry) => yearFor(entry) === year).forEach((entry) => {
-            list.append(entry.type === 'group' || entry.type === 'project' ? createLedgerProject(entry) : createLedgerEntry(entry));
+          entries.filter((entry) => yearFor(entry) === year).forEach((entry) => {
+            list.append(isLedgerProject(entry) ? createLedgerProject(entry) : createLedgerEntry(entry));
           });
           yearSection.append(heading, list);
           target.append(yearSection);
         });
+      }
+
+      function renderLedgerUnavailable() {
+        const target = document.querySelector('#ledger-records');
+        if (!target) return;
+        const message = makeLedgerElement('p', 'ledger-empty', '账本暂时没有加载出来，可以先');
+        const link = makeLedgerElement('a', '', '查看腾讯文档原表');
+        link.href = 'https://docs.qq.com/sheet/DWndhWGJwQ2ljc3dH';
+        link.target = '_blank';
+        link.rel = 'noopener noreferrer';
+        message.append(link, '。');
+        target.replaceChildren(message);
+      }
+
+      function showLedger(entries, metaText) {
+        renderLedger(entries);
+        renderLedgerSummary(entries, metaText);
+      }
+
+      const pad2 = (value) => String(value).padStart(2, '0');
+      const formatSheetDate = (value) => String(value || '').replace(/-/g, '.');
+      function formatSyncTime(value) {
+        const date = new Date(value);
+        if (Number.isNaN(date.getTime())) return '';
+        return `${date.getFullYear()}.${pad2(date.getMonth() + 1)}.${pad2(date.getDate())} ${pad2(date.getHours())}:${pad2(date.getMinutes())}`;
       }
 
       async function fetchLedgerData() {
@@ -1185,12 +1300,16 @@
       }
 
       async function initLedger() {
-        renderLedger(fallbackLedgerEntries);
+        if (Array.isArray(ledgerSnapshot?.entries) && ledgerSnapshot.entries.length) {
+          showLedger(ledgerSnapshot.entries, `数据截至 ${formatSheetDate(ledgerSnapshot.sheetDate)}`);
+        } else {
+          renderLedgerUnavailable();
+        }
         try {
           const data = await fetchLedgerData();
-          renderLedger(data.entries);
+          showLedger(data.entries, `已与腾讯账本同步 · ${formatSyncTime(data.updatedAt)}`);
         } catch (_) {
-          // The ledger is non-blocking. Keep the last reviewed fallback snapshot visible.
+          // 实时同步不可用时，继续显示上面的账本快照。
         }
       }
 
@@ -1238,6 +1357,53 @@
         }
       }
 
+      // 段落最后一行至少留 4 个字：把结尾的几个词（连同标点、数字）包成不换行的一组。
+      // 有 Intl.Segmenter 时按词切分，避免把“公开”“帮忙”这样的词拆到两行。
+      function keepParagraphEndingsTogether() {
+        const selectors = [
+          '.hero-lede', '.section-intro', '.cat-health', '.timeline-content p', '.ledger-subtitle',
+          '.ledger-source-note', '.stats-note', '.sale-caption p', '.sale-text p', '.sales-history-list span',
+          '.guide-item p', '.join-copy p:not(.section-kicker)',
+        ];
+        const minimumCharacters = 4;
+        const closingPunctuation = /[，。；：！？、）》」』”’.,!?;:…)]/;
+        const latinWord = /[A-Za-z0-9]/;
+        const segmenter = window.Intl && Intl.Segmenter ? new Intl.Segmenter('zh-CN', { granularity: 'word' }) : null;
+
+        const segmentsOf = (text) => (segmenter
+          ? [...segmenter.segment(text)].map(({ segment, index, isWordLike }) => ({ segment, index, isWordLike }))
+          : [...text].map((segment, index) => ({ segment, index, isWordLike: !/[\s\p{P}\p{S}]/u.test(segment) })));
+
+        function tailStart(text) {
+          let end = text.length;
+          while (end > 0 && closingPunctuation.test(text[end - 1])) end -= 1;
+          const segments = segmentsOf(text.slice(0, end));
+          let start = end;
+          let count = 0;
+          for (let index = segments.length - 1; index >= 0 && count < minimumCharacters; index -= 1) {
+            const { segment, isWordLike } = segments[index];
+            start = segments[index].index;
+            if (isWordLike) count += latinWord.test(segment) ? 1 : [...segment].length;
+          }
+          while (start < text.length && /\s/.test(text[start])) start += 1;
+          return count >= minimumCharacters ? start : -1;
+        }
+
+        document.querySelectorAll(selectors.join(',')).forEach((element) => {
+          const textNode = element.lastChild;
+          if (!textNode || textNode.nodeType !== Node.TEXT_NODE) return;
+          const text = textNode.textContent;
+          const start = tailStart(text);
+          if (start < minimumCharacters) return;
+          const ending = document.createElement('span');
+          ending.className = 'nowrap';
+          ending.textContent = text.slice(start);
+          textNode.textContent = text.slice(0, start);
+          element.append(ending);
+        });
+      }
+
+      keepParagraphEndingsTogether();
       initLedger();
 
       document.querySelectorAll('[data-carousel]').forEach((carousel) => {
